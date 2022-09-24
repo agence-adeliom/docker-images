@@ -1,0 +1,18 @@
+ARG PHP_VERSION
+FROM arnaudritti/php:${PHP_VERSION}-fpm
+
+RUN apk add --update --no-cache \
+   libgcc libstdc++ libx11 glib libxrender libxext libintl \
+   ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-freefont
+
+# On alpine static compiled patched qt headless wkhtmltopdf (46.8 MB).
+# Compilation took place in Travis CI with auto push to Docker Hub see
+# BUILD_LOG env. Checksum is printed in line 14121.
+
+COPY --from=madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10 \
+   /bin/wkhtmltopdf /bin/wkhtmltopdf
+
+RUN apk add --no-cache imagemagick imagemagick-libs imagemagick-dev
+
+COPY --from=madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10 \
+   /bin/wkhtmltoimage /bin/wkhtmltoimage

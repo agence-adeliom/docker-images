@@ -1,0 +1,7 @@
+ARG PHP_VERSION
+FROM arnaudritti/php:${PHP_VERSION}-fpm
+FROM caddy:builder AS builder
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
+WORKDIR /var/www/html
