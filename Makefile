@@ -11,7 +11,7 @@ help: ## This help.
 
 IMAGE_PREFIX=arnaudritti
 IMAGE_NAME=$(IMAGE_PREFIX)/$(IMAGE)
-DOCKER_REPO=docker.io
+REGISTRY=
 
 # DOCKER TASKS
 build: ## Build the container
@@ -19,7 +19,12 @@ build: ## Build the container
 ifeq ("$(wildcard $(DOCKERFILE))","")
 	$(eval DOCKERFILE := $(IMAGE)/Dockerfile.$(VARIATION))
 endif
-	docker build -t $(IMAGE_NAME) --build-arg PHP_VERSION=$(VERSION) -f $(DOCKERFILE) $(IMAGE)
+	docker buildx build \
+	--push \
+	--platform linux/amd64,linux/arm64 \
+	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
+	--build-arg PHP_VERSION=$(VERSION) \
+	--file $(DOCKERFILE) $(IMAGE)
 
 
 build-nc: ## Build the container without caching
@@ -27,7 +32,13 @@ build-nc: ## Build the container without caching
 ifeq ("$(wildcard $(DOCKERFILE))","")
 	$(eval DOCKERFILE := $(IMAGE)/Dockerfile.$(VARIATION))
 endif
-	docker build --no-cache -t $(IMAGE_NAME) --build-arg PHP_VERSION=$(VERSION) -f $(DOCKERFILE) $(IMAGE)
+	docker buildx build \
+	--push \
+	--no-cache \
+	--platform linux/amd64,linux/arm64 \
+	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION) \
+	--build-arg PHP_VERSION=$(VERSION) \
+	--file $(DOCKERFILE) $(IMAGE)
 
 # Run containers
 run: stop ## Run container
@@ -44,10 +55,10 @@ release: build-nc publish ## Make a release by building and publishing the tagge
 
 # Docker publish
 publish: tag ## publish the taged container
-	@echo 'publish $(VERSION)-$(VARIATION) to $(DOCKER_REPO)'
-	docker push $(DOCKER_REPO)/$(IMAGE_NAME):$(VERSION)-$(VARIATION)
+	@echo 'publish $(VERSION)-$(VARIATION)'
+	docker push $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
 # Docker tagging
 tag: ## Generate container tag
 	@echo 'create tag $(VERSION)-$(VARIATION)'
-	docker tag $(IMAGE_NAME) $(DOCKER_REPO)/$(IMAGE_NAME):$(VERSION)-$(VARIATION)
+	docker tag $(IMAGE_NAME) $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
