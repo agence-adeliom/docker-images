@@ -35,19 +35,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          image: ["php"]
           version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2.0RC2"]
           variant: [cli, fpm, caddy, fpm-wkhtmltopdf, caddy-wkhtmltopdf]
           platforms: ["linux/amd64,linux/arm64"]
     steps:
       - name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo '::set-output name=IMAGE_TAG::${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/php:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       -
         name: Build and export to Docker
         uses: docker/build-push-action@v3
         with:
-          context: ${{ matrix.image }}
+          context: ./php
           file: Dockerfile.${{ matrix.variant }}
           load: true
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
@@ -79,7 +78,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: ${{ matrix.image }}
+          context: ./php
           platforms: ${{ matrix.platforms }}
           push: true
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
