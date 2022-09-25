@@ -40,7 +40,7 @@ jobs:
           platforms: ["linux/amd64,linux/arm64"]
     steps:
       - name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::$IMAGE_PREFIX/${{ matrix.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo '::set-output name=IMAGE_TAG::${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       -
         name: Build and export to Docker
@@ -79,5 +79,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: $IMAGE_PREFIX/php
+          repository: ${{ env.IMAGE_PREFIX }}/php
           readme-filepath: ./php/README.md
