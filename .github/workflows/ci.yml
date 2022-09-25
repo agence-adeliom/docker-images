@@ -6,6 +6,7 @@ on:
       - 'main'
 
 env:
+  REGISTRY: docker.io
   IMAGE_PREFIX: arnaudritti
 
 jobs:
@@ -40,7 +41,7 @@ jobs:
           platforms: ["linux/amd64,linux/arm64"]
     steps:
       - name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo '::set-output name=IMAGE_TAG::${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       -
         name: Build and export to Docker
@@ -52,6 +53,24 @@ jobs:
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+          format: "template"
+          template: "@/contrib/sarif.tpl"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: "trivy-results.sarif"
+          
       -
         name: Test
         run: |
