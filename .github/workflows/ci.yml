@@ -72,8 +72,6 @@ jobs:
     needs: build-php-images
     strategy:
       fail-fast: false
-      matrix:
-          image: ["php"]
     steps:
       -
         name: Update repo description
@@ -81,5 +79,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: $IMAGE_PREFIX/${{ matrix.image }}
-          readme-filepath: ./${{ matrix.image }}/README.md
+          repository: $IMAGE_PREFIX/php
+          readme-filepath: ./php/README.md
