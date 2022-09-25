@@ -1,7 +1,6 @@
 ARG PHP_VERSION
 
 FROM caddy:$CADDY_IMAGE_VER AS caddy-builder
-
 RUN xcaddy build
 
 FROM arnaudritti/php:${PHP_VERSION}-fpm
@@ -13,20 +12,14 @@ EXPOSE 80
 WORKDIR /var/www/html/
 VOLUME ["/etc/caddy", "/var/www/html"]
 
+COPY config/caddy/Caddyfile /etc/caddy/
+COPY config/supervisord.conf /etc/
+COPY config/supervisord /etc/supervisord/
+
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
+COPY config/caddy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 
-COPY ./.docker/Caddyfile /etc/caddy/
-COPY ./.docker/supervisord.conf /etc/
-COPY ./.docker/supervisord /etc/supervisord/
-COPY ./.docker/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
-
-COPY ./.docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
-RUN chmod +x /usr/local/bin/docker-healthcheck
-
-HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint"]
 CMD ["-D"]
