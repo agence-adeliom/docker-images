@@ -39,7 +39,11 @@ jobs:
           variant: [cli, fpm, caddy, fpm-wkhtmltopdf, caddy-wkhtmltopdf]
           platforms: ["linux/amd64,linux/arm64"]
     steps:
-      - name: Set image tag
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Set image tag
         run: echo '::set-output name=IMAGE_TAG::${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/php:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       -
@@ -53,7 +57,8 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
       
-      - name: Run Trivy vulnerability scanner
+      - 
+        name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
@@ -65,7 +70,8 @@ jobs:
           template: "@/contrib/sarif.tpl"
           output: "trivy-results.sarif"
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      - 
+        name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: "trivy-results.sarif"
@@ -91,6 +97,9 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
       -
         name: Update repo description
         uses: peter-evans/dockerhub-description@v2
