@@ -50,8 +50,8 @@ jobs:
           file: Dockerfile.${{ matrix.variant }}
           load: true
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args:
-            PHP_VERSION: ${{ matrix.version }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
       -
         name: Test
         run: |
@@ -64,8 +64,8 @@ jobs:
           platforms: ${{ matrix.platforms }}
           push: true
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args:
-            PHP_VERSION: ${{ matrix.version }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
 
   dockerhub-php-images:
     runs-on: ubuntu-latest
