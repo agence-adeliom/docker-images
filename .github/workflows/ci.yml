@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./php
-          file: Dockerfile.${{ matrix.variant }}
+          file: ./php/Dockerfile.${{ matrix.variant }}
           load: true
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -85,6 +85,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./php
+          file: ./php/Dockerfile.${{ matrix.variant }}
           platforms: ${{ matrix.platforms }}
           push: true
           tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
