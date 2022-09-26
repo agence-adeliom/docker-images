@@ -12,6 +12,9 @@ env:
 jobs:
   docker-setup:
     runs-on: ubuntu-latest
+    outputs:
+      REGISTRY: ${{ steps.docker-env.outputs.REGISTRY }}
+      IMAGE_PREFIX: ${{ steps.docker-env.outputs.IMAGE_PREFIX }}   
     steps:
       -
         name: Checkout
@@ -29,14 +32,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: Print inputs passed to the reusable workflow
+        id: docker-env
+        run: |
+          echo "::set-output name=REGISTRY::$REGISTRY"
+          echo "::set-output name=IMAGE_PREFIX::$IMAGE_PREFIX"
+
   build-php-images:
     uses: ./.github/workflows/build_php.yml
     needs: [docker-setup]
     secrets: inherit
     with:
       image: php
-      prefix: $IMAGE_PREFIX
-      registry: $REGISTRY
+      prefix: ${{ needs.docker-setup.outputs.REGISTRY }}
+      registry: ${{ needs.docker-setup.outputs.IMAGE_PREFIX }}
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
