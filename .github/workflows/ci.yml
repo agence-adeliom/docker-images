@@ -31,6 +31,7 @@ jobs:
 
   build-php-images:
     uses: ./.github/workflows/build_php.yml
+    needs: [docker-setup]
     secrets: inherit
     with:
       image: php
