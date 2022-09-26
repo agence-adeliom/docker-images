@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
   build-php-images:
-    uses: ./.github/workflows/build/php.yml
+    uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
       image: php
