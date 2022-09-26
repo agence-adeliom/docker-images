@@ -7,14 +7,14 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_PREFIX: arnaudritti
+  PREFIX: arnaudritti
 
 jobs:
   docker-setup:
     runs-on: ubuntu-latest
     outputs:
       REGISTRY: ${{ steps.docker-env.outputs.REGISTRY }}
-      IMAGE_PREFIX: ${{ steps.docker-env.outputs.IMAGE_PREFIX }}   
+      PREFIX: ${{ steps.docker-env.outputs.PREFIX }}   
     steps:
       -
         name: Checkout
@@ -36,7 +36,7 @@ jobs:
         id: docker-env
         run: |
           echo "::set-output name=REGISTRY::$REGISTRY"
-          echo "::set-output name=IMAGE_PREFIX::$IMAGE_PREFIX"
+          echo "::set-output name=PREFIX::$PREFIX"
 
   build-php-images:
     uses: ./.github/workflows/build_php.yml
@@ -44,7 +44,7 @@ jobs:
     secrets: inherit
     with:
       image: php
-      prefix: ${{ needs.docker-setup.outputs.IMAGE_PREFIX }}
+      prefix: ${{ needs.docker-setup.outputs.PREFIX }}
       registry: ${{ needs.docker-setup.outputs.REGISTRY }}
 
   dockerhub-php-doc:
