@@ -34,7 +34,8 @@ jobs:
     secrets: inherit
     with:
       image: php
-      prefix: arnaudritti
+      prefix: ${{ env.IMAGE_PREFIX }}
+      registry: ${{ env.REGISTRY }}
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
