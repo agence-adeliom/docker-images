@@ -44,7 +44,6 @@ jobs:
         with:
           context: ./${{ inputs.image }}
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-          platforms: "linux/amd64,linux/arm64"
           load: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
