@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM arnaudritti/php:${PHP_VERSION}-caddy
+FROM adeliom/php:${PHP_VERSION}-caddy
 
 RUN apk add --update --no-cache \
    libgcc libstdc++ libx11 glib libxrender libxext libintl \

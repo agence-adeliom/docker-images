@@ -13,7 +13,7 @@ jobs:
     secrets: inherit
     with:
       image: php
-      prefix: arnaudritti
+      prefix: adeliom
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest

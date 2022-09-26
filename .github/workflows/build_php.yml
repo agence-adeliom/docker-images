@@ -128,18 +128,20 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - 
         name: Set image tag
         run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
+      - 
+        name: Set repository
+        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}'
+        id: repository
       -
         name: Build and export to Docker
         uses: docker/build-push-action@v3
         with:
           context: ./${{ inputs.image }}
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-          platforms: "linux/amd64,linux/arm64"
           load: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
@@ -215,14 +217,16 @@ jobs:
         name: Set image tag
         run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
-
+      - 
+        name: Set repository
+        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}'
+        id: repository
       -
         name: Build and export to Docker
         uses: docker/build-push-action@v3
         with:
           context: ./${{ inputs.image }}
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-          platforms: "linux/amd64,linux/arm64"
           load: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}

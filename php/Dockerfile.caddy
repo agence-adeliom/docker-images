@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM arnaudritti/php:${PHP_VERSION}-fpm
+FROM adeliom/php:${PHP_VERSION}-fpm
 
 FROM caddy:$CADDY_IMAGE_VER AS caddy-builder
 
