@@ -82,7 +82,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}/${{ matrix.version }}/${{ matrix.variant }}
+          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
           
       #-
       #  name: Test
@@ -165,7 +165,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}/${{ matrix.version }}/${{ matrix.variant }}
+          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
           
       #-
       #  name: Test
@@ -248,7 +248,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}/${{ matrix.version }}/${{ matrix.variant }}
+          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
           
       #-
       #  name: Test
