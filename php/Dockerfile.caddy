@@ -1,16 +1,33 @@
 ARG PHP_VERSION
+FROM arnaudritti/php:${PHP_VERSION}-fpm
 
 FROM caddy:$CADDY_IMAGE_VER AS caddy-builder
-RUN xcaddy build
 
-FROM arnaudritti/php:${PHP_VERSION}-fpm
+RUN set -eux; \
+	mkdir -p \
+		/config/caddy \
+		/data/caddy \
+		/etc/caddy \
+		/usr/share/caddy \
+	;
+
+RUN xcaddy build
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 
+RUN apk add --no-cache ca-certificates mailcap
+
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
+
 ENV DOCUMENT_ROOT="/var/www/html/"
+
 EXPOSE 80
+EXPOSE 2019
+EXPOSE 2021
+
 WORKDIR /var/www/html/
-VOLUME ["/etc/caddy", "/var/www/html"]
+VOLUME ["/etc/caddy", "/config/caddy", "/data/caddy", "/var/www/html"]
 
 COPY config/caddy/Caddyfile /etc/caddy/
 COPY config/supervisord.conf /etc/

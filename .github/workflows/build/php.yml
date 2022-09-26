@@ -1,0 +1,246 @@
+name: Builds - PHP
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        default: 'php'
+        required: false
+        type: string
+      prefix:
+        required: true
+        type: string
+      registry:
+        default: 'docker.io'
+        required: false
+        type: string
+    outputs:
+      repository:
+        value: ${{ jobs.base-images.repository.outputs.REPOSITORY }}
+        
+jobs:
+  base-images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2.0RC2"]
+          variant: [cli, fpm]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Set image tag
+        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        id: image_tag
+      - 
+        name: Set repository
+        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}'
+        id: repository
+      -
+        name: Build and export to Docker
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
+          load: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+      
+      - 
+        name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+          format: "template"
+          template: "@/contrib/sarif.tpl"
+          output: "trivy-results.sarif"
+
+      - 
+        name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "trivy-results.sarif"
+          category: ${{ inputs.image }}/${{ matrix.version }}/${{ matrix.variant }}
+          
+      #-
+      #  name: Test
+      #  run: |
+      #    docker run --rm ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
+          push: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+
+  extend-images:
+    runs-on: ubuntu-latest
+    needs: base-images
+    strategy:
+      fail-fast: false
+      matrix:
+          version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2.0RC2"]
+          variant: [caddy, fpm-wkhtmltopdf]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Set image tag
+        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        id: image_tag
+      -
+        name: Build and export to Docker
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
+          load: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+      
+      - 
+        name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+          format: "template"
+          template: "@/contrib/sarif.tpl"
+          output: "trivy-results.sarif"
+
+      - 
+        name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "trivy-results.sarif"
+          category: ${{ inputs.image }}/${{ matrix.version }}/${{ matrix.variant }}
+          
+      #-
+      #  name: Test
+      #  run: |
+      #    docker run --rm ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
+          push: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+
+  extend-images-2:
+    runs-on: ubuntu-latest
+    needs: extend-images
+    strategy:
+      fail-fast: false
+      matrix:
+          version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2.0RC2"]
+          variant: [caddy-wkhtmltopdf]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Set image tag
+        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        id: image_tag
+      -
+        name: Build and export to Docker
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
+          load: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+      
+      - 
+        name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+          format: "template"
+          template: "@/contrib/sarif.tpl"
+          output: "trivy-results.sarif"
+
+      - 
+        name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: "trivy-results.sarif"
+          category: ${{ inputs.image }}/${{ matrix.version }}/${{ matrix.variant }}
+          
+      #-
+      #  name: Test
+      #  run: |
+      #    docker run --rm ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
+          push: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+
+  dockerhub-php-images:
+    runs-on: ubuntu-latest
+    needs: [base-images, extend-images, extend-images-2]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ inputs.prefix }}/${{ inputs.image }}
+          readme-filepath: ./${{ inputs.image }}/README.md

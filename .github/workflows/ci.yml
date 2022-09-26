@@ -1,4 +1,4 @@
-name: ci
+name: CI
 
 on:
   push:
@@ -30,73 +30,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
   build-php-images:
-    runs-on: ubuntu-latest
-    needs: docker-setup
-    strategy:
-      fail-fast: false
-      matrix:
-          version: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2.0RC2"]
-          variant: [cli, fpm, caddy, fpm-wkhtmltopdf, caddy-wkhtmltopdf]
-          platforms: ["linux/amd64,linux/arm64"]
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      - 
-        name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/php:${{ matrix.version }}-${{ matrix.variant }}'
-        id: image_tag
-      -
-        name: Build and export to Docker
-        uses: docker/build-push-action@v3
-        with:
-          context: ./php
-          file: ./php/Dockerfile.${{ matrix.variant }}
-          load: true
-          tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args: |
-            PHP_VERSION=${{ matrix.version }}
-      
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          exit-code: "1"
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "template"
-          template: "@/contrib/sarif.tpl"
-          output: "trivy-results.sarif"
+    uses: ./.github/workflows/build/php.yml
+    secrets: inherit
+    with:
+      image: php
+      prefix: arnaudritti
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: "trivy-results.sarif"
-          
-      -
-        name: Test
-        run: |
-          docker run --rm ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: ./php
-          file: ./php/Dockerfile.${{ matrix.variant }}
-          platforms: ${{ matrix.platforms }}
-          push: true
-          tags: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args: |
-            PHP_VERSION=${{ matrix.version }}
-
-  dockerhub-php-images:
+  dockerhub-php-doc:
     runs-on: ubuntu-latest
-    needs: build-php-images
-    strategy:
-      fail-fast: false
+    needs: [build-php-images]
     steps:
       -
         name: Checkout
@@ -107,5 +49,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: ${{ env.IMAGE_PREFIX }}/php
+          repository: ${{ needs.build-php-images.outputs.repository }}
           readme-filepath: ./php/README.md
