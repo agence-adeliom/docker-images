@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2.0RC2"]
+          version: ["7.4", "8.0", "8.1"]
           variant: [cli, fpm]
     steps:
       -
@@ -109,7 +109,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2.0RC2"]
+          version: ["7.4", "8.0", "8.1"]
           variant: [caddy, fpm-wkhtmltopdf]
     steps:
       -
@@ -194,7 +194,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2.0RC2"]
+          version: ["7.4", "8.0", "8.1"]
           variant: [caddy-wkhtmltopdf]
     steps:
       -
