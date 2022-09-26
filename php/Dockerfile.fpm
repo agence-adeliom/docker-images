@@ -5,6 +5,10 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /var/www/html
 
+RUN apk add --upgrade xz # Fix CVE-2022-32207 xz security
+RUN apk add --upgrade curl # Fix CVE-2022-32207 curl security
+RUN apk add --upgrade openssl # Fix CVE-2021-3711 openssl security
+
 # persistent / runtime deps
 RUN curl -sSLf \
         -o /usr/local/bin/install-php-extensions \
