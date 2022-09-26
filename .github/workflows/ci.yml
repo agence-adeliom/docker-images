@@ -44,8 +44,8 @@ jobs:
     secrets: inherit
     with:
       image: php
-      prefix: ${{ needs.docker-setup.outputs.REGISTRY }}
-      registry: ${{ needs.docker-setup.outputs.IMAGE_PREFIX }}
+      prefix: ${{ needs.docker-setup.outputs.IMAGE_PREFIX }}
+      registry: ${{ needs.docker-setup.outputs.REGISTRY }}
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
