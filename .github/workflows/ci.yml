@@ -1,20 +1,15 @@
 name: CI
 
-on:
+on: 
+  schedule:
+    - cron: 0 6 * * 1,4
   push:
     branches:
       - 'main'
 
-env:
-  REGISTRY: docker.io
-  PREFIX: arnaudritti
-
 jobs:
   docker-setup:
     runs-on: ubuntu-latest
-    outputs:
-      REGISTRY: ${{ steps.docker-env.outputs.REGISTRY }}
-      PREFIX: ${{ steps.docker-env.outputs.PREFIX }}   
     steps:
       -
         name: Checkout
@@ -32,20 +27,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Print inputs passed to the reusable workflow
-        id: docker-env
-        run: |
-          echo "::set-output name=REGISTRY::$REGISTRY"
-          echo "::set-output name=PREFIX::$PREFIX"
-
   build-php-images:
     uses: ./.github/workflows/build_php.yml
     needs: [docker-setup]
     secrets: inherit
     with:
       image: php
-      prefix: ${{ needs.docker-setup.outputs.PREFIX }}
-      registry: ${{ needs.docker-setup.outputs.REGISTRY }}
+      prefix: arnaudritti
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
