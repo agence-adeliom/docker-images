@@ -35,8 +35,8 @@ jobs:
     secrets: inherit
     with:
       image: php
-      prefix: ${{ env.IMAGE_PREFIX }}
-      registry: ${{ env.REGISTRY }}
+      prefix: $IMAGE_PREFIX
+      registry: $REGISTRY
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
