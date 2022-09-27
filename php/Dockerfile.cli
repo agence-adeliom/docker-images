@@ -6,9 +6,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /var/www/html
 
-RUN apk add --upgrade xz # Fix CVE-2022-32207 xz security
-RUN apk add --upgrade curl # Fix CVE-2022-32207 curl security
-RUN apk add --upgrade openssl # Fix CVE-2021-3711 openssl security
+RUN apk add --upgrade xz curl openssl
 
 # persistent / runtime deps
 RUN curl -sSLf \
@@ -25,28 +23,8 @@ COPY config/php-cli.ini /usr/local/etc/php/conf.d/
 RUN echo "expose_php = Off" > /usr/local/etc/php/conf.d/expose_php.ini
 
 # Install extensions
-RUN install-php-extensions @composer
-RUN install-php-extensions opcache
-RUN install-php-extensions sysvsem
-RUN install-php-extensions soap
-RUN install-php-extensions intl
-RUN install-php-extensions gettext
-RUN install-php-extensions ldap
-RUN install-php-extensions swoole
-RUN install-php-extensions zip
-RUN install-php-extensions amqp 
-RUN install-php-extensions mongodb 
-RUN install-php-extensions redis 
-RUN install-php-extensions mysqli 
-RUN install-php-extensions pgsql 
-RUN install-php-extensions pdo_mysql 
-RUN install-php-extensions pdo_pgsql
-RUN install-php-extensions gd 
-RUN install-php-extensions imagick 
-RUN install-php-extensions exif
+RUN install-php-extensions @composer opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif
 
-RUN apk add --no-cache gnu-libiconv && \
-    apk add --no-cache libwebp-tools jpegoptim optipng pngquant && \
-    apk add --no-cache mysql-client
+RUN apk add --no-cache gnu-libiconv libwebp-tools jpegoptim optipng pngquant mysql-client
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
