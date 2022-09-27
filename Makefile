@@ -9,7 +9,7 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-IMAGE_PREFIX=arnaudritti
+IMAGE_PREFIX=adeliom
 IMAGE_NAME=$(IMAGE_PREFIX)/$(IMAGE)
 REGISTRY=
 
@@ -19,12 +19,14 @@ build: ## Build the container
 ifeq ("$(wildcard $(DOCKERFILE))","")
 	$(eval DOCKERFILE := $(IMAGE)/Dockerfile.$(VARIATION))
 endif
+	docker buildx create --use
 	docker buildx build \
 	--push \
 	--platform linux/amd64,linux/arm64 \
 	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
-	--file $(DOCKERFILE) $(IMAGE)
+	--file $(DOCKERFILE) $(IMAGE) \
+	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
 
 build-nc: ## Build the container without caching
@@ -32,13 +34,15 @@ build-nc: ## Build the container without caching
 ifeq ("$(wildcard $(DOCKERFILE))","")
 	$(eval DOCKERFILE := $(IMAGE)/Dockerfile.$(VARIATION))
 endif
+	docker buildx create --use
 	docker buildx build \
 	--push \
 	--no-cache \
 	--platform linux/amd64,linux/arm64 \
 	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
-	--file $(DOCKERFILE) $(IMAGE)
+	--file $(DOCKERFILE) $(IMAGE) \
+	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
 # Run containers
 run: stop ## Run container
