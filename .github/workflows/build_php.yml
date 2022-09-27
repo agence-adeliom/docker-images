@@ -54,13 +54,12 @@ jobs:
         with:
           context: ./${{ inputs.image }}
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
           load: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          
            
       - 
         name: Run Trivy vulnerability scanner
@@ -75,7 +74,6 @@ jobs:
 
       - 
         name: Upload Trivy scan results to GitHub Security tab
-        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
@@ -93,8 +91,6 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          
 
   caddy:
     runs-on: ubuntu-latest
@@ -136,14 +132,13 @@ jobs:
         with:
           context: ./${{ inputs.image }}
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64,linux/arm64"
           load: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          
-           
+                     
       - 
         name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
@@ -157,7 +152,6 @@ jobs:
 
       - 
         name: Upload Trivy scan results to GitHub Security tab
-        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
@@ -175,7 +169,6 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
           
 
   wkhtmltopdf:
@@ -223,7 +216,6 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
           
            
       - 
@@ -239,7 +231,6 @@ jobs:
 
       - 
         name: Upload Trivy scan results to GitHub Security tab
-        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
@@ -257,5 +248,4 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
           
