@@ -1,8 +1,9 @@
 ARG PHP_VERSION
+
+FROM caddy:2-builder-alpine AS caddy-builder
+RUN xcaddy build
+
 FROM adeliom/php:${PHP_VERSION}-fpm
-
-FROM caddy:$CADDY_IMAGE_VER AS caddy-builder
-
 RUN set -eux; \
 	mkdir -p \
 		/config/caddy \
@@ -10,8 +11,6 @@ RUN set -eux; \
 		/etc/caddy \
 		/usr/share/caddy \
 	;
-
-RUN xcaddy build
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 

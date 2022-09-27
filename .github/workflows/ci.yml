@@ -8,7 +8,25 @@ on:
       - main
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      php: ${{ steps.filter.outputs.php }}
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            php:
+              - 'php/**'
+
   build-php-images:
+    needs: changes
+    if: ${{ needs.changes.outputs.php == 'true' }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
