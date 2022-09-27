@@ -7,12 +7,8 @@ on:
         default: 'php'
         required: false
         type: string
-      prefix:
-        required: true
-        type: string
       registry:
-        default: 'docker.io'
-        required: false
+        required: true
         type: string
     outputs:
       repository:
@@ -45,11 +41,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}'
+        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
         id: repository
       -
         name: Build and Push
@@ -113,11 +109,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}'
+        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
         id: repository
       -
         name: Build and Push
@@ -181,11 +177,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.prefix }}/${{ inputs.image }}'
+        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
         id: repository
       -
         name: Build and Push

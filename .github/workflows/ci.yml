@@ -31,7 +31,7 @@ jobs:
     secrets: inherit
     with:
       image: php
-      prefix: adeliom
+      registry: docker.io/adeliom
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest

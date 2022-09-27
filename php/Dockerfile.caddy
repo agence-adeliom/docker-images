@@ -1,5 +1,4 @@
 ARG PHP_VERSION
-
 FROM caddy:2-builder-alpine AS caddy-builder
 RUN xcaddy build
 
