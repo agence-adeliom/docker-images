@@ -49,12 +49,25 @@ jobs:
         id: repository
 
       - 
-        name: Build image
+        name: Build image amd64
         uses: docker/build-push-action@v3
         with:
           context: ./${{ inputs.image }}
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
+          load: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+
+      - 
+        name: Build image arm64
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/arm64"
           load: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
