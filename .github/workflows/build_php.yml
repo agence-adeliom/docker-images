@@ -23,7 +23,7 @@ jobs:
           version: ["7.4", "8.0", "8.1"]
           variant: [cli, fpm]
     steps:
-      
+      - uses: actions/checkout@v3
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -116,7 +116,7 @@ jobs:
           version: ["7.4", "8.0", "8.1"]
           variant: [fpm-wkhtmltopdf, cli-wkhtmltopdf]
     steps:
-      
+      - uses: actions/checkout@v3
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -210,7 +210,7 @@ jobs:
           version: ["7.4", "8.0", "8.1"]
           variant: [caddy, caddy-wkhtmltopdf]
     steps:
-      
+      - uses: actions/checkout@v3
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
