@@ -128,13 +128,13 @@ COPY config/supervisord.conf /etc/
 COPY config/supervisord/nginx.conf /etc/supervisord/
 COPY config/supervisord/php-fpm.conf /etc/supervisord/
 
-COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
-COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
-COPY 30-tune-worker-processes.sh /docker-entrypoint.d
+COPY config/nginx/10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
+COPY config/nginx/20-envsubst-on-templates.sh /docker-entrypoint.d
+COPY config/nginx/30-tune-worker-processes.sh /docker-entrypoint.d
 
 COPY config/nginx/nginx.conf /etc/nginx/
 COPY config/nginx/upstream.conf /etc/nginx/
-COPY config/nginx/default.template /etc/nginx/conf.d/
+COPY config/nginx/default.template /etc/nginx/templates/
 
 RUN mkdir -p /var/tmp/nginx && chmod -R 777 /var/tmp/nginx 
 

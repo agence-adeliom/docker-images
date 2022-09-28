@@ -134,7 +134,7 @@ COPY 30-tune-worker-processes.sh /docker-entrypoint.d
 
 COPY config/nginx/nginx.conf /etc/nginx/
 COPY config/nginx/upstream.conf /etc/nginx/
-COPY config/nginx/default.template /etc/nginx/conf.d/
+COPY config/nginx/default.template /etc/nginx/templates/
 
 RUN mkdir -p /var/tmp/nginx && chmod -R 777 /var/tmp/nginx 
 
