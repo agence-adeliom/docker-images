@@ -22,7 +22,7 @@ endif
 	docker buildx create --use
 	docker buildx build \
 	--push \
-	--platform linux/amd64,linux/arm64 \
+	--platform linux/amd64 \
 	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
 	--file $(DOCKERFILE) $(IMAGE) \
@@ -38,7 +38,7 @@ endif
 	docker buildx build \
 	--push \
 	--no-cache \
-	--platform linux/amd64,linux/arm64 \
+	--platform linux/amd64 \
 	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
 	--file $(DOCKERFILE) $(IMAGE) \
