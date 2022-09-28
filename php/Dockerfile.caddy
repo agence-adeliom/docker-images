@@ -31,7 +31,8 @@ VOLUME ["/etc/caddy", "/config/caddy", "/data/caddy", "/var/www/html"]
 
 COPY config/caddy/Caddyfile /etc/caddy/
 COPY config/supervisord.conf /etc/
-COPY config/supervisord /etc/supervisord/
+COPY config/supervisord/caddy.conf /etc/supervisord/
+COPY config/supervisord/php-fpm.conf /etc/supervisord/
 
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
