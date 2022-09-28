@@ -15,7 +15,10 @@ RUN set -eux; \
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 
-RUN apk add --no-cache ca-certificates mailcap
+RUN apk --update add --no-cache supervisor \
+	ca-certificates \
+	mailcap \
+	&& rm  -rf /tmp/* /var/cache/apk/*
 
 ENV XDG_CONFIG_HOME /config
 ENV XDG_DATA_HOME /data
@@ -38,6 +41,8 @@ RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 COPY config/caddy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
+
+STOPSIGNAL SIGQUIT
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["-D"]

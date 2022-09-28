@@ -6,7 +6,16 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /var/www/html
 
-RUN apk add --upgrade xz curl openssl
+RUN apk add  --upgrade --no-cache \
+		acl \
+		fcgi \
+		file \
+		gettext \
+		git \
+        xz \
+        curl \
+        openssl \
+	;
 
 # persistent / runtime deps
 RUN curl -sSLf \

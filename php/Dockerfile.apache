@@ -11,7 +11,7 @@ WORKDIR $HTTPD_PREFIX
 # install httpd runtime dependencies
 # https://httpd.apache.org/docs/2.4/install.html#requirements
 RUN set -eux; \
-	apk add --no-cache \
+	apk --update add --no-cache \
 		apr \
 		apr-util \
 		apr-util-ldap \
@@ -29,7 +29,7 @@ ENV HTTPD_PATCHES=""
 # see https://httpd.apache.org/docs/2.4/install.html#requirements
 RUN set -eux; \
 	\
-	apk add --no-cache --virtual .build-deps \
+	apk --update add --no-cache --virtual .build-deps \
 		apr-dev \
 		apr-util-dev \
 		coreutils \
@@ -205,20 +205,12 @@ RUN set -eux; \
 	; \
 	grep -E '^\s*User www-data$' "$HTTPD_PREFIX/conf/httpd.conf"; \
 	grep -E '^\s*Group www-data$' "$HTTPD_PREFIX/conf/httpd.conf"; \
-	\
-	deps="$( \
-		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-			| tr ',' '\n' \
-			| sort -u \
-			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-	)"; \
-	apk add --no-network --virtual .httpd-so-deps $deps; \
-	apk del --no-network .build-deps; \
-	\
-# smoke test
-	httpd -v
+	apk del --no-network .build-deps;
 
-RUN apk add --no-cache mailcap
+RUN httpd -v
+RUN apk --update add --no-cache supervisor \
+	mailcap \
+	&& rm  -rf /tmp/* /var/cache/apk/*
 
 ENV DOCUMENT_ROOT="/var/www/html/"
 EXPOSE 80
@@ -226,15 +218,24 @@ EXPOSE 80
 WORKDIR /var/www/html/
 VOLUME ["/var/www/html"]
 
+# create a docker-entrypoint.d directory
+RUN mkdir /docker-entrypoint.d \
+	&& mkdir -p /var/log/httpd \
+	&& touch /var/log/httpd/access.log \
+	&& touch /var/log/httpd/error.log \
+	&& ln -sf /dev/stdout /var/log/httpd/access.log \
+	&& ln -sf /dev/stderr /var/log/httpd/error.log
+
 COPY config/supervisord.conf /etc/
 
 COPY config/supervisord/apache.conf /etc/supervisord/
 COPY config/supervisord/php-fpm.conf /etc/supervisord/
 
 COPY config/apache/10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
+RUN chmod +x /docker-entrypoint.d/*
 
 COPY config/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
-COPY config/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY config/apache/000-default.conf /etc/apache2/conf.d/000-default.conf
 
 COPY config/apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint

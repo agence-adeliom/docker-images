@@ -115,7 +115,9 @@ RUN set -x \
 # create a docker-entrypoint.d directory
     && mkdir /docker-entrypoint.d
 
-RUN apk add --no-cache ca-certificates mailcap
+RUN apk --update add --no-cache supervisor \
+	mailcap \
+	&& rm  -rf /tmp/* /var/cache/apk/*
 
 ENV DOCUMENT_ROOT="/var/www/html/"
 EXPOSE 80
@@ -131,15 +133,17 @@ COPY config/supervisord/php-fpm.conf /etc/supervisord/
 COPY config/nginx/10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
 COPY config/nginx/20-envsubst-on-templates.sh /docker-entrypoint.d
 COPY config/nginx/30-tune-worker-processes.sh /docker-entrypoint.d
+RUN chmod +x /docker-entrypoint.d/*
 
 COPY config/nginx/nginx.conf /etc/nginx/
-COPY config/nginx/upstream.conf /etc/nginx/
-COPY config/nginx/default.template /etc/nginx/templates/
+COPY config/nginx/default.conf.template /etc/nginx/templates/
 
 RUN mkdir -p /var/tmp/nginx && chmod -R 777 /var/tmp/nginx 
 
 COPY config/nginx/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
+
+STOPSIGNAL SIGQUIT
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["-D"]
