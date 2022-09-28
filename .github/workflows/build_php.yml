@@ -199,7 +199,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
           
-  servers:
+  caddy:
     runs-on: ubuntu-latest
     needs: [base, wkhtmltopdf]
     strategy:
