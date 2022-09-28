@@ -54,8 +54,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -69,8 +69,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/arm64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -102,6 +102,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64,linux/arm64"
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -147,8 +149,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -162,8 +164,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/arm64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -196,6 +198,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64,linux/arm64"
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -241,8 +245,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -256,8 +260,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/arm64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -289,6 +293,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64,linux/arm64"
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
