@@ -49,5 +49,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          repository: ${{ needs.build-php-images.outputs.repository }}
+          repository: adeliom/php
           readme-filepath: ./php/README.md
