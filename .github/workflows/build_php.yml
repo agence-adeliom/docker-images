@@ -487,7 +487,7 @@ jobs:
 
   node:
     runs-on: ubuntu-latest
-    needs: [base]
+    needs: [apache, nginx, caddy]
     strategy:
       fail-fast: false
       matrix:
