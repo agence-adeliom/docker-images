@@ -6,6 +6,8 @@ ENV NGINX_VERSION 1.22.0
 ENV NJS_VERSION   0.7.6
 ENV PKG_RELEASE   1
 
+USER root
+
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
     && addgroup -g 101 -S nginx \
@@ -142,6 +144,8 @@ RUN mkdir -p /var/tmp/nginx && chmod -R 777 /var/tmp/nginx
 
 COPY config/nginx/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
+
+USER www-data
 
 STOPSIGNAL SIGQUIT
 

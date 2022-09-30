@@ -2,6 +2,8 @@
 ARG PHP_VERSION
 FROM adeliom/php:${PHP_VERSION}-fpm
 
+USER root
+
 RUN apk add --update --no-cache \
    libgcc libstdc++ libx11 glib libxrender libxext libintl \
    ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-freefont
@@ -17,3 +19,7 @@ RUN apk add --no-cache imagemagick imagemagick-libs imagemagick-dev
 
 COPY --from=madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10 \
    /bin/wkhtmltoimage /bin/wkhtmltoimage
+
+RUN chown -R www-data:www-data /var/www
+
+USER www-data

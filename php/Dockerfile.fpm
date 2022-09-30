@@ -41,6 +41,8 @@ ENV PHP_INI_XDEBUG_MODE='Off'
 
 WORKDIR /var/www/html
 
+USER root
+
 RUN apk add  --upgrade --no-cache \
 		acl \
 		fcgi \
@@ -77,5 +79,8 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 COPY config/fpm/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck
+
+RUN chown -R www-data:www-data /var/www
+USER www-data
 
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
