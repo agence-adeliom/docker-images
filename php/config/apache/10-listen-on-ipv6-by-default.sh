@@ -23,36 +23,6 @@ touch /$DEFAULT_CONF_FILE 2>/dev/null || { echo >&3 "$ME: info: can not modify /
 # check if the file is already modified, e.g. on a container restart
 grep -q "Listen \[::]\:80;" /$DEFAULT_CONF_FILE && { echo >&3 "$ME: info: IPv6 listen already enabled"; exit 0; }
 
-if [ -f "/etc/os-release" ]; then
-    . /etc/os-release
-else
-    echo >&3 "$ME: info: can not guess the operating system"
-    exit 0
-fi
-
-echo >&3 "$ME: info: Getting the checksum of /$DEFAULT_CONF_FILE"
-
-case "$ID" in
-    "debian")
-        CHECKSUM=$(dpkg-query --show --showformat='${Conffiles}\n' nginx | grep $DEFAULT_CONF_FILE | cut -d' ' -f 3)
-        echo "$CHECKSUM  /$DEFAULT_CONF_FILE" | md5sum -c - >/dev/null 2>&1 || {
-            echo >&3 "$ME: info: /$DEFAULT_CONF_FILE differs from the packaged version"
-            exit 0
-        }
-        ;;
-    "alpine")
-        CHECKSUM=$(apk manifest nginx 2>/dev/null| grep $DEFAULT_CONF_FILE | cut -d' ' -f 1 | cut -d ':' -f 2)
-        echo "$CHECKSUM  /$DEFAULT_CONF_FILE" | sha1sum -c - >/dev/null 2>&1 || {
-            echo >&3 "$ME: info: /$DEFAULT_CONF_FILE differs from the packaged version"
-            exit 0
-        }
-        ;;
-    *)
-        echo >&3 "$ME: info: Unsupported distribution"
-        exit 0
-        ;;
-esac    
-
 # enable ipv6 on default.conf listen sockets
 sed -i -E 's,Listen 80,Listen 80\nListen [::]:80,' /$DEFAULT_CONF_FILE
 
