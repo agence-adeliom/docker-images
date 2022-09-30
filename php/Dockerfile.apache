@@ -231,7 +231,6 @@ COPY config/supervisord.conf /etc/
 COPY config/supervisord/apache.conf /etc/supervisord/
 COPY config/supervisord/php-fpm.conf /etc/supervisord/
 
-COPY config/apache/10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
 RUN chmod +x /docker-entrypoint.d/*
 
 COPY config/apache/httpd.conf /usr/local/apache2/conf/httpd.conf
