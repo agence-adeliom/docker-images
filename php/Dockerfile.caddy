@@ -6,8 +6,6 @@ RUN xcaddy build
 
 FROM adeliom/php:${PHP_VERSION}-fpm
 
-USER root
-
 RUN set -eux; \
 	mkdir -p \
 		/config/caddy \
@@ -44,8 +42,6 @@ RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 COPY config/caddy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
-
-USER www-data
 
 STOPSIGNAL SIGQUIT
 

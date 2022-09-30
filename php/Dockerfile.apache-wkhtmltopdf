@@ -2,8 +2,6 @@
 ARG PHP_VERSION
 FROM adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
 
-USER root
-
 ENV HTTPD_PREFIX /usr/local/apache2
 ENV PATH $HTTPD_PREFIX/bin:$PATH
 RUN mkdir -p "$HTTPD_PREFIX" \
@@ -240,8 +238,6 @@ COPY config/apache/000-default.conf /etc/apache2/conf.d/000-default.conf
 
 COPY config/apache/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
-
-USER www-data
 
 # https://httpd.apache.org/docs/2.4/stopping.html#gracefulstop
 STOPSIGNAL SIGWINCH
