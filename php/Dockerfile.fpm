@@ -46,6 +46,7 @@ RUN apk add  --upgrade --no-cache \
 		fcgi \
 		bash \
 		openssh-client \
+        ca-certificates \
 		file \
 		gettext \
 		git \

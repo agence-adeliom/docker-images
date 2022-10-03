@@ -45,6 +45,7 @@ RUN apk add  --upgrade --no-cache \
 		acl \
         bash \
 		openssh-client \
+        ca-certificates \
 		fcgi \
 		file \
 		gettext \
