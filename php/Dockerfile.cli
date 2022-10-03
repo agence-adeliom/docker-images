@@ -43,6 +43,8 @@ WORKDIR /var/www/html
 
 RUN apk add  --upgrade --no-cache \
 		acl \
+        bash \
+		openssh-client \
 		fcgi \
 		file \
 		gettext \
