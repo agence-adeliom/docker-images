@@ -157,7 +157,7 @@ For all server variants, you can change the document root (i.e. your "public" di
 DOCUMENT_ROOT=/var/www/html/public/
 ```
 
-## Change PHP.ini config
+## Setting parameters in php.ini
 
 | PHP.ini variable |Environement variable name| Default value |
 |----|----|----|
@@ -194,7 +194,44 @@ XDEBUG_CONFIG='client_host=host.docker.internal discover_client_host=1 log=/tmp/
 
 You can setup your own xdebug config by following the documentation of [Xdebug](https://xdebug.org/docs/all_settings)
 
+## Extensions available
 
+These extensions are enabled by default in images : `amqp` `ctype` `curl` `date` `dom` `exif` `fileinfo` `filter` `ftp` `gd` `gettext` `hash` `iconv` `imagick` `intl` `json` `ldap` `libxml` `mbstring` `mongodb` `mysqli` `mysqlnd` `openssl` `pcre` `PDO` `pdo_mysql` `pdo_pgsql` `pdo_sqlite` `pgsql` `Phar` `posix` `readline` `redis` `Reflection` `session` `SimpleXML` `soap` `sodium` `SPL` `sqlite3` `standard` `swoole` `sysvsem` `tokenizer` `xdebug` `xml` `xmlreader` `xmlwriter` `opcache` `zip` `zlib` 
+
+This list can be outdated, you can verify by executing : `docker run --rm -it  adeliom/php:8.1-cli php -m`
+
+### Compiling extensions in the custom image
+
+By default the `PHP_EXTENSIONS` arg is `opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug`. So you can add or remove extensions at image build time.
+
+```Dockerfile
+ARG PHP_EXTENSIONS="opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug"
+FROM adeliom/php:8.1-apache
+# The build will automatically trigger the download and compilation of the extensions
+```
+
+Beware :
+* The `ARG PHP_EXTENSIONS` command must be written before the `FROM`. This is not a typo.
+* **Heads up**: if you are using multistage builds, the "ARG" variable must be put at the very top of the file (before the 
+first FROM):
+
+```Dockerfile
+ARG PHP_EXTENSIONS="opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug"
+FROM adeliom/php:8.1-apache-node16 AS builder
+
+COPY --chown=www-data:www-data src/web .
+RUN composer install &&\
+    npm install &&\
+    npm run build
+
+# The image will automatically build the extensions from the list provided at the very top of the file.
+FROM adeliom/php:8.1-apache
+
+ENV APP_ENV=prod \
+    DOCUMENT_ROOT=/var/www/html/public/
+
+COPY --from=builder /var/www/html .
+```
 
 -----
-Made with ❤️ by @agence-adeliom
+Made with ❤️ by [@agence-adeliom](https://github.com/agence-adeliom)

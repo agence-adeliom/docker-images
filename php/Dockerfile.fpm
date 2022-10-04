@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
+ARG PHP_EXTENSIONS="opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug"
 FROM php:${PHP_VERSION}-fpm-alpine
 
 ENV COMPOSER_ALLOW_SUPERUSER='1'
@@ -74,7 +75,7 @@ COPY config/fpm/pool.d /usr/local/etc/pool.d
 RUN echo "expose_php = Off" > /usr/local/etc/php/conf.d/expose_php.ini
 
 # Install extensions
-RUN install-php-extensions opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug
+RUN install-php-extensions ${PHP_EXTENSIONS}
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
