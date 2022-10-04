@@ -44,6 +44,7 @@ WORKDIR /var/www/html
 RUN apk add  --upgrade --no-cache \
 		acl \
         bash \
+        rsync \
 		openssh-client \
         ca-certificates \
 		fcgi \

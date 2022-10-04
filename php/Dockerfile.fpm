@@ -45,6 +45,7 @@ RUN apk add  --upgrade --no-cache \
 		acl \
 		fcgi \
 		bash \
+        rsync \
 		openssh-client \
         ca-certificates \
 		file \
