@@ -1,5 +1,4 @@
 # Adeliom PHP
-
 ![Docker Pulls](https://img.shields.io/docker/pulls/adeliom/php)
 
 This repository contains a set of developer-friendly, general purpose PHP images for Docker.
