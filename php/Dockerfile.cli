@@ -73,7 +73,7 @@ COPY config/php.ini /usr/local/etc/php/conf.d/000-php.ini
 RUN echo "expose_php = Off" > /usr/local/etc/php/conf.d/expose_php.ini
 
 # Install extensions
-RUN install-php-extensions $PHP_EXTENSIONS
+ONBUILD RUN install-php-extensions $PHP_EXTENSIONS
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
