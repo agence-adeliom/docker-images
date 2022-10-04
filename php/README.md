@@ -200,37 +200,13 @@ These extensions are enabled by default in images : `amqp` `ctype` `curl` `date`
 
 This list can be outdated, you can verify by executing : `docker run --rm -it  adeliom/php:8.1-cli php -m`
 
-### Compiling extensions in the custom image
-
-By default the `PHP_EXTENSIONS` arg is `opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug`. So you can add or remove extensions at image build time.
+### Compiling extensions in the custom image with [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
 
 ```Dockerfile
-ARG PHP_EXTENSIONS="opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug"
-FROM adeliom/php:8.1-apache
-# The build will automatically trigger the download and compilation of the extensions
-```
-
-Beware :
-* The `ARG PHP_EXTENSIONS` command must be written before the `FROM`. This is not a typo.
-* **Heads up**: if you are using multistage builds, the "ARG" variable must be put at the very top of the file (before the 
-first FROM):
-
-```Dockerfile
-ARG PHP_EXTENSIONS="opcache sysvsem soap intl gettext ldap swoole zip amqp mongodb redis mysqli pgsql pdo_mysql pdo_pgsql gd imagick exif xdebug"
-FROM adeliom/php:8.1-apache-node16 AS builder
-
-COPY --chown=www-data:www-data src/web .
-RUN composer install &&\
-    npm install &&\
-    npm run build
-
-# The image will automatically build the extensions from the list provided at the very top of the file.
 FROM adeliom/php:8.1-apache
 
-ENV APP_ENV=prod \
-    DOCUMENT_ROOT=/var/www/html/public/
-
-COPY --from=builder /var/www/html .
+# Install tidy extension
+RUN install-php-extensions tidy
 ```
 
 -----
