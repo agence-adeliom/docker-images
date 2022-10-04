@@ -25,7 +25,7 @@ jobs:
               - 'php/config/**'
               - 'php/Dockerfile.*'
             php_doc:
-              - 'php/**/*.md'
+              - 'php/*.md'
 
   build-php-images:
     needs: changes
