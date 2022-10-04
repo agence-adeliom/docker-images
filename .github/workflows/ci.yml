@@ -38,6 +38,7 @@ jobs:
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
+    needs: changes
     if: ${{ needs.changes.outputs.php_doc == 'true' }}
     steps:
       -
