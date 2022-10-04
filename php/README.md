@@ -1,5 +1,7 @@
 # Adeliom PHP
 
+![Docker Pulls](https://img.shields.io/docker/pulls/adeliom/php)
+
 This repository contains a set of developer-friendly, general purpose PHP images for Docker.
 
 * You can also modify the php.ini settings using environment variables.
@@ -192,3 +194,8 @@ XDEBUG_CONFIG='client_host=host.docker.internal discover_client_host=1 log=/tmp/
 ```
 
 You can setup your own xdebug config by following the documentation of [Xdebug](https://xdebug.org/docs/all_settings)
+
+
+-----
+
+Made with ❤️ by @agence-adeliom
