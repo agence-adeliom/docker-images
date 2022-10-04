@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       php: ${{ steps.filter.outputs.php }}
+      phpdoc: ${{ steps.filter.outputs.phpdoc }}
     steps:
       -
         name: Checkout
@@ -24,7 +25,7 @@ jobs:
             php:
               - 'php/config/**'
               - 'php/Dockerfile.*'
-            php_doc:
+            phpdoc:
               - 'php/*.md'
 
   build-php-images:
@@ -39,7 +40,7 @@ jobs:
   dockerhub-php-doc:
     runs-on: ubuntu-latest
     needs: changes
-    if: ${{ needs.changes.outputs.php_doc == 'true' }}
+    if: ${{ needs.changes.outputs.phpdoc == 'true' }}
     steps:
       -
         name: Checkout

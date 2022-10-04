@@ -195,6 +195,6 @@ XDEBUG_CONFIG='client_host=host.docker.internal discover_client_host=1 log=/tmp/
 You can setup your own xdebug config by following the documentation of [Xdebug](https://xdebug.org/docs/all_settings)
 
 
------
 
+-----
 Made with ❤️ by @agence-adeliom
