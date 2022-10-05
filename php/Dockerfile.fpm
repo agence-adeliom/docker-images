@@ -86,6 +86,7 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 COPY config/fpm/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
 RUN chmod +x /usr/local/bin/docker-healthcheck
 
-RUN chown -R www-data:www-data /var/www
+RUN mkdir -p /var/www/.composer && \
+    chown -R www-data:www-data /var/www
 
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]

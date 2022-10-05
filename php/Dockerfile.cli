@@ -81,4 +81,5 @@ RUN apk add --no-cache gnu-libiconv libwebp-tools jpegoptim optipng pngquant mys
 
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
-RUN chown -R www-data:www-data /var/www
+RUN mkdir -p /var/www/.composer && \
+    chown -R www-data:www-data /var/www
