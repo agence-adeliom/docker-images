@@ -42,15 +42,16 @@ ENV XDEBUG_MODE='off'
 WORKDIR /var/www/html
 
 RUN apk add  --upgrade --no-cache \
-		acl \
+        acl \
         bash \
         rsync \
-		openssh-client \
+        less \
+        openssh-client \
         ca-certificates \
-		fcgi \
-		file \
-		gettext \
-		git \
+        fcgi \
+        file \
+        gettext \
+        git \
         xz \
         curl \
         openssl \
