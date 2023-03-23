@@ -71,7 +71,6 @@ RUN curl -sSLf \
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# Copy configuration
 COPY config/php.ini /usr/local/etc/php/conf.d/000-php.ini
 COPY config/fpm/php-fpm.conf /usr/local/etc/
 COPY config/fpm/pool.d /usr/local/etc/pool.d
