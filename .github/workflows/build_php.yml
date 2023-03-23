@@ -16,7 +16,7 @@ on:
         
 jobs:
   base:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'adeliom']
     strategy:
       fail-fast: false
       matrix:
@@ -109,7 +109,7 @@ jobs:
             PHP_VERSION=${{ matrix.version }}         
 
   wkhtmltopdf:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'adeliom']
     needs: [base]
     strategy:
       fail-fast: false
@@ -204,7 +204,7 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
           
   caddy:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'adeliom']
     needs: [base, wkhtmltopdf]
     strategy:
       fail-fast: false
@@ -298,7 +298,7 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
 
   nginx:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'adeliom']
     needs: [base, wkhtmltopdf]
     strategy:
       fail-fast: false
@@ -392,7 +392,7 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
   
   apache:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'adeliom']
     needs: [base, wkhtmltopdf]
     strategy:
       fail-fast: false
@@ -486,7 +486,7 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
 
   node:
-    runs-on: ubuntu-latest
+    runs-on: ['self-hosted', 'adeliom']
     needs: [apache, nginx, caddy]
     strategy:
       fail-fast: false
