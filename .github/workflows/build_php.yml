@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1"]
+          version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [cli, fpm]
     steps:
       - uses: actions/checkout@v3
@@ -39,13 +39,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
-
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -114,7 +113,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1"]
+          version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [fpm-wkhtmltopdf, cli-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v3
@@ -133,11 +132,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
 
       - 
@@ -209,7 +208,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1"]
+          version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [caddy, caddy-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v3
@@ -228,11 +227,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
 
       - 
@@ -303,7 +302,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1"]
+          version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [nginx, nginx-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v3
@@ -322,11 +321,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
 
       - 
@@ -397,7 +396,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1"]
+          version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [apache, apache-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v3
@@ -416,11 +415,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}'
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
 
       - 
@@ -491,8 +490,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          php_version: ["7.4", "8.0", "8.1"]
-          node_version: ["14", "16", "18"]
+          php_version: ["7.4", "8.0", "8.1", "8.2"]
+          node_version: ["14", "16", "18", "19"]
           variant: [apache, apache-wkhtmltopdf, caddy, caddy-wkhtmltopdf, nginx, nginx-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v3
@@ -509,13 +508,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - 
         name: Set image tag
-        run: echo '::set-output name=IMAGE_TAG::${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.php_version }}-${{ matrix.variant }}-node${{ matrix.node_version }}'
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.php_version }}-${{ matrix.variant }}-node${{ matrix.node_version }}" >> $GITHUB_OUTPUT
         id: image_tag
       - 
         name: Set repository
-        run: echo '::set-output name=REPOSITORY::${{ inputs.registry }}/${{ inputs.image }}'
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
 
       - 

@@ -38,8 +38,6 @@ COPY config/supervisord.conf /etc/
 COPY config/supervisord/caddy.conf /etc/supervisord/
 COPY config/supervisord/php-fpm.conf /etc/supervisord/
 
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
-
 COPY config/caddy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
