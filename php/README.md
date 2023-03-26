@@ -17,85 +17,112 @@ This repository contains a set of developer-friendly, general purpose PHP images
 |`adeliom/php:7.4-cli`|`7.4`||`cli`|||
 |`adeliom/php:8.0-cli`|`8.0`||`cli`|||
 |`adeliom/php:8.1-cli`|`8.1`||`cli`|||
+|`adeliom/php:8.2-cli`|`8.2`||`cli`|||
 |`adeliom/php:7.4-cli-wkhtmltopdf`|`7.4`||`cli`||✅|
 |`adeliom/php:8.0-cli-wkhtmltopdf`|`8.0`||`cli`||✅|
 |`adeliom/php:8.1-cli-wkhtmltopdf`|`8.1`||`cli`||✅|
+|`adeliom/php:8.2-cli-wkhtmltopdf`|`8.2`||`cli`||✅|
 |`adeliom/php:7.4-fpm`|`7.4`||`fpm`|||
 |`adeliom/php:8.0-fpm`|`8.0`||`fpm`|||
 |`adeliom/php:8.1-fpm`|`8.1`||`fpm`|||
+|`adeliom/php:8.2-fpm`|`8.2`||`fpm`|||
 |`adeliom/php:7.4-fpm-wkhtmltopdf`|`7.4`||`fpm`||✅|
 |`adeliom/php:8.0-fpm-wkhtmltopdf`|`8.0`||`fpm`||✅|
 |`adeliom/php:8.1-fpm-wkhtmltopdf`|`8.1`||`fpm`||✅|
+|`adeliom/php:8.2-fpm-wkhtmltopdf`|`8.2`||`fpm`||✅|
 |`adeliom/php:7.4-apache`|`7.4`||`fpm`|`apache`||
 |`adeliom/php:8.0-apache`|`8.0`||`fpm`|`apache`||
 |`adeliom/php:8.1-apache`|`8.1`||`fpm`|`apache`||
+|`adeliom/php:8.2-apache`|`8.2`||`fpm`|`apache`||
 |`adeliom/php:7.4-apache-node14`|`7.4`|`14`|`fpm`|`apache`||
 |`adeliom/php:8.0-apache-node14`|`8.0`|`14`|`fpm`|`apache`||
 |`adeliom/php:8.1-apache-node14`|`8.1`|`14`|`fpm`|`apache`||
+|`adeliom/php:8.2-apache-node14`|`8.2`|`14`|`fpm`|`apache`||
 |`adeliom/php:7.4-apache-node16`|`7.4`|`16`|`fpm`|`apache`||
 |`adeliom/php:8.0-apache-node16`|`8.0`|`16`|`fpm`|`apache`||
 |`adeliom/php:8.1-apache-node16`|`8.1`|`16`|`fpm`|`apache`||
+|`adeliom/php:8.2-apache-node16`|`8.2`|`16`|`fpm`|`apache`||
 |`adeliom/php:7.4-apache-node18`|`7.4`|`18`|`fpm`|`apache`||
 |`adeliom/php:8.0-apache-node18`|`8.0`|`18`|`fpm`|`apache`||
 |`adeliom/php:8.1-apache-node18`|`8.1`|`18`|`fpm`|`apache`||
+|`adeliom/php:8.2-apache-node18`|`8.2`|`18`|`fpm`|`apache`||
 |`adeliom/php:7.4-apache-wkhtmltopdf`|`7.4`||`fpm`|`apache`|✅|
 |`adeliom/php:7.4-apache-wkhtmltopdf-node14`|`7.4`|`14`|`fpm`|`apache`|✅|
 |`adeliom/php:8.0-apache-wkhtmltopdf-node14`|`8.0`|`14`|`fpm`|`apache`|✅|
 |`adeliom/php:8.1-apache-wkhtmltopdf-node14`|`8.1`|`14`|`fpm`|`apache`|✅|
+|`adeliom/php:8.2-apache-wkhtmltopdf-node14`|`8.2`|`14`|`fpm`|`apache`|✅|
 |`adeliom/php:7.4-apache-wkhtmltopdf-node16`|`7.4`|`16`|`fpm`|`apache`|✅|
 |`adeliom/php:8.0-apache-wkhtmltopdf-node16`|`8.0`|`16`|`fpm`|`apache`|✅|
 |`adeliom/php:8.1-apache-wkhtmltopdf-node16`|`8.1`|`16`|`fpm`|`apache`|✅|
+|`adeliom/php:8.2-apache-wkhtmltopdf-node16`|`8.2`|`16`|`fpm`|`apache`|✅|
 |`adeliom/php:7.4-apache-wkhtmltopdf-node18`|`7.4`|`18`|`fpm`|`apache`|✅|
 |`adeliom/php:8.0-apache-wkhtmltopdf-node18`|`8.0`|`18`|`fpm`|`apache`|✅|
 |`adeliom/php:8.1-apache-wkhtmltopdf-node18`|`8.1`|`18`|`fpm`|`apache`|✅|
+|`adeliom/php:8.2-apache-wkhtmltopdf-node18`|`8.2`|`18`|`fpm`|`apache`|✅|
 |`adeliom/php:7.4-nginx`|`7.4`||`fpm`|`nginx`||
 |`adeliom/php:8.0-nginx`|`8.0`||`fpm`|`nginx`||
 |`adeliom/php:8.1-nginx`|`8.1`||`fpm`|`nginx`||
+|`adeliom/php:8.2-nginx`|`8.2`||`fpm`|`nginx`||
 |`adeliom/php:7.4-nginx-node14`|`7.4`|`14`|`fpm`|`nginx`||
 |`adeliom/php:8.0-nginx-node14`|`8.0`|`14`|`fpm`|`nginx`||
 |`adeliom/php:8.1-nginx-node14`|`8.1`|`14`|`fpm`|`nginx`||
+|`adeliom/php:8.2-nginx-node14`|`8.2`|`14`|`fpm`|`nginx`||
 |`adeliom/php:7.4-nginx-node16`|`7.4`|`16`|`fpm`|`nginx`||
 |`adeliom/php:8.0-nginx-node16`|`8.0`|`16`|`fpm`|`nginx`||
 |`adeliom/php:8.1-nginx-node16`|`8.1`|`16`|`fpm`|`nginx`||
+|`adeliom/php:8.2-nginx-node16`|`8.2`|`16`|`fpm`|`nginx`||
 |`adeliom/php:7.4-nginx-node18`|`7.4`|`18`|`fpm`|`nginx`||
 |`adeliom/php:8.0-nginx-node18`|`8.0`|`18`|`fpm`|`nginx`||
 |`adeliom/php:8.1-nginx-node18`|`8.1`|`18`|`fpm`|`nginx`||
+|`adeliom/php:8.2-nginx-node18`|`8.2`|`18`|`fpm`|`nginx`||
 |`adeliom/php:7.4-nginx-wkhtmltopdf`|`7.4`||`fpm`|`nginx`|✅|
 |`adeliom/php:8.0-nginx-wkhtmltopdf`|`8.0`||`fpm`|`nginx`|✅|
 |`adeliom/php:8.1-nginx-wkhtmltopdf`|`8.1`||`fpm`|`nginx`|✅|
+|`adeliom/php:8.2-nginx-wkhtmltopdf`|`8.2`||`fpm`|`nginx`|✅|
 |`adeliom/php:7.4-nginx-wkhtmltopdf-node14`|`7.4`|`14`|`fpm`|`nginx`|✅|
 |`adeliom/php:8.0-nginx-wkhtmltopdf-node14`|`8.0`|`14`|`fpm`|`nginx`|✅|
 |`adeliom/php:8.1-nginx-wkhtmltopdf-node14`|`8.1`|`14`|`fpm`|`nginx`|✅|
+|`adeliom/php:8.2-nginx-wkhtmltopdf-node14`|`8.2`|`14`|`fpm`|`nginx`|✅|
 |`adeliom/php:7.4-nginx-wkhtmltopdf-node16`|`7.4`|`16`|`fpm`|`nginx`|✅|
 |`adeliom/php:8.0-nginx-wkhtmltopdf-node16`|`8.0`|`16`|`fpm`|`nginx`|✅|
 |`adeliom/php:8.1-nginx-wkhtmltopdf-node16`|`8.1`|`16`|`fpm`|`nginx`|✅|
+|`adeliom/php:8.2-nginx-wkhtmltopdf-node16`|`8.2`|`16`|`fpm`|`nginx`|✅|
 |`adeliom/php:7.4-nginx-wkhtmltopdf-node18`|`7.4`|`18`|`fpm`|`nginx`|✅|
 |`adeliom/php:8.0-nginx-wkhtmltopdf-node18`|`8.0`|`18`|`fpm`|`nginx`|✅|
 |`adeliom/php:8.1-nginx-wkhtmltopdf-node18`|`8.1`|`18`|`fpm`|`nginx`|✅|
+|`adeliom/php:8.2-nginx-wkhtmltopdf-node18`|`8.2`|`18`|`fpm`|`nginx`|✅|
 |`adeliom/php:7.4-caddy`|`7.4`||`fpm`|`caddy`||
 |`adeliom/php:8.0-caddy`|`8.0`||`fpm`|`caddy`||
 |`adeliom/php:8.1-caddy`|`8.1`||`fpm`|`caddy`||
+|`adeliom/php:8.2-caddy`|`8.2`||`fpm`|`caddy`||
 |`adeliom/php:7.4-caddy-node14`|`7.4`|`14`|`fpm`|`caddy`||
 |`adeliom/php:8.0-caddy-node14`|`8.0`|`14`|`fpm`|`caddy`||
 |`adeliom/php:8.1-caddy-node14`|`8.1`|`14`|`fpm`|`caddy`||
+|`adeliom/php:8.2-caddy-node14`|`8.2`|`14`|`fpm`|`caddy`||
 |`adeliom/php:7.4-caddy-node16`|`7.4`|`16`|`fpm`|`caddy`||
 |`adeliom/php:8.0-caddy-node16`|`8.0`|`16`|`fpm`|`caddy`||
 |`adeliom/php:8.1-caddy-node16`|`8.1`|`16`|`fpm`|`caddy`||
+|`adeliom/php:8.2-caddy-node16`|`8.2`|`16`|`fpm`|`caddy`||
 |`adeliom/php:7.4-caddy-node18`|`7.4`|`18`|`fpm`|`caddy`||
 |`adeliom/php:8.0-caddy-node18`|`8.0`|`18`|`fpm`|`caddy`||
 |`adeliom/php:8.1-caddy-node18`|`8.1`|`18`|`fpm`|`caddy`||
+|`adeliom/php:8.2-caddy-node18`|`8.2`|`18`|`fpm`|`caddy`||
 |`adeliom/php:7.4-caddy-wkhtmltopdf`|`7.4`||`fpm`|`caddy`|✅|
 |`adeliom/php:8.0-caddy-wkhtmltopdf`|`8.0`||`fpm`|`caddy`|✅|
 |`adeliom/php:8.1-caddy-wkhtmltopdf`|`8.1`||`fpm`|`caddy`|✅|
+|`adeliom/php:8.2-caddy-wkhtmltopdf`|`8.2`||`fpm`|`caddy`|✅|
 |`adeliom/php:7.4-caddy-wkhtmltopdf-node14`|`7.4`|`14`|`fpm`|`caddy`|✅|
 |`adeliom/php:8.0-caddy-wkhtmltopdf-node14`|`8.0`|`14`|`fpm`|`caddy`|✅|
 |`adeliom/php:8.1-caddy-wkhtmltopdf-node14`|`8.1`|`14`|`fpm`|`caddy`|✅|
+|`adeliom/php:8.2-caddy-wkhtmltopdf-node14`|`8.2`|`14`|`fpm`|`caddy`|✅|
 |`adeliom/php:7.4-caddy-wkhtmltopdf-node16`|`7.4`|`16`|`fpm`|`caddy`|✅|
 |`adeliom/php:8.0-caddy-wkhtmltopdf-node16`|`8.0`|`16`|`fpm`|`caddy`|✅|
 |`adeliom/php:8.1-caddy-wkhtmltopdf-node16`|`8.1`|`16`|`fpm`|`caddy`|✅|
+|`adeliom/php:8.2-caddy-wkhtmltopdf-node16`|`8.2`|`16`|`fpm`|`caddy`|✅|
 |`adeliom/php:7.4-caddy-wkhtmltopdf-node18`|`7.4`|`18`|`fpm`|`caddy`|✅|
 |`adeliom/php:8.0-caddy-wkhtmltopdf-node18`|`8.0`|`18`|`fpm`|`caddy`|✅|
 |`adeliom/php:8.1-caddy-wkhtmltopdf-node18`|`8.1`|`18`|`fpm`|`caddy`|✅|
+|`adeliom/php:8.2-caddy-wkhtmltopdf-node18`|`8.2`|`18`|`fpm`|`caddy`|✅|
 
 
 ## Usage
@@ -175,9 +202,12 @@ DOCUMENT_ROOT=/var/www/html/public/
 | `opcache.interned_strings_buffer` | PHP_INI_OPCACHE_INTERNED_STRINGS_BUFFER | `8` |
 | `opcache.max_accelerated_files` | PHP_INI_OPCACHE_MAX_ACCELERATED_FILES | `4000` |
 | `opcache.revalidate_freq` | PHP_INI_OPCACHE_REVALIDATE_FREQ | `60` |
+| `opcache.validate_timestamps` | PHP_INI_OPCACHE_VALIDATE_TIMESTAMPS | `1` |
 | `opcache.fast_shutdown` | PHP_INI_OPCACHE_FAST_SHUTDOWN | `1` |
 | `opcache.enable_cli` | PHP_INI_OPCACHE_ENABLE_CLI | `1` |
 | `opcache.enable` | PHP_INI_OPCACHE_ENABLE | `1`
+| `opcache.preload` | PHP_INI_OPCACHE_PRELOAD | ``
+| `opcache.preload_user` | PHP_INI_OPCACHE_PRELOAD_USER | ``
 | `soap.wsdl_cache_enabled` | PHP_INI_SOAP_WSDL_CACHE_ENABLED | `1` |
 | `max_execution_time` | PHP_INI_MAX_EXECUTION_TIME | `30` |
 | `max_input_time` | PHP_INI_MAX_INPUT_TIME | `60` |
@@ -185,7 +215,7 @@ DOCUMENT_ROOT=/var/www/html/public/
 
 ## Debugging
 
-To enable XDebug` `you simply have to set the environment variable:
+To enable XDebug you simply have to set the environment variable:
 
 ```bash
 XDEBUG_MODE='debug'
