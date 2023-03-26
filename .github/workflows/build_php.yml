@@ -84,23 +84,23 @@ jobs:
 #          build-args: |
 #            PHP_VERSION=${{ matrix.version }}
            
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "sarif"
-          output: "trivy-results.sarif"
+      # - 
+      #   name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
+      #     format: "sarif"
+      #     output: "trivy-results.sarif"
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
+      # - 
+      #   name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: "trivy-results.sarif"
+      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
 
       -
         name: Build and Push
@@ -194,23 +194,23 @@ jobs:
 #            PHP_VERSION=${{ matrix.version }}
           
            
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "sarif"
-          output: "trivy-results.sarif"
+      # - 
+      #   name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
+      #     format: "sarif"
+      #     output: "trivy-results.sarif"
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
+      # - 
+      #   name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: "trivy-results.sarif"
+      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
 
       -
         name: Build and Push
@@ -305,23 +305,23 @@ jobs:
 #          build-args: |
 #            PHP_VERSION=${{ matrix.version }}
                      
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "sarif"
-          output: "trivy-results.sarif"
+      # - 
+      #   name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
+      #     format: "sarif"
+      #     output: "trivy-results.sarif"
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
+      # - 
+      #   name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: "trivy-results.sarif"
+      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
 
       -
         name: Build and Push
@@ -415,23 +415,23 @@ jobs:
 #          build-args: |
 #            PHP_VERSION=${{ matrix.version }}
                      
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "sarif"
-          output: "trivy-results.sarif"
+      # - 
+      #   name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
+      #     format: "sarif"
+      #     output: "trivy-results.sarif"
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
+      # - 
+      #   name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: "trivy-results.sarif"
+      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
 
       -
         name: Build and Push
@@ -526,23 +526,23 @@ jobs:
 #          build-args: |
 #            PHP_VERSION=${{ matrix.version }}
                      
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "sarif"
-          output: "trivy-results.sarif"
+      # - 
+      #   name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
+      #     format: "sarif"
+      #     output: "trivy-results.sarif"
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
+      # - 
+      #   name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: "trivy-results.sarif"
+      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
 
       -
         name: Build and Push
@@ -642,23 +642,23 @@ jobs:
 #            PHP_VERSION=${{ matrix.version }}
           
            
-      - 
-        name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
-          format: "sarif"
-          output: "trivy-results.sarif"
+      # - 
+      #   name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
+      #     format: "sarif"
+      #     output: "trivy-results.sarif"
 
-      - 
-        name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: "trivy-results.sarif"
-          category: ${{ inputs.image }}-${{ matrix.php_version }}-${{ matrix.variant }}-node${{ matrix.node_version }}
+      # - 
+      #   name: Upload Trivy scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     sarif_file: "trivy-results.sarif"
+      #     category: ${{ inputs.image }}-${{ matrix.php_version }}-${{ matrix.variant }}-node${{ matrix.node_version }}
 
       -
         name: Build and Push
