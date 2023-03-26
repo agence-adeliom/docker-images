@@ -23,6 +23,7 @@ jobs:
         with:
           filters: |
             php:
+              - '.github/workflows/build_php.yml'
               - 'php/config/**'
               - 'php/Dockerfile.*'
             phpdoc:

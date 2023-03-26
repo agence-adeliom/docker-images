@@ -49,10 +49,11 @@ jobs:
         name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          key: ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -61,8 +62,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=local,dest=/tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -120,8 +121,8 @@ jobs:
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          mv /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   wkhtmltopdf:
     runs-on: ubuntu-latest
@@ -157,10 +158,11 @@ jobs:
         name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          key: ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -169,8 +171,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=local,dest=/tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -230,8 +232,8 @@ jobs:
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          mv /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   caddy:
     runs-on: ubuntu-latest
@@ -268,10 +270,11 @@ jobs:
         name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          key: ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -280,8 +283,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=local,dest=/tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -340,8 +343,8 @@ jobs:
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          mv /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   nginx:
     runs-on: ubuntu-latest
@@ -377,10 +380,11 @@ jobs:
         name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          key: ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -389,8 +393,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }},mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -449,8 +453,8 @@ jobs:
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          mv /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
   
   apache:
     runs-on: ubuntu-latest
@@ -487,10 +491,11 @@ jobs:
         name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          key: ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -499,8 +504,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }},mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -559,8 +564,8 @@ jobs:
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          mv /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   node:
     runs-on: ubuntu-latest
@@ -598,10 +603,12 @@ jobs:
         name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          key: ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ github.sha }}
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-node${{ matrix.node_version }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-node${{ matrix.node_version }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
       - 
         name: Build image amd64
         uses: docker/build-push-action@v4
@@ -610,8 +617,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.node
           platforms: "linux/amd64"
           load: true
-          cache-from: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }}
-          cache-to: type=registry,ref=${{ steps.image_tag.outputs.IMAGE_TAG }},mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -675,6 +682,6 @@ jobs:
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
-          rm -rf /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
-          mv /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}-new /tmp/.buildx-cache-${{ steps.image_tag.outputs.IMAGE_TAG }}
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
   
