@@ -1,8 +1,11 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-ARG CADDY_VERSION="2.6.1"
+ARG CADDY_VERSION="2.6.4"
 FROM caddy:${CADDY_VERSION}-builder-alpine AS caddy-builder
-RUN xcaddy build
+RUN xcaddy build \
+  --with github.com/dunglas/mercure \
+  --with github.com/dunglas/mercure/caddy
+
 
 FROM adeliom/php:${PHP_VERSION}-fpm
 
