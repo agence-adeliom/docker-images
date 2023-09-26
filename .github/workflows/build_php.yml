@@ -23,7 +23,7 @@ jobs:
           version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [cli, fpm]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -133,7 +133,7 @@ jobs:
           version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [fpm-wkhtmltopdf, cli-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -244,7 +244,7 @@ jobs:
           version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [caddy, caddy-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -355,7 +355,7 @@ jobs:
           version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [nginx, nginx-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -465,7 +465,7 @@ jobs:
           version: ["7.4", "8.0", "8.1", "8.2"]
           variant: [apache, apache-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -577,7 +577,7 @@ jobs:
           node_version: ["14", "16", "18", "19"]
           variant: [apache, apache-wkhtmltopdf, caddy, caddy-wkhtmltopdf, nginx, nginx-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
