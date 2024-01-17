@@ -47,7 +47,7 @@ jobs:
         id: repository
       -
         name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
@@ -156,7 +156,7 @@ jobs:
         id: repository
       -
         name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
@@ -268,7 +268,7 @@ jobs:
         id: repository
       -
         name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
@@ -378,7 +378,7 @@ jobs:
         id: repository
       -
         name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
@@ -489,7 +489,7 @@ jobs:
         id: repository
       -
         name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
@@ -601,7 +601,7 @@ jobs:
         id: repository
       -
         name: Cache Docker layers
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-node${{ matrix.node_version }}-${{ github.sha }}
