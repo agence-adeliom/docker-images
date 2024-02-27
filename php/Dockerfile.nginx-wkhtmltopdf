@@ -4,7 +4,7 @@ FROM adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
 
 ENV NGINX_VERSION 1.24.0
 ENV PKG_RELEASE   1
-ENV NJS_VERSION   0.8.0
+ENV NJS_VERSION   0.8.3
 
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
