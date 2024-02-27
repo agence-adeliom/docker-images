@@ -16,6 +16,15 @@
 	log {
 		output discard
 		level INFO
+		format filter {
+			# Defaults to json while waiting for https://github.com/caddyserver/caddy/pull/5980
+			wrap json
+			fields {
+				uri query {
+					replace authorization REDACTED
+				}
+			}
+		}
 	}
 
 	# Serve static files
@@ -23,6 +32,12 @@
 
 	# Enable gzip compression (and zstd)
 	encode zstd gzip
+
+	skip_log /robots.txt
+	skip_log /healthz
+	skip_log /favicon.ico
+
+	respond /healthz 200
 }
 
 :2021 {
