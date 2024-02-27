@@ -574,7 +574,7 @@ jobs:
       fail-fast: false
       matrix:
           php_version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          node_version: ["14", "16", "18", "19"]
+          node_version: ["16", "18", "20", "21"]
           variant: [apache, apache-wkhtmltopdf, caddy, caddy-wkhtmltopdf, nginx, nginx-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v4
