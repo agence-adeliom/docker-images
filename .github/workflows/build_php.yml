@@ -1,6 +1,16 @@
 name: Builds - PHP
 
 on:
+  workflow_dispatch:
+    inputs:
+      image:
+        default: 'php'
+        required: false
+        type: string
+      registry:
+        default: 'adeliom'
+        required: true
+        type: string
   workflow_call:
     inputs:
       image:
@@ -8,6 +18,7 @@ on:
         required: false
         type: string
       registry:
+        default: 'adeliom'
         required: true
         type: string
     outputs:
