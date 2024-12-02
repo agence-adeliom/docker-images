@@ -71,8 +71,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -89,13 +89,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
 
   frankenphp-wkhtmltopdf:
     runs-on: ubuntu-latest
@@ -138,8 +132,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -156,13 +150,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
 
   base:
     runs-on: ubuntu-latest
@@ -205,8 +193,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -224,13 +212,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
 
   wkhtmltopdf:
     runs-on: ubuntu-latest
@@ -273,8 +255,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -292,13 +274,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
 
   caddy:
     runs-on: ubuntu-latest
@@ -342,8 +318,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -362,13 +338,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
 
   nginx:
     runs-on: ubuntu-latest
@@ -411,8 +381,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -430,13 +400,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
 
   apache:
     runs-on: ubuntu-latest
@@ -480,8 +444,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           platforms: "linux/amd64"
           load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
@@ -499,10 +463,4 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      - # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      
