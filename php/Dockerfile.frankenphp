@@ -2,6 +2,12 @@
 ARG PHP_VERSION
 FROM dunglas/frankenphp:php${PHP_VERSION}
 
+LABEL org.opencontainers.image.source=https://github.com/agence-adeliom/docker-images/tree/main/php
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.authors="Adeliom https://adeliom.com"
+LABEL org.opencontainers.image.title="PHP ${PHP_VERSION} - FrankenPHP"
+LABEL org.opencontainers.image.description="PHP ${PHP_VERSION} Docker image with FrankenPHP"
+
 ENV COMPOSER_ALLOW_SUPERUSER='1'
 ENV COMPOSER_MEMORY_LIMIT='-1'
 ENV PHP_INI_MEMORY_LIMIT='-1'

@@ -5,6 +5,12 @@ FROM caddy:${CADDY_VERSION}-alpine AS caddy-builder
 
 FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm
 
+LABEL org.opencontainers.image.source=https://github.com/agence-adeliom/docker-images/tree/main/php
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.authors="Adeliom https://adeliom.com"
+LABEL org.opencontainers.image.title="PHP ${PHP_VERSION} - Caddy"
+LABEL org.opencontainers.image.description="PHP ${PHP_VERSION} Docker image with Caddy"
+
 RUN set -eux; \
 	mkdir -p \
 		/config/caddy \
