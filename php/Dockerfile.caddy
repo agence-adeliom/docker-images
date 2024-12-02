@@ -15,19 +15,23 @@ RUN set -eux; \
 
 COPY --from=caddy-builder /usr/bin/caddy /usr/bin/caddy
 
-RUN apk --update add --no-cache supervisor \
-	ca-certificates \
-	mailcap \
+RUN set -x \
+	&& apk --update add --no-cache supervisor \
+		ca-certificates \
+		mailcap \
+		nss-tools \
 	&& rm  -rf /tmp/* /var/cache/apk/*
 
 ENV XDG_CONFIG_HOME="/config"
 ENV XDG_DATA_HOME="/data"
 
+ENV SERVER_NAME=":80"
 ENV DOCUMENT_ROOT="/var/www/html/"
 
 EXPOSE 80
+EXPOSE 443
+EXPOSE 443/udp
 EXPOSE 2019
-EXPOSE 2021
 
 WORKDIR /var/www/html/
 VOLUME ["/etc/caddy", "/config/caddy", "/data/caddy", "/var/www/html"]

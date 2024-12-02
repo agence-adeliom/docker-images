@@ -4,60 +4,54 @@ on:
   workflow_dispatch:
     inputs:
       image:
-        default: 'php'
+        default: "php"
         required: false
         type: string
       registry:
-        default: 'adeliom'
+        default: "adeliom"
         required: true
         type: string
   workflow_call:
     inputs:
       image:
-        default: 'php'
+        default: "php"
         required: false
         type: string
       registry:
-        default: 'adeliom'
+        default: "adeliom"
         required: true
         type: string
     outputs:
       repository:
         value: ${{ jobs.base-images.repository.outputs.REPOSITORY }}
-        
+
 jobs:
-  base:
+  frankenphp:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          variant: [cli, fpm]
+        version: ["8.2", "8.3"]
+        variant: [frankenphp]
     steps:
       - uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      -
-        name: Login to DockerHub
+
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - 
-        name: Set image tag
+      - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
-      - 
-        name: Set repository
+      - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
-      -
-        name: Cache Docker layers
+      - name: Cache Docker layers
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -65,8 +59,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
             ${{ runner.os }}-buildx-${{ matrix.version }}
-      - 
-        name: Build image amd64
+      - name: Build image amd64
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -80,41 +73,101 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-#      - 
-#        name: Build image arm64
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./${{ inputs.image }}
-#          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-#          platforms: "linux/arm64"
-#          load: true
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
-#          tags: |
-#            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-#          build-args: |
-#            PHP_VERSION=${{ matrix.version }}
-           
-      # - 
-      #   name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      #     ignore-unfixed: true
-      #     vuln-type: "os,library"
-      #     severity: "CRITICAL,HIGH"
-      #     format: "sarif"
-      #     output: "trivy-results.sarif"
+  frankenphp-wkhtmltopdf:
+    runs-on: ubuntu-latest
+    needs: [frankenphp]
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["8.2", "8.3"]
+        variant: [frankenphp-wkhtmltopdf]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
+        id: image_tag
+      - name: Set repository
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
+        id: repository
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
+      - name: Build image amd64
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64"
+          load: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
 
-      # - 
-      #   name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: "trivy-results.sarif"
-      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
+  base:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["8.1", "8.2", "8.3", "8.4"]
+        variant: [cli, fpm]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      -
-        name: Build and Push
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
+        id: image_tag
+      - name: Set repository
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
+        id: repository
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
+            ${{ runner.os }}-buildx-${{ matrix.version }}
+      - name: Build image amd64
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64"
+          load: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+
+      - name: Build and Push
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -125,9 +178,8 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
-            PHP_VERSION=${{ matrix.version }}         
-      -
-        # Temp fix
+            PHP_VERSION=${{ matrix.version }}
+      - # Temp fix
         # https://github.com/docker/build-push-action/issues/252
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
@@ -141,32 +193,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          variant: [fpm-wkhtmltopdf, cli-wkhtmltopdf]
+        version: ["8.1", "8.2", "8.3", "8.4"]
+        variant: [fpm-wkhtmltopdf, cli-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - 
-        name: Set image tag
+      - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
-      - 
-        name: Set repository
+      - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
-      -
-        name: Cache Docker layers
+      - name: Cache Docker layers
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -174,8 +220,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
             ${{ runner.os }}-buildx-${{ matrix.version }}
-      - 
-        name: Build image amd64
+      - name: Build image amd64
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -188,43 +233,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-
-#      - 
-#        name: Build image arm64
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./${{ inputs.image }}
-#          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-#          platforms: "linux/arm64"
-#          load: true
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
-#          tags: |
-#            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-#          build-args: |
-#            PHP_VERSION=${{ matrix.version }}
-          
-           
-      # - 
-      #   name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      #     ignore-unfixed: true
-      #     vuln-type: "os,library"
-      #     severity: "CRITICAL,HIGH"
-      #     format: "sarif"
-      #     output: "trivy-results.sarif"
-
-      # - 
-      #   name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: "trivy-results.sarif"
-      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
-
-      -
-        name: Build and Push
+      - name: Build and Push
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -237,8 +246,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      -
-        # Temp fix
+      - # Temp fix
         # https://github.com/docker/build-push-action/issues/252
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
@@ -252,33 +260,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          variant: [caddy, caddy-wkhtmltopdf]
+        version: ["8.1", "8.2", "8.3", "8.4"]
+        variant: [caddy, caddy-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      -
-        name: Login to DockerHub
+
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - 
-        name: Set image tag
+      - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
-      - 
-        name: Set repository
+      - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
-      -
-        name: Cache Docker layers
+      - name: Cache Docker layers
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -286,8 +288,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
             ${{ runner.os }}-buildx-${{ matrix.version }}
-      - 
-        name: Build image amd64
+      - name: Build image amd64
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -301,41 +302,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-#      - 
-#        name: Build image arm64
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./${{ inputs.image }}
-#          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-#          platforms: "linux/arm64"
-#          load: true
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
-#          tags: |
-#            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-#          build-args: |
-#            PHP_VERSION=${{ matrix.version }}
-                     
-      # - 
-      #   name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      #     ignore-unfixed: true
-      #     vuln-type: "os,library"
-      #     severity: "CRITICAL,HIGH"
-      #     format: "sarif"
-      #     output: "trivy-results.sarif"
-
-      # - 
-      #   name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: "trivy-results.sarif"
-      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
-
-      -
-        name: Build and Push
+      - name: Build and Push
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -348,8 +315,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      -
-        # Temp fix
+      - # Temp fix
         # https://github.com/docker/build-push-action/issues/252
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
@@ -363,32 +329,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          variant: [nginx, nginx-wkhtmltopdf]
+        version: ["8.1", "8.2", "8.3", "8.4"]
+        variant: [nginx, nginx-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3  
-      -
-        name: Login to DockerHub
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - 
-        name: Set image tag
+      - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
-      - 
-        name: Set repository
+      - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
-      -
-        name: Cache Docker layers
+      - name: Cache Docker layers
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -396,8 +356,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
             ${{ runner.os }}-buildx-${{ matrix.version }}
-      - 
-        name: Build image amd64
+      - name: Build image amd64
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -410,42 +369,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-
-#      - 
-#        name: Build image arm64
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./${{ inputs.image }}
-#          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-#          platforms: "linux/arm64"
-#          load: true
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
-#          tags: |
-#            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-#          build-args: |
-#            PHP_VERSION=${{ matrix.version }}
-                     
-      # - 
-      #   name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      #     ignore-unfixed: true
-      #     vuln-type: "os,library"
-      #     severity: "CRITICAL,HIGH"
-      #     format: "sarif"
-      #     output: "trivy-results.sarif"
-
-      # - 
-      #   name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: "trivy-results.sarif"
-      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
-
-      -
-        name: Build and Push
+      - name: Build and Push
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -458,48 +382,41 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.version }}
 
-      -
-        # Temp fix
+      - # Temp fix
         # https://github.com/docker/build-push-action/issues/252
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-  
+
   apache:
     runs-on: ubuntu-latest
     needs: [base, wkhtmltopdf]
     strategy:
       fail-fast: false
       matrix:
-          version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          variant: [apache, apache-wkhtmltopdf]
+        version: ["8.1", "8.2", "8.3", "8.4"]
+        variant: [apache, apache-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      -
-        name: Login to DockerHub
+
+      - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - 
-        name: Set image tag
+      - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
-      - 
-        name: Set repository
+      - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
-      -
-        name: Cache Docker layers
+      - name: Cache Docker layers
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
@@ -507,8 +424,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
             ${{ runner.os }}-buildx-${{ matrix.version }}
-      - 
-        name: Build image amd64
+      - name: Build image amd64
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -521,42 +437,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-
-#      - 
-#        name: Build image arm64
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./${{ inputs.image }}
-#          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-#          platforms: "linux/arm64"
-#          load: true
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
-#          tags: |
-#            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-#          build-args: |
-#            PHP_VERSION=${{ matrix.version }}
-                     
-      # - 
-      #   name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      #     ignore-unfixed: true
-      #     vuln-type: "os,library"
-      #     severity: "CRITICAL,HIGH"
-      #     format: "sarif"
-      #     output: "trivy-results.sarif"
-
-      # - 
-      #   name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: "trivy-results.sarif"
-      #     category: ${{ inputs.image }}-${{ matrix.version }}-${{ matrix.variant }}
-
-      -
-        name: Build and Push
+      - name: Build and Push
         uses: docker/build-push-action@v6
         with:
           context: ./${{ inputs.image }}
@@ -568,131 +449,11 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
-      
-      -
-        # Temp fix
+
+      - # Temp fix
         # https://github.com/docker/build-push-action/issues/252
         # https://github.com/moby/buildkit/issues/1896
         name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
-  node:
-    runs-on: ubuntu-latest
-    needs: [apache, nginx, caddy]
-    strategy:
-      fail-fast: false
-      matrix:
-          php_version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-          node_version: ["16", "18", "20", "21"]
-          variant: [apache, apache-wkhtmltopdf, caddy, caddy-wkhtmltopdf, nginx, nginx-wkhtmltopdf]
-    steps:
-      - uses: actions/checkout@v4
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3  
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - 
-        name: Set image tag
-        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.php_version }}-${{ matrix.variant }}-node${{ matrix.node_version }}" >> $GITHUB_OUTPUT
-        id: image_tag
-      - 
-        name: Set repository
-        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
-        id: repository
-      -
-        name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-node${{ matrix.node_version }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}-node${{ matrix.node_version }}
-            ${{ runner.os }}-buildx-${{ matrix.version }}-${{ matrix.variant }}
-            ${{ runner.os }}-buildx-${{ matrix.version }}
-      - 
-        name: Build image amd64
-        uses: docker/build-push-action@v6
-        with:
-          context: ./${{ inputs.image }}
-          file: ./${{ inputs.image }}/Dockerfile.node
-          platforms: "linux/amd64"
-          load: true
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-          tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args: |
-            PHP_VERSION=${{ matrix.php_version }}
-            IMAGE_VARIANT=${{ matrix.variant }}
-            NODE_VERSION=${{ matrix.node_version }}
-
-#      - 
-#        name: Build image arm64
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: ./${{ inputs.image }}
-#          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-#          platforms: "linux/arm64"
-#          load: true
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
-#          tags: |
-#            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-#          build-args: |
-#            PHP_VERSION=${{ matrix.version }}
-          
-           
-      # - 
-      #   name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: ${{ steps.image_tag.outputs.IMAGE_TAG }}
-      #     ignore-unfixed: true
-      #     vuln-type: "os,library"
-      #     severity: "CRITICAL,HIGH"
-      #     format: "sarif"
-      #     output: "trivy-results.sarif"
-
-      # - 
-      #   name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: "trivy-results.sarif"
-      #     category: ${{ inputs.image }}-${{ matrix.php_version }}-${{ matrix.variant }}-node${{ matrix.node_version }}
-
-      -
-        name: Build and Push
-        uses: docker/build-push-action@v6
-        with:
-          context: ./${{ inputs.image }}
-          file: ./${{ inputs.image }}/Dockerfile.node
-          #platforms: "linux/amd64,linux/arm64"
-          platforms: "linux/amd64"
-          push: true
-          tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args: |
-            PHP_VERSION=${{ matrix.php_version }}
-            IMAGE_VARIANT=${{ matrix.variant }}
-            NODE_VERSION=${{ matrix.node_version }}
-
-      -
-        # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-        name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-  

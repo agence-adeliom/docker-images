@@ -31,7 +31,7 @@ END
 auto_envsubst() {
   local template_dir="${NGINX_ENVSUBST_TEMPLATE_DIR:-/etc/nginx/templates}"
   local suffix="${NGINX_ENVSUBST_TEMPLATE_SUFFIX:-.template}"
-  local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
+  local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/tmp/nginx/conf.d}"
   local stream_suffix="${NGINX_ENVSUBST_STREAM_TEMPLATE_SUFFIX:-.stream-template}"
   local stream_output_dir="${NGINX_ENVSUBST_STREAM_OUTPUT_DIR:-/etc/nginx/stream-conf.d}"
   local filter="${NGINX_ENVSUBST_FILTER:-}"

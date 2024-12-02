@@ -1,46 +1,59 @@
-:80 {
-	root * {$DOCUMENT_ROOT:/var/www/html/}
-	
-	trusted_proxies private_ranges
+{
+	{$CADDY_GLOBAL_OPTIONS}
 
-	# Point all PHP requests to an upstream socket, served by php-fpm
-	php_fastcgi localhost:9000
+    servers {
+        metrics
+        timeouts {
+            read_body 10s
+            read_header 5s
+            write 30s
+            idle 10m
+        }
+        trusted_proxies static private_ranges
+    }
+    log {
+        format json
+        level INFO
+    }
+}
 
+{$CADDY_EXTRA_CONFIG}
+
+{$SERVER_NAME:localhost} {
 	# Enable logging
 	log {
-		output stderr
-		format console
-		level ERROR
-	}
-
-	log {
-		output discard
+		output stdout
 		level INFO
+        # Redact the authorization query parameter that can be set by Mercure
 		format filter {
-			# Defaults to json while waiting for https://github.com/caddyserver/caddy/pull/5980
-			wrap json
 			fields {
-				uri query {
+				request>uri query {
 					replace authorization REDACTED
 				}
 			}
+			wrap json
 		}
 	}
 
-	# Serve static files
-	file_server
+	root * {$DOCUMENT_ROOT:/var/www/html/}
+	
+	log_skip /robots.txt
+	log_skip /healthz
+	log_skip /ping
+	log_skip /status
+	log_skip /favicon.ico
 
-	# Enable gzip compression (and zstd)
+	respond /healthz "healthy" 200
+
+	root * {$DOCUMENT_ROOT:/var/www/html/}
+	
 	encode zstd gzip
 
-	skip_log /robots.txt
-	skip_log /healthz
-	skip_log /favicon.ico
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-	respond /healthz 200
-}
+	# Point all PHP requests to an upstream socket, served by php-fpm
+	php_fastcgi 127.0.0.1:9000
 
-:2021 {
-	tls internal
-	metrics
+	# Serve static files
+	file_server
 }

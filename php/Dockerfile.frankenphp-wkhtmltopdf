@@ -1,0 +1,93 @@
+# syntax=docker/dockerfile:1
+ARG PHP_VERSION
+FROM dunglas/frankenphp:php${PHP_VERSION}
+
+ENV COMPOSER_ALLOW_SUPERUSER='1'
+ENV COMPOSER_MEMORY_LIMIT='-1'
+ENV PHP_INI_MEMORY_LIMIT='-1'
+
+ENV PHP_INI_DATE_TIMEZONE='UTC'
+ENV PHP_INI_CGI_FIX_PATHINFO='0'
+
+ENV PHP_INI_UPLOAD_MAX_FILESIZE='16M'
+ENV PHP_INI_POST_MAX_SIZE='16M'
+
+ENV PHP_INI_ERROR_REPORTING='E_ALL & ~E_DEPRECATED & ~E_STRICT'
+ENV PHP_INI_DISPLAY_ERRORS='Off'
+ENV PHP_INI_DISPLAY_STARTUP_ERRORS='Off'
+
+ENV PHP_INI_REALPATH_CACHE_SIZE='4096k'
+ENV PHP_INI_REALPATH_CACHE_TTL='120'
+
+ENV PHP_INI_OPCACHE_MEMORY_CONSUMPTION='128'
+ENV PHP_INI_OPCACHE_INTERNED_STRINGS_BUFFER='8'
+ENV PHP_INI_OPCACHE_MAX_ACCELERATED_FILES='4000'
+ENV PHP_INI_OPCACHE_REVALIDATE_FREQ='60'
+ENV PHP_INI_OPCACHE_VALIDATE_TIMESTAMPS='1'
+ENV PHP_INI_OPCACHE_FAST_SHUTDOWN='1'
+ENV PHP_INI_OPCACHE_ENABLE_CLI='1'
+ENV PHP_INI_OPCACHE_ENABLE='1'
+ENV PHP_INI_OPCACHE_PRELOAD=''
+ENV PHP_INI_OPCACHE_PRELOAD_USER=''
+
+ENV PHP_INI_SOAP_WSDL_CACHE_ENABLED='1'
+
+ENV PHP_INI_MAX_EXECUTION_TIME='30'
+ENV PHP_INI_MAX_INPUT_TIME='60'
+
+ENV PHP_INI_SENDMAIL_PATH='sendmail -t -i'
+
+ENV XDEBUG_REMOTE_AUTOSTART='1'
+ENV XDEBUG_REMOTE_PORT='9003'
+ENV XDEBUG_START_WITH_REQUEST='trigger'
+ENV XDEBUG_MODE='off'
+
+RUN set -x \
+    && apt-get update && apt-get install -y supervisor \
+        ca-certificates \
+        mime-support \
+        libnss3-tools \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV XDG_CONFIG_HOME="/config"
+ENV XDG_DATA_HOME="/data"
+
+ENV SERVER_NAME=":80"
+ENV DOCUMENT_ROOT="/var/www/html/"
+
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions
+
+WORKDIR /var/www/html
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 443/udp
+EXPOSE 2019
+
+# Use the default production configuration
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+COPY config/php.ini /usr/local/etc/php/conf.d/000-php.ini
+
+RUN echo "expose_php = Off" > /usr/local/etc/php/conf.d/expose_php.ini
+
+# Install extensions
+RUN set -x \
+    install-php-extensions opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug pcntl
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+COPY config/frankenphp/Caddyfile /etc/caddy/
+
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y \
+        wkhtmltopdf \
+        imagemagick \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+STOPSIGNAL SIGQUIT
+
+CMD ["--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
