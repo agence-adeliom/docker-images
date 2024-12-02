@@ -86,7 +86,15 @@ RUN set -x \
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY config/frankenphp/Caddyfile /etc/caddy/
+COPY config/supervisord.conf /etc/
+COPY config/supervisord/frankenphp.conf /etc/supervisord/
+
+COPY config/frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 
 STOPSIGNAL SIGQUIT
 
-CMD ["--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+HEALTHCHECK CMD curl -f http://localhost:2019/metrics || exit 1
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["-D"]
