@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-FROM adeliom/php:${PHP_VERSION}-fpm
+FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm
 
 RUN apk add --update --no-cache \
    libgcc libstdc++ libx11 glib libxrender libxext libintl \

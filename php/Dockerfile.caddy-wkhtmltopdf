@@ -3,7 +3,7 @@ ARG PHP_VERSION
 ARG CADDY_VERSION="2.8.4"
 FROM caddy:${CADDY_VERSION}-alpine AS caddy-builder
 
-FROM adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
+FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
 
 RUN set -eux; \
 	mkdir -p \

@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-FROM adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
+FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
 
 RUN apk --update add --no-cache \
     supervisor \

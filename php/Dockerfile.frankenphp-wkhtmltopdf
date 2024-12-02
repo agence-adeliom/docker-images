@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-FROM adeliom/php:${PHP_VERSION}-frankenphp
+FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-frankenphp
 
 RUN set -x \
     && apt-get update \
