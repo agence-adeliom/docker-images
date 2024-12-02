@@ -9,12 +9,11 @@ LABEL org.opencontainers.image.title="PHP ${PHP_VERSION} - FrankenPHP"
 LABEL org.opencontainers.image.description="PHP ${PHP_VERSION} Docker image with FrankenPHP"
 
 ARG USER="www-data"
-
-ARG USER=www-data
+ARG UID="1000"
 
 RUN \
 	# Use "adduser -D ${USER}" for alpine based distros
-	useradd -D ${USER}; \
+	useradd -u ${UID} -s /bin/bash ${USER} --no-create-home --home /var/www/html; \
 	# Add additional capability to bind to port 80 and 443
 	setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp; \
 	# Give write access to /data/caddy and /config/caddy
