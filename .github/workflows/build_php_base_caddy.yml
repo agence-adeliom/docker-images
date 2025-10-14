@@ -1,4 +1,4 @@
-name: Builds - PHP - Base & Caddy
+name: Manual release for php builds (light)
 
 on:
   workflow_dispatch:
@@ -191,7 +191,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set image tag
-        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}:${{ github.ref_name }}" >> $GITHUB_OUTPUT
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}-${{ github.ref_name }}" >> $GITHUB_OUTPUT
         id: image_tag
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT

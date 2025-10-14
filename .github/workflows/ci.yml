@@ -1,11 +1,10 @@
-name: CI
+name: Auto release
 
-on: 
-  schedule:
-    - cron: 0 6 * * 1,4
-  push:
-    branches:
-      - main
+on:
+#  schedule:
+#    - cron: 0 6 * * 1,4
+  release:
+    types: [ published ]
 
 jobs:
   changes:
@@ -17,7 +16,7 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
-      - 
+      -
         uses: dorny/paths-filter@v3
         id: filter
         with:

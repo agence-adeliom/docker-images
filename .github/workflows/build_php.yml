@@ -1,4 +1,4 @@
-name: Builds - PHP
+name: Manual release for php builds
 
 on:
   workflow_dispatch:
