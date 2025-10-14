@@ -7,30 +7,8 @@ on:
     types: [ published ]
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      php: ${{ steps.filter.outputs.php }}
-      phpdoc: ${{ steps.filter.outputs.phpdoc }}
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v4
-      -
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            php:
-              - '.github/workflows/build_php.yml'
-              - 'php/config/**'
-              - 'php/Dockerfile.*'
-            phpdoc:
-              - 'php/*.md'
 
   build-php-images:
-    needs: changes
-    if: ${{ needs.changes.outputs.php == 'true' }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
@@ -40,8 +18,6 @@ jobs:
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
-    needs: changes
-    if: ${{ needs.changes.outputs.phpdoc == 'true' }}
     steps:
       -
         name: Checkout
