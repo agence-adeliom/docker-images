@@ -46,6 +46,8 @@ jobs:
         variant: [ cli, fpm ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -65,69 +67,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set image tag
-        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-        id: image_tag
-      - name: Set repository
-        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
-        id: repository
-      - name: Build image amd64
-        uses: docker/build-push-action@v6
-        with:
-          context: ./${{ inputs.image }}
-          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-          platforms: "linux/amd64"
-          load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args: |
-            PHP_VERSION=${{ matrix.version }}
-            REGISTRY=${{ inputs.registry }}
-
-      - name: Build and Push
-        uses: docker/build-push-action@v6
-        with:
-          context: ./${{ inputs.image }}
-          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
-          #platforms: "linux/amd64,linux/arm64"
-          platforms: "linux/amd64"
-          push: true
-          tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
-          build-args: |
-            PHP_VERSION=${{ matrix.version }}
-            REGISTRY=${{ inputs.registry }}
-
-  wkhtmltopdf:
-    runs-on: ubuntu-latest
-    needs: [ base ]
-    strategy:
-      fail-fast: false
-      matrix:
-        version: [ "8.4" ]
-        variant: [ fpm-wkhtmltopdf, cli-wkhtmltopdf ]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      # 🔐 Connexion à Docker Hub
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      # 🔐 Connexion à GitHub Container Registry
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get latest tag
+        id: get_tag
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -144,7 +86,78 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          #platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
+          push: true
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+          build-args: |
+            PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
+
+  wkhtmltopdf:
+    runs-on: ubuntu-latest
+    needs: [ base ]
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ "8.4" ]
+        variant: [ fpm-wkhtmltopdf, cli-wkhtmltopdf ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get latest tag
+        id: get_tag
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
+        id: image_tag
+      - name: Set repository
+        run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
+        id: repository
+      - name: Build image amd64
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ inputs.image }}
+          file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
+          platforms: "linux/amd64"
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -157,7 +170,8 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -171,6 +185,8 @@ jobs:
         variant: [caddy, caddy-wkhtmltopdf]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -190,8 +206,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get latest tag
+        id: get_tag
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
       - name: Set image tag
-        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}-${{ github.ref_name }}" >> $GITHUB_OUTPUT
+        run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
@@ -206,7 +225,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -219,7 +239,8 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
+            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
