@@ -2,7 +2,7 @@
 ARG PHP_VERSION
 ARG REGISTRY
 ARG TAG_VERSION
-FROM ${REGISTRY}/php:${PHP_VERSION}-cli${TAG_VERSION:''}
+FROM ${REGISTRY}/php:${PHP_VERSION}-cli${TAG_VERSION}
 
 LABEL org.opencontainers.image.source=https://github.com/agence-adeliom/docker-images/tree/main/php
 LABEL org.opencontainers.image.licenses="MIT"
