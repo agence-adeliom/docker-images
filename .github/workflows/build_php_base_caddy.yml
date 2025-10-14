@@ -10,12 +10,12 @@ on:
         type: string
       registry:
         description: 'Registry to deploy to'
-        default: "adeliom"
+        default: "ghcr.io/agence-adeliom"
         required: true
         type: choice
         options:
           - "ghcr.io/agence-adeliom"
-          - "docker.io/adeliom"
+          - "adeliom"
   workflow_call:
     inputs:
       image:

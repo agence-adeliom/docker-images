@@ -1,7 +1,9 @@
 # HELP
 # This will output the help for each task
-# IMAGE=php VARIATION=cli PHP_VERSION=8.2 VERSION=8.2 REGISTRY=ghcr.io/agence-adeliom make build-local
-# IMAGE=php VARIATION=cli PHP_VERSION=8.2 VERSION=8.2 REGISTRY=adeliom make build-local
+# Github packages Version
+# IMAGE=php VARIATION=cli PHP_VERSION=8.2 VERSION=8.2 REGISTRY=ghcr.io/agence-adeliom IMAGE_PREFIX=php make build-local
+# Docker Hub Version
+# IMAGE=php VARIATION=cli PHP_VERSION=8.2 VERSION=8.2 REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom make build-local
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
 
@@ -10,7 +12,6 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-IMAGE_PREFIX=php
 IMAGE_NAME=$(IMAGE_PREFIX)/$(IMAGE)
 
 # DOCKER TASKS
@@ -83,24 +84,25 @@ tag: ## Generate container tag
 	@echo 'create tag $(VERSION)-$(VARIATION)'
 	docker tag $(IMAGE_NAME) $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
-fpm@8.4:
-	IMAGE=php VERSION=8.4 VARIATION=fpm $(MAKE) build-local
+fpm@8.2:
+	IMAGE=php VERSION=8.4 VARIATION=fpm REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom $(MAKE) build-local
 
 caddy@8.2:
-	IMAGE=php VERSION=8.2 VARIATION=caddy $(MAKE) build-local
+	IMAGE=php VERSION=8.2 VARIATION=caddy REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom $(MAKE) build-local
 
 apache@8.2:
-	IMAGE=php VERSION=8.2 VARIATION=apache $(MAKE) build-local
+	IMAGE=php VERSION=8.2 VARIATION=apache REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom $(MAKE) build-local
 
 nginx@8.2:
-	IMAGE=php VERSION=8.2 VARIATION=nginx $(MAKE) build-local
+	IMAGE=php VERSION=8.2 VARIATION=nginx REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom $(MAKE) build-local
 
 frankenphp@8.2:
-	IMAGE=php VERSION=8.2 VARIATION=frankenphp $(MAKE) build-local
+	IMAGE=php VERSION=8.2 VARIATION=frankenphp REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom $(MAKE) build-local
 
 caddy@8.2-debug:
 	$(eval IMAGE := php)
-	$(eval VERSION := 8.2)
+	$(eval IMAGE_PREFIX := adeliom)
+	$(eval VERSION := 8.4)
 	$(eval VARIATION := caddy)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
 	@docker stop $(IMAGE)_$(VERSION)-$(VARIATION) || true
@@ -108,6 +110,7 @@ caddy@8.2-debug:
 
 apache@8.2-debug:
 	$(eval IMAGE := php)
+	$(eval IMAGE_PREFIX := adeliom)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := apache)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -116,6 +119,7 @@ apache@8.2-debug:
 
 nginx@8.2-debug:
 	$(eval IMAGE := php)
+	$(eval IMAGE_PREFIX := adeliom)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := nginx)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -124,6 +128,7 @@ nginx@8.2-debug:
 
 frankenphp@8.2-debug:
 	$(eval IMAGE := php)
+	$(eval IMAGE_PREFIX := adeliom)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -132,6 +137,7 @@ frankenphp@8.2-debug:
 
 frankenphp@8.2-worker-debug:
 	$(eval IMAGE := php)
+	$(eval IMAGE_PREFIX := adeliom)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
