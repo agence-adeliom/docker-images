@@ -84,7 +84,7 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
             if [ "${{ inputs.generate_dev }}" = "false" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
@@ -101,7 +101,7 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
             if [ "${{ inputs.generate_dev }}" = "false" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
@@ -164,7 +164,7 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
             if [ "${{ inputs.generate_dev }}" = "false" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
@@ -180,7 +180,7 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
             if [ "${{ inputs.generate_dev }}" = "false" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
@@ -243,7 +243,7 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
             if [ "${{ inputs.generate_dev }}" = "false" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
@@ -259,7 +259,7 @@ jobs:
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
             if [ "${{ inputs.generate_dev }}" = "false" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
