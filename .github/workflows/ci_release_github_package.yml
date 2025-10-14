@@ -1,4 +1,4 @@
-name: Auto release
+name: Auto release (github package)
 
 on:
 #  schedule:
@@ -35,7 +35,7 @@ jobs:
     secrets: inherit
     with:
       image: php
-      registry: ghcr.io/agence-adeliom
+      registry: adeliom
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
