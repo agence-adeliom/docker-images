@@ -102,8 +102,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -118,8 +120,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -181,8 +185,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -197,8 +203,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -260,8 +268,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -277,8 +287,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -340,8 +352,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -356,8 +370,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -420,8 +436,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -437,8 +455,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -500,8 +520,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -516,8 +538,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -580,8 +604,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
@@ -596,8 +622,10 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+            if [ "${{ inputs.generate_dev }}" = "true" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
+            else
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
               ${{ steps.image_tag.outputs.IMAGE_TAG }}
             fi
           build-args: |
