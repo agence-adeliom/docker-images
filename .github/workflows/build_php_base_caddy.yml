@@ -69,6 +69,23 @@ jobs:
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
+      - name: Set Docker tags
+        id: tags
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            {
+              echo 'tags<<EOF'
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo 'tags<<EOF'
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}"
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          fi
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -82,12 +99,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            if [ "${{ inputs.generate_dev }}" = "true" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
-            else
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}
-            fi
+            ${{ steps.tags.outputs.tags }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -101,12 +113,7 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            if [ "${{ inputs.generate_dev }}" = "true" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
-            else
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}
-            fi
+            ${{ steps.tags.outputs.tags }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -153,6 +160,23 @@ jobs:
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
+      - name: Set Docker tags
+        id: tags
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            {
+              echo 'tags<<EOF'
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo 'tags<<EOF'
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}"
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          fi
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -166,12 +190,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            if [ "${{ inputs.generate_dev }}" = "true" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
-            else
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}
-            fi
+            ${{ steps.tags.outputs.tags }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -184,12 +203,7 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            if [ "${{ inputs.generate_dev }}" = "true" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
-            else
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}
-            fi
+            ${{ steps.tags.outputs.tags }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -236,6 +250,23 @@ jobs:
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
+      - name: Set Docker tags
+        id: tags
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            {
+              echo 'tags<<EOF'
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo 'tags<<EOF'
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}"
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+              echo 'EOF'
+            } >> "$GITHUB_OUTPUT"
+          fi
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -249,12 +280,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            if [ "${{ inputs.generate_dev }}" = "true" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
-            else
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}
-            fi
+            ${{ steps.tags.outputs.tags }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -267,12 +293,7 @@ jobs:
           platforms: "linux/amd64"
           push: true
           tags: |
-            if [ "${{ inputs.generate_dev }}" = "true" ]; then
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-dev
-            else
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-              ${{ steps.image_tag.outputs.IMAGE_TAG }}
-            fi
+            ${{ steps.tags.outputs.tags }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
