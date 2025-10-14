@@ -60,15 +60,15 @@ ENV XDEBUG_REMOTE_PORT='9003'
 ENV XDEBUG_START_WITH_REQUEST='trigger'
 ENV XDEBUG_MODE='off'
 
-RUN set -x \
+RUN set -eux \
     && apt-get update && apt-get install -y supervisor \
         ca-certificates \
-        mime-support \
+        media-types \
         libnss3-tools \
         imagemagick \
         jpegoptim \
         optipng \
-        webp \
+        libwebp-tools \
         pngquant \
         ffmpeg \
         libavif-dev \
