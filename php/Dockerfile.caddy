@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-ARG CADDY_VERSION="2.8.4"
+ARG CADDY_VERSION="2.10.2"
 FROM caddy:${CADDY_VERSION}-alpine AS caddy-builder
 
 FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm
