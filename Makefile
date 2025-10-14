@@ -1,6 +1,7 @@
 # HELP
 # This will output the help for each task
-# IMAGE=php VARIATION=cli PHP_VERSION=8.1 make build 
+# IMAGE=php VARIATION=cli PHP_VERSION=8.2 VERSION=8.2 REGISTRY=ghcr.io/agence-adeliom make build-local
+# IMAGE=php VARIATION=cli PHP_VERSION=8.2 VERSION=8.2 REGISTRY=adeliom make build-local
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
 
@@ -9,9 +10,8 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-IMAGE_PREFIX=adeliom
+IMAGE_PREFIX=php
 IMAGE_NAME=$(IMAGE_PREFIX)/$(IMAGE)
-REGISTRY=
 
 # DOCKER TASKS
 build: ## Build the container
@@ -25,6 +25,7 @@ endif
 	--platform linux/amd64 \
 	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
+	--build-arg REGISTRY=$(REGISTRY) \
 	--file $(DOCKERFILE) $(IMAGE) \
 	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
@@ -41,6 +42,7 @@ endif
 	--platform linux/amd64 \
 	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
+	--build-arg REGISTRY=$(REGISTRY) \
 	--file $(DOCKERFILE) $(IMAGE) \
 	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
@@ -55,6 +57,7 @@ endif
 	--platform linux/amd64 \
 	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
+	--build-arg REGISTRY=$(REGISTRY) \
 	--file $(DOCKERFILE) $(IMAGE)
 
 # Run containers
@@ -95,7 +98,7 @@ nginx@8.2:
 frankenphp@8.2:
 	IMAGE=php VERSION=8.2 VARIATION=frankenphp $(MAKE) build-local
 
-caddy@8.2-debug: 
+caddy@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := caddy)
@@ -103,7 +106,7 @@ caddy@8.2-debug:
 	@docker stop $(IMAGE)_$(VERSION)-$(VARIATION) || true
 	@docker run -i -t --rm -p 1234:80 -v ./test/:/var/www/html/ --name="$(IMAGE)_$(VERSION)-$(VARIATION)" $(IMAGE_NAME)
 
-apache@8.2-debug: 
+apache@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := apache)
@@ -111,7 +114,7 @@ apache@8.2-debug:
 	@docker stop $(IMAGE)_$(VERSION)-$(VARIATION) || true
 	@docker run -i -t --rm -p 1234:80 -v ./test/:/var/www/html/ --name="$(IMAGE)_$(VERSION)-$(VARIATION)" $(IMAGE_NAME)
 
-nginx@8.2-debug: 
+nginx@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := nginx)
@@ -119,7 +122,7 @@ nginx@8.2-debug:
 	@docker stop $(IMAGE)_$(VERSION)-$(VARIATION) || true
 	@docker run -i -t --rm -p 1234:80 -v ./test/:/var/www/html/ --name="$(IMAGE)_$(VERSION)-$(VARIATION)" $(IMAGE_NAME)
 
-frankenphp@8.2-debug: 
+frankenphp@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
@@ -127,7 +130,7 @@ frankenphp@8.2-debug:
 	@docker stop $(IMAGE)_$(VERSION)-$(VARIATION) || true
 	@docker run -i -t --rm -p 1234:80 -v ./test/:/var/www/html/ --name="$(IMAGE)_$(VERSION)-$(VARIATION)" $(IMAGE_NAME)
 
-frankenphp@8.2-worker-debug: 
+frankenphp@8.2-worker-debug:
 	$(eval IMAGE := php)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)

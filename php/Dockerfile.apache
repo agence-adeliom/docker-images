@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm
+ARG REGISTRY
+FROM ${REGISTRY}/php:${PHP_VERSION}-fpm
 
 LABEL org.opencontainers.image.source=https://github.com/agence-adeliom/docker-images/tree/main/php
 LABEL org.opencontainers.image.licenses="MIT"
@@ -233,7 +234,7 @@ RUN set -eux; \
 # smoke test
 	httpd -v
 
-	
+
 RUN apk --update add --no-cache supervisor \
 	mailcap \
 	&& rm  -rf /tmp/* /var/cache/apk/*

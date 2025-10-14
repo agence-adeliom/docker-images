@@ -4,20 +4,27 @@ on:
   workflow_dispatch:
     inputs:
       image:
+        description: 'Image type to build'
         default: "php"
         required: false
         type: string
       registry:
+        description: 'Registry to deploy to'
         default: "adeliom"
         required: true
-        type: string
+        type: choice
+        options:
+          - "ghcr.io/agence-adeliom"
+          - "docker.io/adeliom"
   workflow_call:
     inputs:
       image:
+        description: 'Image type to build'
         default: "php"
         required: false
         type: string
       registry:
+        description: 'Registry to deploy to'
         default: "ghcr.io/agence-adeliom"
         required: true
         type: string
@@ -44,7 +51,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -69,6 +84,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -81,6 +97,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
   frankenphp-wkhtmltopdf:
     runs-on: ubuntu-latest
@@ -96,7 +113,15 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -121,6 +146,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -133,6 +159,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
   base:
     runs-on: ubuntu-latest
@@ -148,7 +175,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -173,6 +208,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
       - name: Build and Push
         uses: docker/build-push-action@v6
@@ -186,6 +222,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
   wkhtmltopdf:
     runs-on: ubuntu-latest
@@ -201,7 +238,15 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -226,6 +271,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -238,6 +284,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
   caddy:
     runs-on: ubuntu-latest
@@ -254,7 +301,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -279,6 +334,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
       - name: Build and Push
         uses: docker/build-push-action@v6
@@ -292,6 +348,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
   nginx:
     runs-on: ubuntu-latest
@@ -307,7 +364,15 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -332,6 +397,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -344,6 +410,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
 
   apache:
     runs-on: ubuntu-latest
@@ -360,7 +427,15 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to DockerHub
+      # 🔐 Connexion à Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 🔐 Connexion à GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -385,6 +460,7 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -397,3 +473,4 @@ jobs:
             ${{ steps.image_tag.outputs.IMAGE_TAG }}
           build-args: |
             PHP_VERSION=${{ matrix.version }}
+            REGISTRY=${{ inputs.registry }}

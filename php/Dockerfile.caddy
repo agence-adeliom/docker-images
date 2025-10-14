@@ -1,9 +1,10 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
+ARG REGISTRY
 ARG CADDY_VERSION="2.10.2"
 FROM caddy:${CADDY_VERSION}-alpine AS caddy-builder
 
-FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm
+FROM ${REGISTRY}/php:${PHP_VERSION}-fpm
 
 LABEL org.opencontainers.image.source=https://github.com/agence-adeliom/docker-images/tree/main/php
 LABEL org.opencontainers.image.licenses="MIT"

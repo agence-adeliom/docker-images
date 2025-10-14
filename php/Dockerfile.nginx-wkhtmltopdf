@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 ARG PHP_VERSION
-FROM ghcr.io/agence-adeliom/php:${PHP_VERSION}-fpm-wkhtmltopdf
+ARG REGISTRY
+FROM ${REGISTRY}/php:${PHP_VERSION}-fpm-wkhtmltopdf
 
 LABEL org.opencontainers.image.source=https://github.com/agence-adeliom/docker-images/tree/main/php
 LABEL org.opencontainers.image.licenses="MIT"
@@ -49,7 +50,7 @@ RUN chmod +x /docker-entrypoint.d/*
 COPY config/nginx/nginx.conf /etc/nginx/
 COPY config/nginx/default.conf.template /etc/nginx/templates/
 
-RUN mkdir -p /tmp/nginx/conf.d && chmod -R 777 /tmp/nginx 
+RUN mkdir -p /tmp/nginx/conf.d && chmod -R 777 /tmp/nginx
 
 COPY config/nginx/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint

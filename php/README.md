@@ -154,7 +154,7 @@ This list can be outdated, you can verify by executing : `docker run --rm -it  a
 ### Compiling extensions in the custom image with [mlocati/docker-php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
 
 ```Dockerfile
-FROM ghcr.io/agence-adeliom/php:8.1-apache
+FROM ${REGISTRY}/php:8.1-apache
 
 # Install tidy extension
 RUN install-php-extensions tidy
