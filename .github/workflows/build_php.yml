@@ -103,7 +103,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -117,7 +119,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -178,7 +182,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -192,7 +198,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -253,7 +261,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -268,7 +278,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -329,7 +341,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -343,7 +357,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -405,7 +421,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -420,7 +438,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -481,7 +501,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -495,7 +517,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -557,7 +581,9 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
@@ -571,7 +597,9 @@ jobs:
           push: true
           tags: |
             ${{ steps.image_tag.outputs.IMAGE_TAG }}-${{ steps.get_tag.outputs.tag }}
-            ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            if [ "${{ inputs.generate_dev }}" = "false" ]; then
+              ${{ steps.image_tag.outputs.IMAGE_TAG }}-latest
+            fi
           build-args: |
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
