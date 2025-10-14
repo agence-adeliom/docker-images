@@ -13,6 +13,7 @@ help: ## This help.
 .DEFAULT_GOAL := help
 
 IMAGE_NAME=$(IMAGE_PREFIX)/$(IMAGE)
+TAG_VERSION="-dev"
 
 # DOCKER TASKS
 build: ## Build the container
@@ -27,6 +28,7 @@ endif
 	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
 	--build-arg REGISTRY=$(REGISTRY) \
+	--build-arg TAG_VERSION=$(TAG_VERSION) \
 	--file $(DOCKERFILE) $(IMAGE) \
 	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
@@ -44,6 +46,7 @@ endif
 	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION) \
 	--build-arg PHP_VERSION=$(VERSION) \
 	--build-arg REGISTRY=$(REGISTRY) \
+	--build-arg TAG_VERSION=$(TAG_VERSION) \
 	--file $(DOCKERFILE) $(IMAGE) \
 	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
 
@@ -102,6 +105,7 @@ frankenphp@8.2:
 caddy@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
+	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.4)
 	$(eval VARIATION := caddy)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -111,6 +115,7 @@ caddy@8.2-debug:
 apache@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
+	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := apache)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -120,6 +125,7 @@ apache@8.2-debug:
 nginx@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
+	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := nginx)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -129,6 +135,7 @@ nginx@8.2-debug:
 frankenphp@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
+	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -138,6 +145,7 @@ frankenphp@8.2-debug:
 frankenphp@8.2-worker-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
+	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))

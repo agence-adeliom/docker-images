@@ -10,10 +10,11 @@ This repository contains a set of developer-friendly, general purpose PHP images
 - A variant with wkhtmltopdf
 - Images come with Composer
 
-## Images
+
+## Images list
 
 | Name                                     | PHP version | variant | server       | wkhtmltopdf |
-| ---------------------------------------- | ----------- | ------- | ------------ | :---------: |
+|------------------------------------------| ----------- | ------- | ------------ | :---------: |
 | `adeliom/php:8.1-cli`                    | `8.1`       | `cli`   |              |             |
 | `adeliom/php:8.2-cli`                    | `8.2`       | `cli`   |              |             |
 | `adeliom/php:8.3-cli`                    | `8.3`       | `cli`   |              |             |
@@ -59,6 +60,20 @@ This repository contains a set of developer-friendly, general purpose PHP images
 | `adeliom/php:8.2-frankenphp-wkhtmltopdf` | `8.2`       | `php`   | `frankenphp` |     ✅      |
 | `adeliom/php:8.3-frankenphp-wkhtmltopdf` | `8.3`       | `php`   | `frankenphp` |     ✅      |
 
+
+## Images versions
+
+All detailed images are the latest stable versions.
+You can also use specific versions by adding a `-{specific-version}` part in the image name by one of the following:
+Example: `adeliom/php:8.4-caddy-dev` or `adeliom/php:8.4-caddy-1.0.0`
+
+- On every release, the image tag is moved to the new version.
+- On every release a new tag is created with the version number (e.g. `1.0.0`, `1.0.1`, etc.). [See releases list](https://github.com/agence-adeliom/docker-images/releases)
+- Before a new release, the `dev` tag is used for the new version. Do not use this tag in production.
+
+To stay up to date, you can use the `default` tag, which is always pointing to the latest stable version.
+> And if you have some trouble with the latest stable version, you can use a `adeliom/php:8.4-caddy-{specific-version}` tag, which is always pointing to the previous released version. [See releases list](https://github.com/agence-adeliom/docker-images/releases)
+
 ## Usage
 
 These images are based on the [official PHP image](https://hub.docker.com/_/php/).
@@ -66,19 +81,19 @@ These images are based on the [official PHP image](https://hub.docker.com/_/php/
 Example with CLI:
 
 ```bash
-$ docker run -it --rm --name my-running-script -v "$PWD":/var/www/html adeliom/php:8.2-cli php your-script.php
+$ docker run -it --rm --name my-running-script -v "$PWD":/var/www/html adeliom/php:8.2-cli-latest php your-script.php
 ```
 
 Example with Apache:
 
 ```bash
-$ docker run -p 80:80 --rm --name my-apache-php-app -v "$PWD":/var/www/html adeliom/php:8.2-apache
+$ docker run -p 80:80 --rm --name my-apache-php-app -v "$PWD":/var/www/html adeliom/php:8.2-apache-latest
 ```
 
 Example with PHP-FPM:
 
 ```bash
-$ docker run -p 9000:9000 --rm --name my-php-fpm -v "$PWD":/var/www/html adeliom/php:8.2-fpm
+$ docker run -p 9000:9000 --rm --name my-php-fpm -v "$PWD":/var/www/html adeliom/php:8.2-fpm-latest
 ```
 
 ## Default working directory
