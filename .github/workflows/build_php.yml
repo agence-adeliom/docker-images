@@ -1,4 +1,4 @@
-name: Manual release a dev version to test puprpose
+name: Manual release for php builds
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
         type: string
       registry:
         description: 'Registry to deploy to'
-        default: "ghcr.io/agence-adeliom"
+        default: "adeliom"
         required: true
         type: choice
         options:
