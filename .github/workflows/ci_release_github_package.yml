@@ -36,6 +36,7 @@ jobs:
     with:
       image: php
       registry: adeliom
+      generate_dev: false
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest

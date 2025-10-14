@@ -36,6 +36,7 @@ jobs:
     with:
       image: php
       registry: ghcr.io/agence-adeliom
+      generate_dev: false
 
   dockerhub-php-doc:
     runs-on: ubuntu-latest
