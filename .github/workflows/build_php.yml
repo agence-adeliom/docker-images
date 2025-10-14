@@ -1,8 +1,13 @@
-name: Manual release for php builds
+name: Manual release a dev version to test puprpose
 
 on:
   workflow_dispatch:
     inputs:
+      generate_dev:
+        description: 'Generate a dev version'
+        required: true
+        type: boolean
+        default: true
       image:
         description: 'Image type to build'
         default: "php"
@@ -18,6 +23,11 @@ on:
           - "adeliom"
   workflow_call:
     inputs:
+      generate_dev:
+        description: 'Generate a dev version'
+        required: true
+        type: boolean
+        default: false
       image:
         description: 'Image type to build'
         default: "php"
@@ -67,9 +77,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -136,9 +152,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -205,9 +227,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -275,9 +303,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -345,9 +379,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -415,9 +455,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
@@ -485,9 +531,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get latest tag
+      - name: Get latest tag (auto)
         id: get_tag
-        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+            tag="dev"
+          else
+            tag=$(git describe --tags --abbrev=0)
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
       - name: Set image tag
         run: echo "IMAGE_TAG=${{ inputs.registry }}/${{ inputs.image }}:${{ matrix.version }}-${{ matrix.variant }}" >> $GITHUB_OUTPUT
         id: image_tag
