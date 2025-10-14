@@ -9,6 +9,7 @@ on:
 jobs:
 
   build-php-images:
+    if: ${{ github.event.release.prerelease == false }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
@@ -17,6 +18,7 @@ jobs:
       generate_dev: false
 
   dockerhub-php-doc:
+    if: ${{ github.event.release.prerelease == false }}
     runs-on: ubuntu-latest
     steps:
       -
