@@ -16,6 +16,7 @@ jobs:
       image: php
       registry: ghcr.io/agence-adeliom
       generate_dev: false
+      generate_with_lastest_tag: true
 
   dockerhub-php-doc:
     if: ${{ github.event.release.prerelease == false }}
