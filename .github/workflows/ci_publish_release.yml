@@ -1,0 +1,48 @@
+name: Release PHP images when a new GitHub Release is published
+
+on:
+#  schedule:
+#    - cron: 0 6 * * 1,4
+  release:
+    types: [ published ]
+
+jobs:
+
+  # For dockerhub: build images via build_php workflow
+  dockerhub-build-php-images:
+    if: ${{ github.event.release.prerelease == false }}
+    uses: ./.github/workflows/build_php.yml
+    secrets: inherit
+    with:
+      image: php
+      registry: adeliom
+      image_suffix: '-{{latest_release_tag}}'
+      test_only: false
+
+  # For dockerhub: upgrade readme doc
+  dockerhub-php-doc:
+    if: ${{ github.event.release.prerelease == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: adeliom/php
+          readme-filepath: ./php/README.md
+
+  # For github package: build images via build_php workflow
+  ghcr-build-php-images:
+    if: ${{ github.event.release.prerelease == false }}
+    uses: ./.github/workflows/build_php.yml
+    secrets: inherit
+    with:
+      image: php
+      registry: ghcr.io/agence-adeliom
+      image_suffix: '-{{latest_release_tag}}'
+      test_only: false
+
+

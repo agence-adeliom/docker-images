@@ -3,16 +3,15 @@ name: Manual release for php builds
 on:
   workflow_dispatch:
     inputs:
-      generate_dev:
-        description: 'Generate a dev version'
+      image_suffix:
+        description: 'Image version to generate'
         required: true
-        type: boolean
-        default: true
-      generate_with_lastest_tag:
-        description: 'Add latest release tag into docker tags names ? (ex: -1.0.0, only if a dev version is not generated)'
-        required: true
-        type: boolean
-        default: false
+        default: '-dev'
+        type: choice
+        options:
+          - "-dev"
+          - "-{{latest_release_tag}}"
+          - "-latest"
       image:
         description: 'Image type to build'
         default: "php"
@@ -26,18 +25,18 @@ on:
         options:
           - "ghcr.io/agence-adeliom"
           - "adeliom"
+      test_only:
+        description: 'Run tests instead of pushing images to registry'
+        required: true
+        type: boolean
+        default: true
   workflow_call:
     inputs:
-      generate_dev:
-        description: 'Generate a dev version'
+      image_suffix:
+        description: 'Image version to generate'
         required: true
-        type: boolean
-        default: false
-      generate_with_lastest_tag:
-        description: 'Add latest release tag into docker tags names ? (ex: -1.0.0, only if a dev version is not generated)'
-        required: true
-        type: boolean
-        default: false
+        default: '-dev'
+        type: string
       image:
         description: 'Image type to build'
         default: "php"
@@ -48,6 +47,11 @@ on:
         default: "ghcr.io/agence-adeliom"
         required: true
         type: string
+      test_only:
+        description: 'Run tests instead of pushing images to registry'
+        required: true
+        type: boolean
+        default: true
     outputs:
       repository:
         value: ${{ jobs.base-images.repository.outputs.REPOSITORY }}
@@ -90,10 +94,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -109,19 +113,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -147,7 +143,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |
@@ -187,10 +183,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -206,19 +202,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -244,7 +232,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |
@@ -285,10 +273,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -304,19 +292,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -343,7 +323,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |
@@ -384,10 +364,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -403,19 +383,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -441,7 +413,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |
@@ -483,10 +455,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -502,19 +474,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -541,7 +505,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |
@@ -582,10 +546,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -601,19 +565,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -639,7 +595,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |
@@ -681,10 +637,10 @@ jobs:
       - name: Get latest tag (auto)
         id: get_tag
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
+          if [ "${{ inputs.image_suffix }}" = "-dev" ]; then
             tag="dev"
           else
-            if [ "${{ inputs.generate_with_lastest_tag }}" = "true" ]; then
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
               tag=$(git describe --tags --abbrev=0)
             else
               tag=""
@@ -700,19 +656,11 @@ jobs:
       - name: Set Docker tags
         id: tags
         run: |
-          if [ "${{ inputs.generate_dev }}" = "true" ]; then
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}-dev"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          else
-            {
-              echo 'tags<<EOF'
-              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
-              echo 'EOF'
-            } >> "$GITHUB_OUTPUT"
-          fi
+          {
+            echo 'tags<<EOF'
+            echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - name: Set repository
         run: echo "REPOSITORY=${{ inputs.registry }}/${{ inputs.image }}" >> $GITHUB_OUTPUT
         id: repository
@@ -738,7 +686,7 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile.${{ matrix.variant }}
           #platforms: "linux/amd64,linux/arm64"
           platforms: "linux/amd64"
-          push: true
+          push: ${{ inputs.test_only == 'false' }}
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |

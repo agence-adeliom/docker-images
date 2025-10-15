@@ -11,7 +11,7 @@ This repository contains a set of developer-friendly, general purpose PHP images
 - Images come with Composer
 
 
-## Images list
+## Latest Images
 
 | Name                                     | PHP version | variant | server       | wkhtmltopdf |
 |------------------------------------------| ----------- | ------- | ------------ | :---------: |
@@ -61,7 +61,9 @@ This repository contains a set of developer-friendly, general purpose PHP images
 | `adeliom/php:8.3-frankenphp-wkhtmltopdf` | `8.3`       | `php`   | `frankenphp` |     ✅      |
 
 
-## Images versions
+## Specific Images versions
+
+Using latest tags is a good way to stay up to date, but sometimes you need more control over the version you are using :
 
 All detailed images are the latest stable versions.
 You can also use specific versions by adding a `-{specific-version}` part in the image name by one of the following:
@@ -72,7 +74,8 @@ Example: `adeliom/php:8.4-caddy-dev` or `adeliom/php:8.4-caddy-1.0.0`
 - Before a new release, the `dev` tag is used for the new version. Do not use this tag in production.
 
 To stay up to date, you can use the `default` tag, which is always pointing to the latest stable version.
-> And if you have some trouble with the latest stable version, you can use a `adeliom/php:8.4-caddy-{specific-version}` tag, which is always pointing to the previous released version. [See releases list](https://github.com/agence-adeliom/docker-images/releases)
+[build_php.yml](../.github/workflows/build_php.yml)
+And if you have some trouble with the latest stable version, you can use a `adeliom/php:8.4-caddy-{specific-version}` tag, which is always pointing to the previous released version. [See releases list](https://github.com/agence-adeliom/docker-images/releases)
 
 ## Usage
 
