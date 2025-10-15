@@ -797,31 +797,4 @@ cd docker-images/redis
 docker build --build-arg REDIS_VERSION=7.4 -t adeliom/redis:7.4 .
 ```
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -am 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Support
-
-For issues and questions:
-- GitHub Issues: [GitHub Issues](https://github.com/agence-adeliom/docker-images/issues)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
-
-## Versions
-
-- **Redis**: 6.2, 7.0, 7.2, 7.4
-- **Alpine**: Latest
-- **Image Version**: See [releases](https://github.com/agence-adeliom/docker-images/releases)
-
----
-
 Made with ❤️ by [@agence-adeliom](https://github.com/agence-adeliom)
