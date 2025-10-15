@@ -68,7 +68,7 @@ RUN set -eux \
         imagemagick \
         jpegoptim \
         optipng \
-        libwebp-tools \
+        webp \
         pngquant \
         ffmpeg \
         libavif-dev \

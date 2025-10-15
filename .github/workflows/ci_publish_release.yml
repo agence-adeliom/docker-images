@@ -17,7 +17,7 @@ jobs:
       image: php
       registry: adeliom
       image_suffix: '-{{latest_release_tag}}'
-      test_only: false
+      push_image: true
 
   # For dockerhub: upgrade readme doc
   dockerhub-php-doc:
@@ -43,6 +43,6 @@ jobs:
       image: php
       registry: ghcr.io/agence-adeliom
       image_suffix: '-{{latest_release_tag}}'
-      test_only: false
+      push_image: true
 
 

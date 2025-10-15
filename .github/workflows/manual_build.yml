@@ -25,11 +25,11 @@ on:
         options:
           - "ghcr.io/agence-adeliom"
           - "adeliom"
-      test_only:
-        description: 'Run tests instead of pushing images to registry'
+      push_image:
+        description: 'Push images to registry'
         required: true
         type: boolean
-        default: true
+        default: false
 
 jobs:
 
@@ -41,7 +41,7 @@ jobs:
       image: ${{ inputs.image }}
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
-      test_only: ${{ inputs.test_only }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
 
   # For github package: build images via build_php workflow
   ghcr-build-php-images:
@@ -51,4 +51,4 @@ jobs:
       image: ${{ inputs.image }}
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
-      test_only: ${{ inputs.test_only }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}

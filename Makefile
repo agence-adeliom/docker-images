@@ -25,12 +25,12 @@ endif
 	docker buildx build \
 	--push \
 	--platform linux/amd64 \
-	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION) \
+	--tag $(IMAGE_NAME):$(VERSION)-$(VARIATION)$(TAG_VERSION) \
 	--build-arg PHP_VERSION=$(VERSION) \
 	--build-arg REGISTRY=$(REGISTRY) \
 	--build-arg TAG_VERSION=$(TAG_VERSION) \
 	--file $(DOCKERFILE) $(IMAGE) \
-	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
+	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)$(TAG_VERSION)
 
 
 build-nc: ## Build the container without caching
@@ -43,12 +43,12 @@ endif
 	--push \
 	--no-cache \
 	--platform linux/amd64 \
-	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION) \
+	--tag $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)$(TAG_VERSION) \
 	--build-arg PHP_VERSION=$(VERSION) \
 	--build-arg REGISTRY=$(REGISTRY) \
 	--build-arg TAG_VERSION=$(TAG_VERSION) \
 	--file $(DOCKERFILE) $(IMAGE) \
-	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
+	--cache-from=type=registry,ref=$(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)$(TAG_VERSION)
 
 build-local: ## Build the container
 	$(eval DOCKERFILE := $(IMAGE)/Dockerfile-$(VERSION).$(VARIATION))
@@ -79,13 +79,13 @@ release: build-nc publish ## Make a release by building and publishing the tagge
 
 # Docker publish
 publish: tag ## publish the taged container
-	@echo 'publish $(VERSION)-$(VARIATION)'
-	docker push $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
+	@echo 'publish $(VERSION)-$(VARIATION)$(TAG_VERSION)'
+	docker push $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)$(TAG_VERSION)
 
 # Docker tagging
 tag: ## Generate container tag
-	@echo 'create tag $(VERSION)-$(VARIATION)'
-	docker tag $(IMAGE_NAME) $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)
+	@echo 'create tag $(VERSION)-$(VARIATION)$(TAG_VERSION)'
+	docker tag $(IMAGE_NAME) $(REGISTRY)$(IMAGE_NAME):$(VERSION)-$(VARIATION)$(TAG_VERSION)
 
 fpm@8.2:
 	IMAGE=php VERSION=8.4 VARIATION=fpm REGISTRY=docker.io/adeliom IMAGE_PREFIX=adeliom $(MAKE) build-local
@@ -105,7 +105,6 @@ frankenphp@8.2:
 caddy@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
-	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.4)
 	$(eval VARIATION := caddy)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -115,7 +114,6 @@ caddy@8.2-debug:
 apache@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
-	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := apache)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -125,7 +123,6 @@ apache@8.2-debug:
 nginx@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
-	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := nginx)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -135,7 +132,6 @@ nginx@8.2-debug:
 frankenphp@8.2-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
-	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))
@@ -145,7 +141,6 @@ frankenphp@8.2-debug:
 frankenphp@8.2-worker-debug:
 	$(eval IMAGE := php)
 	$(eval IMAGE_PREFIX := adeliom)
-	$(eval TAG_VERSION := dev)
 	$(eval VERSION := 8.2)
 	$(eval VARIATION := frankenphp)
 	$(eval IMAGE_NAME := $(IMAGE_PREFIX)/$(IMAGE):$(VERSION)-$(VARIATION))

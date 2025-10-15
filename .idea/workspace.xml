@@ -6,21 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9360f8de-a402-49fa-9c6d-59a278e4701c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.github/workflows/build_php.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build_php.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/build_php_base_caddy.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build_php_base_caddy.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci_publish_release.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci_publish_release.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/manual_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/manual_build.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.apache" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.apache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.apache-wkhtmltopdf" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.apache-wkhtmltopdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.caddy" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.caddy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.caddy-wkhtmltopdf" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.caddy-wkhtmltopdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.cli" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.cli" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.cli-wkhtmltopdf" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.cli-wkhtmltopdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.fpm" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.fpm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.fpm-wkhtmltopdf" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.fpm-wkhtmltopdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/php/Dockerfile.frankenphp" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.frankenphp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.frankenphp-wkhtmltopdf" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.frankenphp-wkhtmltopdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.nginx" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.nginx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.nginx-wkhtmltopdf" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.nginx-wkhtmltopdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/php/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,24 +45,24 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore_missing_gitignore": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/adeliom/Documents/Projets/docker-images/.github/workflows",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ssh.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/adeliom/Documents/Projets/docker-images/.github/workflows&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ssh.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/.github/workflows" />
