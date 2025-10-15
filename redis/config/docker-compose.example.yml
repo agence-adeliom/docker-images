@@ -1,0 +1,155 @@
+# Docker Compose for Redis Adeliom
+# Usage examples with different environments
+
+version: '3.8'
+
+services:
+  # Standard Redis
+  redis:
+    image: adeliom/redis:7.4
+    container_name: adeliom_redis
+    restart: unless-stopped
+    
+    environment:
+      # Authentication
+      - REDIS_PASSWORD=your_secure_password_here
+      # Or use a password file
+      # - REDIS_PASSWORD_FILE=/run/secrets/redis_password
+      
+      # Basic configuration
+      - REDIS_PORT_NUMBER=6379
+      - REDIS_DATABASE=16
+      
+      # Persistence
+      - REDIS_AOF_ENABLED=yes
+      - REDIS_RDB_POLICY_DISABLED=no
+      
+      # Performance
+      - REDIS_IO_THREADS=4
+      - REDIS_IO_THREADS_DO_READS=yes
+      
+      # Security
+      # - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+      
+      # Debug
+      - MODE_DEBUG=false
+    
+    ports:
+      - "6379:6379"
+    
+    volumes:
+      - redis_data:/adeliom/redis/data
+      - redis_logs:/adeliom/redis/logs
+    
+    networks:
+      - adeliom_network
+    
+    healthcheck:
+      test: ["CMD", "/opt/adeliom/scripts/redis/healthcheck.sh"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Redis for development (no password)
+  redis-dev:
+    image: adeliom/redis:7.4
+    container_name: adeliom_redis_dev
+    restart: unless-stopped
+    
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PORT_NUMBER=6380
+      - REDIS_AOF_ENABLED=no
+      - MODE_DEBUG=true
+    
+    ports:
+      - "6380:6380"
+    
+    volumes:
+      - redis_dev_data:/adeliom/redis/data
+      - ./config/redis-dev.conf:/opt/adeliom/redis/redis.conf.default:ro
+    
+    networks:
+      - adeliom_network
+
+  # Redis with custom configuration
+  redis-custom:
+    image: adeliom/redis:7.4
+    container_name: adeliom_redis_custom
+    restart: unless-stopped
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG,KEYS
+      - REDIS_RDB_POLICY=900 1 300 10 60 10000
+      - REDIS_IO_THREADS=4
+    
+    ports:
+      - "6381:6379"
+    
+    volumes:
+      - redis_custom_data:/adeliom/redis/data
+      - redis_custom_logs:/adeliom/redis/logs
+      - ./config/redis-prod.conf:/opt/adeliom/redis/redis.conf.default:ro
+    
+    networks:
+      - adeliom_network
+
+  # Redis Commander (Web UI)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: adeliom_redis_ui
+    restart: unless-stopped
+    
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:your_secure_password_here
+      - HTTP_USER=admin
+      - HTTP_PASSWORD=admin
+    
+    ports:
+      - "8081:8081"
+    
+    networks:
+      - adeliom_network
+    
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # Example PHP application using Redis
+  php-app:
+    image: adeliom/php:8.3-fpm
+    container_name: app_php
+    restart: unless-stopped
+    
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=your_secure_password_here
+    
+    volumes:
+      - ./app:/var/www/html
+    
+    networks:
+      - adeliom_network
+    
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:
+    driver: local
+  redis_logs:
+    driver: local
+  redis_dev_data:
+    driver: local
+  redis_custom_data:
+    driver: local
+  redis_custom_logs:
+    driver: local
+
+networks:
+  adeliom_network:
+    driver: bridge

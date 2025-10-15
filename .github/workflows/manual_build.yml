@@ -16,7 +16,10 @@ on:
         description: 'Image type to build'
         default: "php"
         required: false
-        type: string
+        type: choice
+        options:
+          - "php"
+          - "redis"
       registry:
         description: 'Registry to deploy to'
         default: "adeliom"
@@ -35,6 +38,7 @@ jobs:
 
   # For dockerhub: build images via build_php workflow
   dockerhub-build-php-images:
+    if: ${{ inputs.image == 'php' }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
@@ -45,6 +49,18 @@ jobs:
 
   # For github package: build images via build_php workflow
   ghcr-build-php-images:
+    if: ${{ inputs.image == 'php' }}
+    uses: ./.github/workflows/build_php.yml
+    secrets: inherit
+    with:
+      image: ${{ inputs.image }}
+      registry: ${{ inputs.registry }}
+      image_suffix: ${{ inputs.image_suffix }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+
+  # For dockerhub: build images via build_redis workflow
+  dockerhub-build-redis-images:
+    if: ${{ inputs.image == 'redis' }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
