@@ -79,7 +79,7 @@ run-debug: stop ## Run Redis in debug mode
 	docker run -it --rm \
 		--name $(CONTAINER_NAME) \
 		-e REDIS_PASSWORD=$(TEST_PASSWORD) \
-		-e ADELIOM_DEBUG=true \
+		-e MODE_DEBUG=true \
 		-p 6379:6379 \
 		$(IMAGE_NAME):$(REDIS_VERSION)
 

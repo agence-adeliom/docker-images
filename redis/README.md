@@ -450,6 +450,278 @@ stringData:
   password: your-secure-password-here
 ```
 
+## Helm Chart Example
+
+You can deploy Redis using Helm with a custom values file.
+
+### Create Helm Chart Values
+
+Create a `redis-values.yaml` file:
+
+```yaml
+# redis-values.yaml
+image:
+  registry: docker.io
+  repository: adeliom/redis
+  tag: 7.4
+  pullPolicy: IfNotPresent
+
+# Redis configuration
+auth:
+  enabled: true
+  password: "your-secure-password"
+  # Or use existing secret
+  # existingSecret: "redis-secret"
+  # existingSecretPasswordKey: "password"
+
+# Environment variables
+env:
+  - name: REDIS_PORT_NUMBER
+    value: "6379"
+  - name: REDIS_DATABASE
+    value: "16"
+  - name: REDIS_AOF_ENABLED
+    value: "yes"
+  - name: REDIS_RDB_POLICY
+    value: "900 1 300 10 60 10000"
+  - name: REDIS_DISABLE_COMMANDS
+    value: "FLUSHDB,FLUSHALL,CONFIG,KEYS"
+  - name: REDIS_IO_THREADS
+    value: "4"
+  - name: REDIS_IO_THREADS_DO_READS
+    value: "yes"
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 6379
+
+# Persistence
+persistence:
+  enabled: true
+  storageClass: ""  # Use default storage class
+  size: 8Gi
+  mountPath: /adeliom/redis/data
+
+# Resources
+resources:
+  limits:
+    memory: 512Mi
+    cpu: 500m
+  requests:
+    memory: 256Mi
+    cpu: 250m
+
+# Health checks
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 5
+  exec:
+    command:
+      - /opt/adeliom/scripts/redis/healthcheck.sh
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  successThreshold: 1
+  failureThreshold: 3
+  exec:
+    command:
+      - /opt/adeliom/scripts/redis/healthcheck.sh
+
+# Security context
+podSecurityContext:
+  fsGroup: 1001
+
+securityContext:
+  runAsUser: 999
+  runAsNonRoot: true
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+```
+
+### Simple Helm Template
+
+For a simpler deployment, create a minimal Helm chart structure:
+
+```bash
+# Create chart directory
+mkdir -p redis-chart/templates
+
+# Create Chart.yaml
+cat > redis-chart/Chart.yaml <<EOF
+apiVersion: v2
+name: redis-adeliom
+description: Redis Adeliom Helm chart
+type: application
+version: 1.0.0
+appVersion: "7.4"
+EOF
+
+# Create values.yaml
+cat > redis-chart/values.yaml <<EOF
+image:
+  repository: adeliom/redis
+  tag: 7.4
+  pullPolicy: IfNotPresent
+
+redis:
+  password: "change-me"
+  port: 6379
+  database: 16
+
+persistence:
+  enabled: true
+  size: 8Gi
+
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    memory: 256Mi
+EOF
+
+# Create deployment template
+cat > redis-chart/templates/deployment.yaml <<'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-redis
+  labels:
+    app: {{ .Release.Name }}-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-redis
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-redis
+    spec:
+      containers:
+      - name: redis
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: REDIS_PASSWORD
+          value: "{{ .Values.redis.password }}"
+        - name: REDIS_PORT_NUMBER
+          value: "{{ .Values.redis.port }}"
+        - name: REDIS_DATABASE
+          value: "{{ .Values.redis.database }}"
+        - name: REDIS_AOF_ENABLED
+          value: "yes"
+        ports:
+        - containerPort: {{ .Values.redis.port }}
+        volumeMounts:
+        - name: data
+          mountPath: /adeliom/redis/data
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+      volumes:
+      - name: data
+        {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-redis-pvc
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
+EOF
+```
+
+### Deploy with Helm
+
+```bash
+# Install Redis
+helm install my-redis ./redis-chart \
+  --set redis.password=my-secure-password \
+  --namespace redis \
+  --create-namespace
+
+# Or with values file
+helm install my-redis ./redis-chart \
+  -f redis-values.yaml \
+  --namespace redis \
+  --create-namespace
+
+# Upgrade
+helm upgrade my-redis ./redis-chart \
+  -f redis-values.yaml \
+  --namespace redis
+
+# Uninstall
+helm uninstall my-redis --namespace redis
+```
+
+### Using with ArgoCD
+
+Create an Application manifest:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis-adeliom
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/helm-charts
+    targetRevision: HEAD
+    path: redis-adeliom
+    helm:
+      values: |
+        image:
+          repository: adeliom/redis
+          tag: 7.4
+        redis:
+          password: "secure-password"
+        persistence:
+          enabled: true
+          size: 10Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+### Helm Testing
+
+```bash
+# Dry run
+helm install my-redis ./redis-chart \
+  --dry-run --debug \
+  -f redis-values.yaml
+
+# Test connection after deployment
+kubectl run redis-test --rm -it --restart=Never \
+  --image=redis:alpine -- \
+  redis-cli -h my-redis-redis -a your-password ping
+
+# Check status
+helm status my-redis --namespace redis
+
+# Get values
+helm get values my-redis --namespace redis
+```
+
 ## Custom Configuration File
 
 You can use a custom Redis configuration file:
@@ -539,7 +811,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 For issues and questions:
 - GitHub Issues: [GitHub Issues](https://github.com/agence-adeliom/docker-images/issues)
-- Email: contact@adeliom.com
 
 ## License
 

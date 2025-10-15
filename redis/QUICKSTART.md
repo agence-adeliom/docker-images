@@ -126,7 +126,7 @@ environment:
   - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
   
   # Debug
-  - ADELIOM_DEBUG=true
+  - MODE_DEBUG=true
 ```
 
 ## 🐳 Docker Compose Example
