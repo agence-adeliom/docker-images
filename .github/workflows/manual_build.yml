@@ -1,0 +1,54 @@
+name: Build manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_suffix:
+        description: 'Image version to generate'
+        required: true
+        default: '-dev'
+        type: choice
+        options:
+          - "-dev"
+          - "-{{latest_release_tag}}"
+          - "-latest"
+      image:
+        description: 'Image type to build'
+        default: "php"
+        required: false
+        type: string
+      registry:
+        description: 'Registry to deploy to'
+        default: "adeliom"
+        required: true
+        type: choice
+        options:
+          - "ghcr.io/agence-adeliom"
+          - "adeliom"
+      test_only:
+        description: 'Run tests instead of pushing images to registry'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+
+  # For dockerhub: build images via build_php workflow
+  dockerhub-build-php-images:
+    uses: ./.github/workflows/build_php.yml
+    secrets: inherit
+    with:
+      image: ${{ inputs.image }}
+      registry: ${{ inputs.registry }}
+      image_suffix: ${{ inputs.image_suffix }}
+      test_only: ${{ inputs.test_only }}
+
+  # For github package: build images via build_php workflow
+  ghcr-build-php-images:
+    uses: ./.github/workflows/build_php.yml
+    secrets: inherit
+    with:
+      image: ${{ inputs.image }}
+      registry: ${{ inputs.registry }}
+      image_suffix: ${{ inputs.image_suffix }}
+      test_only: ${{ inputs.test_only }}

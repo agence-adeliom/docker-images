@@ -1,4 +1,4 @@
-name: Release PHP images when a new GitHub Release is published
+name: Build on release
 
 on:
 #  schedule:
