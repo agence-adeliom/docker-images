@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9360f8de-a402-49fa-9c6d-59a278e4701c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci_publish_release.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci_publish_release.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/manual_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/manual_build.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redis/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/redis/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redis/QUICKSTART.md" beforeDir="false" afterPath="$PROJECT_DIR$/redis/QUICKSTART.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/php/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/php/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/redis/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/redis/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

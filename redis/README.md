@@ -4,6 +4,12 @@
 
 This repository contains a developer-friendly, preconfigured Redis image for Docker, based on the official Redis Alpine image.
 
+## ⚠️ Important
+
+This project is maintained by ❤️ by [@agence-adeliom](https://github.com/agence-adeliom). And images are used for our projects and clients.
+This work is open-source and publicly available, but we do not provide any guarantee or official support.
+Use at your own risk and always test thoroughly before deploying to production.
+
 ## 🚀 Features
 
 - **Based on Redis Alpine**: Lightweight and performant image

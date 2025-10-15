@@ -6,6 +6,12 @@
 
 Production-ready Docker images for PHP and Redis, preconfigured and optimized for Adeliom projects.
 
+## ⚠️ Important
+
+This project is maintained by ❤️ by [@agence-adeliom](https://github.com/agence-adeliom). And images are used for our projects and clients.
+This work is open-source and publicly available, but we do not provide any guarantee or official support.
+Use at your own risk and always test thoroughly before deploying to production.
+
 ## 📦 Available Images
 
 ### PHP Images
