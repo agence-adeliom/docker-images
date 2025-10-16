@@ -62,8 +62,6 @@ Use at your own risk and always test thoroughly before deploying to production.
 | `adeliom/php:8.4-caddy-wkhtmltopdf`      | `8.4`       | `fpm`   | `caddy`      |     ✅      |
 | `adeliom/php:8.2-frankenphp`             | `8.2`       | `php`   | `frankenphp` |             |
 | `adeliom/php:8.3-frankenphp`             | `8.3`       | `php`   | `frankenphp` |             |
-| `adeliom/php:8.2-frankenphp-wkhtmltopdf` | `8.2`       | `php`   | `frankenphp` |     ✅      |
-| `adeliom/php:8.3-frankenphp-wkhtmltopdf` | `8.3`       | `php`   | `frankenphp` |     ✅      |
 
 
 ## Specific Images versions
