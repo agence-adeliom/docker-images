@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9360f8de-a402-49fa-9c6d-59a278e4701c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.github/workflows/build_php.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/build_php.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci_publish_release.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci_publish_release.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/manual_build.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/manual_build.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/php/Dockerfile.frankenphp" beforeDir="false" afterPath="$PROJECT_DIR$/php/Dockerfile.frankenphp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/php/Dockerfile.frankenphp-wkhtmltopdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/php/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/php/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
