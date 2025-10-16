@@ -61,7 +61,7 @@ jobs:
   # For dockerhub: build images via build_redis workflow
   dockerhub-build-redis-images:
     if: ${{ inputs.image == 'redis' }}
-    uses: ./.github/workflows/build_php.yml
+    uses: ./.github/workflows/build_redis.yml
     secrets: inherit
     with:
       image: ${{ inputs.image }}
