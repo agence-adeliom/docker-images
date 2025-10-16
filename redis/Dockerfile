@@ -57,4 +57,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 ENTRYPOINT ["/opt/adeliom/scripts/redis/entrypoint.sh"]
 
 # Default command
-CMD ["redis-server", "/adeliom/redis/conf/redis-prod.conf"]
+CMD ["redis-server", "/adeliom/redis/conf/redis.conf"]
