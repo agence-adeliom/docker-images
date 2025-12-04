@@ -45,4 +45,17 @@ jobs:
       image_suffix: '-{{latest_release_tag}}'
       push_image: true
 
-
+  # For dockerhub: upgrade redis readme doc
+  dockerhub-redis-doc:
+    if: ${{ github.event.release.prerelease == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: adeliom/redis
+          readme-filepath: ./redis/README.md

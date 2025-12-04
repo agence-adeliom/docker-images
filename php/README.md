@@ -10,6 +10,11 @@ This repository contains a set of developer-friendly, general purpose PHP images
 - A variant with wkhtmltopdf
 - Images come with Composer
 
+## ⚠️ Important
+
+This project is maintained by ❤️ by [@agence-adeliom](https://github.com/agence-adeliom). And images are used for our projects and clients.
+This work is open-source and publicly available, but we do not provide any guarantee or official support.
+Use at your own risk and always test thoroughly before deploying to production.
 
 ## Latest Images
 

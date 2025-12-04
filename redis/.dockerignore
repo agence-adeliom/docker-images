@@ -1,0 +1,29 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!config/README.md
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker Compose examples
+docker-compose*.yml
+!config/docker-compose.example.yml
+
+# Logs
+*.log
+
+# Development files
+redis-dev.conf

@@ -16,7 +16,10 @@ on:
         description: 'Image type to build'
         default: "php"
         required: false
-        type: string
+        type: choice
+        options:
+          - "php"
+          - "redis"
       registry:
         description: 'Registry to deploy to'
         default: "adeliom"
@@ -35,6 +38,7 @@ jobs:
 
   # For dockerhub: build images via build_php workflow
   dockerhub-build-php-images:
+    if: ${{ inputs.image == 'php' }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
@@ -45,6 +49,7 @@ jobs:
 
   # For github package: build images via build_php workflow
   ghcr-build-php-images:
+    if: ${{ inputs.image == 'php' }}
     uses: ./.github/workflows/build_php.yml
     secrets: inherit
     with:
@@ -52,3 +57,30 @@ jobs:
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
       push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+
+  # For dockerhub: build images via build_redis workflow
+  dockerhub-build-redis-images:
+    if: ${{ inputs.image == 'redis' }}
+    uses: ./.github/workflows/build_redis.yml
+    secrets: inherit
+    with:
+      image: ${{ inputs.image }}
+      registry: ${{ inputs.registry }}
+      image_suffix: ${{ inputs.image_suffix }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+
+
+  # For dockerhub: upgrade redis readme doc
+  dockerhub-redis-doc:
+    if: ${{ github.event.release.prerelease == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: adeliom/redis
+          readme-filepath: ./redis/README.md
