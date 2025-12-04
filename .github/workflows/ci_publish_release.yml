@@ -45,6 +45,17 @@ jobs:
       image_suffix: '-{{latest_release_tag}}'
       push_image: true
 
+  # For dockerhub: build images via build_redis workflow
+  dockerhub-build-redis-images:
+    if: ${{ inputs.image == 'redis' }}
+    uses: ./.github/workflows/build_redis.yml
+    secrets: inherit
+    with:
+      image: redis
+      registry: adeliom
+      image_suffix: '-{{latest_release_tag}}'
+      push_image: true
+
   # For dockerhub: upgrade redis readme doc
   dockerhub-redis-doc:
     if: ${{ github.event.release.prerelease == false }}
