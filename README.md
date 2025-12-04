@@ -26,7 +26,7 @@ Developer-friendly PHP images with multiple variants and server options.
 
 Redis images with optimized configurations.
 
-**Versions:** 6.2, 7.0, 7.2, 7.4  
+**Versions:** 6.2, 7.0, 7.2, 7.4, 8.2, 8.4  
 **Documentation:** [redis/README.md](redis/README.md)
 
 ## 🎯 Features
