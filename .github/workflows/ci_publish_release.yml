@@ -47,12 +47,23 @@ jobs:
 
   # For dockerhub: build images via build_redis workflow
   dockerhub-build-redis-images:
-    if: ${{ inputs.image == 'redis' }}
+    if: ${{ github.event.release.prerelease == false }}
     uses: ./.github/workflows/build_redis.yml
     secrets: inherit
     with:
       image: redis
       registry: adeliom
+      image_suffix: '-{{latest_release_tag}}'
+      push_image: true
+
+  # For github package: build images via build_php workflow
+  ghcr-build-redis-images:
+    if: ${{ github.event.release.prerelease == false }}
+    uses: ./.github/workflows/build_redis.yml
+    secrets: inherit
+    with:
+      image: redis
+      registry: ghcr.io/agence-adeliom
       image_suffix: '-{{latest_release_tag}}'
       push_image: true
 
