@@ -164,4 +164,4 @@ generate_config
 info "✅ Configuration complete, starting Redis..."
 
 # Execute as redis user
-exec gosu redis "$@"
+exec su-exec redis "$@"

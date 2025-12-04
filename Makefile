@@ -133,6 +133,12 @@ redis@7.2: ## Build & test Redis 7.2
 redis@7.4: ## Build & test Redis 7.4
 	@cd redis && make 7.4
 
+redis@8.2: ## Build & test Redis 8.2
+	@cd redis && make 8.2
+
+redis@8.4: ## Build & test Redis 8.4
+	@cd redis && make 8.4
+
 redis-latest: ## Build & test Redis latest
 	@cd redis && make latest
 

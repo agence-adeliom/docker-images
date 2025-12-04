@@ -11,7 +11,8 @@ LABEL org.opencontainers.image.description="Redis ${REDIS_VERSION} Docker image 
 # Install required tools
 RUN apk add --no-cache \
     bash \
-    curl
+    curl \
+    su-exec
 
 # Create Adeliom directory structure
 RUN mkdir -p /adeliom/redis/data \

@@ -301,7 +301,17 @@ release: build-nc push ## Build and push image
 	@$(MAKE) run REDIS_VERSION=7.4
 	@$(MAKE) test REDIS_VERSION=7.4
 
-latest: 7.4 ## Build and test latest version
+8.2: ## Quick build and test Redis 8.2
+	@$(MAKE) build REDIS_VERSION=8.2
+	@$(MAKE) run REDIS_VERSION=8.2
+	@$(MAKE) test REDIS_VERSION=8.2
+
+8.4: ## Quick build and test Redis 8.4
+	@$(MAKE) build REDIS_VERSION=8.4
+	@$(MAKE) run REDIS_VERSION=8.4
+	@$(MAKE) test REDIS_VERSION=8.4
+
+latest: 8.4 ## Build and test latest version
 
 # ========== DEBUG COMMANDS ==========
 
