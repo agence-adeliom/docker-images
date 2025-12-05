@@ -40,7 +40,7 @@ jobs:
         version: ["8.2", "8.3"]
         variant: [frankenphp]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
@@ -130,7 +130,7 @@ jobs:
         version: ["8.1", "8.2", "8.3", "8.4"]
         variant: [cli, fpm]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
@@ -222,7 +222,7 @@ jobs:
         version: ["8.1", "8.2", "8.3", "8.4"]
         variant: [fpm-wkhtmltopdf, cli-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
@@ -312,7 +312,7 @@ jobs:
         version: ["8.1", "8.2", "8.3", "8.4"]
         variant: [caddy, caddy-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
@@ -404,7 +404,7 @@ jobs:
         version: ["8.1", "8.2", "8.3", "8.4"]
         variant: [nginx, nginx-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
@@ -494,7 +494,7 @@ jobs:
         version: ["8.1", "8.2", "8.3", "8.4"]
         variant: [apache, apache-wkhtmltopdf]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
