@@ -23,7 +23,7 @@ help: ## Show this help message
 	@echo "$(YELLOW)PHP Quick Start:$(NC)"
 	@echo "  $(GREEN)make php-cli@8.4$(NC)         - Build PHP 8.4 CLI"
 	@echo "  $(GREEN)make php-caddy@8.3$(NC)       - Build PHP 8.3 Caddy"
-	@echo "  $(GREEN)make php-apache@8.2-debug$(NC) - Debug PHP 8.2 Apache"
+	@echo "  $(GREEN)make php-apache@8.5-debug$(NC) - Debug PHP 8.2 Apache"
 	@echo ""
 	@echo "$(YELLOW)Redis Quick Start:$(NC)"
 	@echo "  $(GREEN)make redis@7.4$(NC)       - Build & test Redis 7.4"
@@ -53,6 +53,9 @@ php-cli@8.3: ## Build PHP 8.3 CLI
 php-cli@8.4: ## Build PHP 8.4 CLI
 	@cd php && make cli@8.4
 
+php-cli@8.5: ## Build PHP 8.5 CLI
+	@cd php && make cli@8.5
+
 php-fpm@8.1: ## Build PHP 8.1 FPM
 	@cd php && make fpm@8.1
 
@@ -64,6 +67,9 @@ php-fpm@8.3: ## Build PHP 8.3 FPM
 
 php-fpm@8.4: ## Build PHP 8.4 FPM
 	@cd php && make fpm@8.4
+
+php-fpm@8.5: ## Build PHP 8.5 FPM
+	@cd php && make fpm@8.5
 
 php-apache@8.2: ## Build PHP 8.2 Apache
 	@cd php && make apache@8.2
@@ -83,6 +89,9 @@ php-nginx@8.3: ## Build PHP 8.3 Nginx
 php-nginx@8.4: ## Build PHP 8.4 Nginx
 	@cd php && make nginx@8.4
 
+php-nginx@8.5: ## Build PHP 8.5 Nginx
+	@cd php && make nginx@8.5
+
 php-caddy@8.2: ## Build PHP 8.2 Caddy
 	@cd php && make caddy@8.2
 
@@ -92,23 +101,26 @@ php-caddy@8.3: ## Build PHP 8.3 Caddy
 php-caddy@8.4: ## Build PHP 8.4 Caddy
 	@cd php && make caddy@8.4
 
+php-caddy@8.5: ## Build PHP 8.5 Caddy
+	@cd php && make caddy@8.5
+
 php-frankenphp@8.2: ## Build PHP 8.2 FrankenPHP
 	@cd php && make frankenphp@8.2
 
 php-frankenphp@8.3: ## Build PHP 8.3 FrankenPHP
 	@cd php && make frankenphp@8.3
 
-php-apache@8.2-debug: ## Debug PHP 8.2 Apache
-	@cd php && make apache@8.2-debug
+php-apache@8.5-debug: ## Debug PHP Apache
+	@cd php && make apache@8.5-debug
 
-php-nginx@8.2-debug: ## Debug PHP 8.2 Nginx
-	@cd php && make nginx@8.2-debug
+php-nginx@8.5-debug: ## Debug PHP Nginx
+	@cd php && make nginx@8.5-debug
 
-php-caddy@8.2-debug: ## Debug PHP 8.2 Caddy
-	@cd php && make caddy@8.2-debug
+php-caddy@8.5-debug: ## Debug PHP Caddy
+	@cd php && make caddy@8.5-debug
 
-php-frankenphp@8.2-debug: ## Debug PHP 8.2 FrankenPHP
-	@cd php && make frankenphp@8.2-debug
+php-frankenphp@8.5-debug: ## Debug PHP FrankenPHP
+	@cd php && make frankenphp@8.5-debug
 
 php-build-all: ## Build all PHP images
 	@cd php && make build-all
@@ -201,7 +213,7 @@ caddy@8.3: php-caddy@8.3
 caddy@8.4: php-caddy@8.4
 frankenphp@8.2: php-frankenphp@8.2
 frankenphp@8.3: php-frankenphp@8.3
-apache@8.2-debug: php-apache@8.2-debug
-nginx@8.2-debug: php-nginx@8.2-debug
-caddy@8.2-debug: php-caddy@8.2-debug
-frankenphp@8.2-debug: php-frankenphp@8.2-debug
+apache@8.5-debug: php-apache@8.5-debug
+nginx@8.5-debug: php-nginx@8.5-debug
+caddy@8.5-debug: php-caddy@8.5-debug
+frankenphp@8.5-debug: php-frankenphp@8.5-debug

@@ -177,6 +177,9 @@ cli@8.3: ## Build PHP 8.3 CLI
 cli@8.4: ## Build PHP 8.4 CLI
 	@$(MAKE) build PHP_VERSION=8.4 VARIATION=cli
 
+cli@8.5: ## Build PHP 8.4 CLI
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=cli
+
 fpm@8.1: ## Build PHP 8.1 FPM
 	@$(MAKE) build PHP_VERSION=8.1 VARIATION=fpm
 
@@ -188,6 +191,9 @@ fpm@8.3: ## Build PHP 8.3 FPM
 
 fpm@8.4: ## Build PHP 8.4 FPM
 	@$(MAKE) build PHP_VERSION=8.4 VARIATION=fpm
+
+fpm@8.5: ## Build PHP 8.5 FPM
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=fpm
 
 apache@8.2: ## Build PHP 8.2 Apache
 	@$(MAKE) build PHP_VERSION=8.2 VARIATION=apache
@@ -207,6 +213,9 @@ nginx@8.3: ## Build PHP 8.3 Nginx
 nginx@8.4: ## Build PHP 8.4 Nginx
 	@$(MAKE) build PHP_VERSION=8.4 VARIATION=nginx
 
+nginx@8.5: ## Build PHP 8.4 Nginx
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=nginx
+
 caddy@8.2: ## Build PHP 8.2 Caddy
 	@$(MAKE) build PHP_VERSION=8.2 VARIATION=caddy
 
@@ -216,6 +225,9 @@ caddy@8.3: ## Build PHP 8.3 Caddy
 caddy@8.4: ## Build PHP 8.4 Caddy
 	@$(MAKE) build PHP_VERSION=8.4 VARIATION=caddy
 
+caddy@8.5: ## Build PHP 8.4 Caddy
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=caddy
+
 frankenphp@8.2: ## Build PHP 8.2 FrankenPHP
 	@$(MAKE) build PHP_VERSION=8.2 VARIATION=frankenphp
 
@@ -224,21 +236,21 @@ frankenphp@8.3: ## Build PHP 8.3 FrankenPHP
 
 # ========== DEBUG SHORTCUTS ==========
 
-apache@8.2-debug: ## Run PHP 8.2 Apache in debug mode
-	@$(MAKE) build PHP_VERSION=8.2 VARIATION=apache
-	@$(MAKE) run-debug PHP_VERSION=8.2 VARIATION=apache
+apache@8.5-debug: ## Run PHP 8.5 Apache in debug mode
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=apache
+	@$(MAKE) run-debug PHP_VERSION=8.5 VARIATION=apache
 
-nginx@8.2-debug: ## Run PHP 8.2 Nginx in debug mode
-	@$(MAKE) build PHP_VERSION=8.2 VARIATION=nginx
-	@$(MAKE) run-debug PHP_VERSION=8.2 VARIATION=nginx
+nginx@8.5-debug: ## Run PHP 8.5 Nginx in debug mode
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=nginx
+	@$(MAKE) run-debug PHP_VERSION=8.5 VARIATION=nginx
 
-caddy@8.2-debug: ## Run PHP 8.2 Caddy in debug mode
-	@$(MAKE) build PHP_VERSION=8.2 VARIATION=caddy
-	@$(MAKE) run-debug PHP_VERSION=8.2 VARIATION=caddy
+caddy@8.5-debug: ## Run PHP 8.5 Caddy in debug mode
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=caddy
+	@$(MAKE) run-debug PHP_VERSION=8.5 VARIATION=caddy
 
-frankenphp@8.2-debug: ## Run PHP 8.2 FrankenPHP in debug mode
-	@$(MAKE) build PHP_VERSION=8.2 VARIATION=frankenphp
-	@$(MAKE) run-debug PHP_VERSION=8.2 VARIATION=frankenphp
+frankenphp@8.5-debug: ## Run PHP 8.5 FrankenPHP in debug mode
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=frankenphp
+	@$(MAKE) run-debug PHP_VERSION=8.5 VARIATION=frankenphp
 
 # ========== CLEANUP COMMANDS ==========
 
