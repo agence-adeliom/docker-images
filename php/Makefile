@@ -234,6 +234,12 @@ frankenphp@8.2: ## Build PHP 8.2 FrankenPHP
 frankenphp@8.3: ## Build PHP 8.3 FrankenPHP
 	@$(MAKE) build PHP_VERSION=8.3 VARIATION=frankenphp
 
+frankenphp@8.4: ## Build PHP 8.4 FrankenPHP
+	@$(MAKE) build PHP_VERSION=8.4 VARIATION=frankenphp
+
+frankenphp@8.5: ## Build PHP 8.5 FrankenPHP
+	@$(MAKE) build PHP_VERSION=8.5 VARIATION=frankenphp
+
 # ========== DEBUG SHORTCUTS ==========
 
 apache@8.5-debug: ## Run PHP 8.5 Apache in debug mode
