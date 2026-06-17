@@ -23,6 +23,11 @@ on:
         required: true
         type: boolean
         default: false
+      variant_filter:
+        description: 'Which variants to build (all or frankenphp)'
+        required: false
+        default: 'all'
+        type: string
     outputs:
       repository:
         value: ${{ jobs.base-images.repository.outputs.REPOSITORY }}
@@ -34,6 +39,7 @@ permissions:
 jobs:
   frankenphp:
     runs-on: ubuntu-latest
+    if: ${{ inputs.variant_filter == 'all' || inputs.variant_filter == 'frankenphp' }}
     strategy:
       fail-fast: false
       matrix:
@@ -124,6 +130,7 @@ jobs:
 
   base:
     runs-on: ubuntu-latest
+    if: ${{ inputs.variant_filter == 'all' }}
     strategy:
       fail-fast: false
       matrix:
@@ -216,6 +223,7 @@ jobs:
   wkhtmltopdf:
     runs-on: ubuntu-latest
     needs: [base]
+    if: ${{ inputs.variant_filter == 'all' }}
     strategy:
       fail-fast: false
       matrix:
@@ -306,6 +314,7 @@ jobs:
   caddy:
     runs-on: ubuntu-latest
     needs: [base, wkhtmltopdf]
+    if: ${{ inputs.variant_filter == 'all' }}
     strategy:
       fail-fast: false
       matrix:
@@ -398,6 +407,7 @@ jobs:
   nginx:
     runs-on: ubuntu-latest
     needs: [base, wkhtmltopdf]
+    if: ${{ inputs.variant_filter == 'all' }}
     strategy:
       fail-fast: false
       matrix:
@@ -488,6 +498,7 @@ jobs:
   apache:
     runs-on: ubuntu-latest
     needs: [base, wkhtmltopdf]
+    if: ${{ inputs.variant_filter == 'all' }}
     strategy:
       fail-fast: false
       matrix:

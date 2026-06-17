@@ -20,6 +20,14 @@ on:
         options:
           - "php"
           - "redis"
+      variant:
+        description: 'Which PHP variants to build'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - "all"
+          - "frankenphp"
       registry:
         description: 'Registry to deploy to'
         default: "adeliom"
@@ -46,6 +54,7 @@ jobs:
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
       push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+      variant_filter: ${{ inputs.variant }}
 
   # For github package: build images via build_php workflow
   ghcr-build-php-images:
@@ -57,6 +66,7 @@ jobs:
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
       push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+      variant_filter: ${{ inputs.variant }}
 
   # For dockerhub: build images via build_redis workflow
   dockerhub-build-redis-images:
