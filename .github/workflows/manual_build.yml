@@ -53,7 +53,7 @@ jobs:
       image: ${{ inputs.image }}
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
-      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix != '-dev') }}
       variant_filter: ${{ inputs.variant }}
 
   # For github package: build images via build_php workflow
@@ -65,7 +65,7 @@ jobs:
       image: ${{ inputs.image }}
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
-      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix != '-dev') }}
       variant_filter: ${{ inputs.variant }}
 
   # For dockerhub: build images via build_redis workflow
@@ -77,7 +77,7 @@ jobs:
       image: ${{ inputs.image }}
       registry: ${{ inputs.registry }}
       image_suffix: ${{ inputs.image_suffix }}
-      push_image: ${{ inputs.push_image || (inputs.image_suffix == '-dev') }}
+      push_image: ${{ inputs.push_image || (inputs.image_suffix != '-dev') }}
 
 
   # For dockerhub: upgrade redis readme doc
