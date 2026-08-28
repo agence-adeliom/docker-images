@@ -113,6 +113,18 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug pcntl; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -205,6 +217,19 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          docker run --rm "$TAG" wkhtmltopdf --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug pcntl; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -297,6 +322,18 @@ jobs:
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
 
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug sysvsem soap ldap amqp; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -388,6 +425,19 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          docker run --rm "$TAG" wkhtmltopdf --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug sysvsem soap ldap amqp; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -481,6 +531,21 @@ jobs:
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
 
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug sysvsem soap ldap amqp; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
+          if [[ "${{ matrix.variant }}" == *wkhtmltopdf* ]]; then
+            docker run --rm "$TAG" wkhtmltopdf --version
+          fi
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -572,6 +637,21 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug sysvsem soap ldap amqp; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
+          if [[ "${{ matrix.variant }}" == *wkhtmltopdf* ]]; then
+            docker run --rm "$TAG" wkhtmltopdf --version
+          fi
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
@@ -664,6 +744,21 @@ jobs:
             PHP_VERSION=${{ matrix.version }}
             REGISTRY=${{ inputs.registry }}
             TAG_VERSION=${{ steps.get_tag.outputs.tag }}
+      - name: Test image
+        run: |
+          set -eux
+          TAG="${{ steps.tags.outputs.tags }}"
+          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          docker run --rm "$TAG" composer --version
+          set +x
+          MODULES="$(docker run --rm "$TAG" php -m)"
+          for ext in opcache intl gettext zip redis mysqli pgsql pdo_mysql pdo_pgsql gd exif xdebug sysvsem soap ldap amqp; do
+            echo "$MODULES" | grep -qi "$ext" || { echo "Module manquant: $ext"; exit 1; }
+          done
+          echo "ok"
+          if [[ "${{ matrix.variant }}" == *wkhtmltopdf* ]]; then
+            docker run --rm "$TAG" wkhtmltopdf --version
+          fi
       - name: Build and Push
         uses: docker/build-push-action@v6
         with:
