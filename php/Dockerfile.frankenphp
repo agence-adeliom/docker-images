@@ -61,7 +61,7 @@ ENV XDEBUG_START_WITH_REQUEST='trigger'
 ENV XDEBUG_MODE='off'
 
 RUN set -eux \
-    && apt-get update && apt-get install -y supervisor \
+    && apt-get update && apt-get install -y --no-install-recommends supervisor \
         ca-certificates \
         media-types \
         libnss3-tools \
