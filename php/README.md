@@ -64,6 +64,10 @@ Use at your own risk and always test thoroughly before deploying to production.
 | `adeliom/php:8.3-frankenphp`             | `8.3`       | `php`   | `frankenphp` |             |
 | `adeliom/php:8.4-frankenphp`             | `8.4`       | `php`   | `frankenphp` |             |
 | `adeliom/php:8.5-frankenphp`             | `8.5`       | `php`   | `frankenphp` |             |
+| `adeliom/php:8.2-frankenphp-wkhtmltopdf` | `8.2`       | `php`   | `frankenphp` |     ✅      |
+| `adeliom/php:8.3-frankenphp-wkhtmltopdf` | `8.3`       | `php`   | `frankenphp` |     ✅      |
+| `adeliom/php:8.4-frankenphp-wkhtmltopdf` | `8.4`       | `php`   | `frankenphp` |     ✅      |
+| `adeliom/php:8.5-frankenphp-wkhtmltopdf` | `8.5`       | `php`   | `frankenphp` |     ✅      |
 
 
 ## Specific Images versions
