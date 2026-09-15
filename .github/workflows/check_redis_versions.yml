@@ -1,0 +1,36 @@
+name: Check Redis versions
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-new-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update Redis version matrix
+        id: update
+        run: python3 .github/scripts/update_redis_versions.py "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        if: steps.update.outputs.added_versions
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(redis): add Redis version(s) ${{ steps.update.outputs.added_versions }}"
+          title: "chore(redis): add Redis version(s) ${{ steps.update.outputs.added_versions }}"
+          body: |
+            New Redis minor version(s) detected on Docker Hub: `${{ steps.update.outputs.added_versions }}`.
+
+            This PR was opened automatically by the `check_redis_versions` workflow.
+          branch: chore/redis-versions-update
+          delete-branch: true
+          labels: |
+            dependencies
+            redis
