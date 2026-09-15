@@ -28,8 +28,9 @@ Use at your own risk and always test thoroughly before deploying to production.
 | `adeliom/redis:6.2`       | `6.2`         | `amd64/arm64`|
 | `adeliom/redis:7.0`       | `7.0`         | `amd64/arm64`|
 | `adeliom/redis:7.2`       | `7.2`         | `amd64/arm64`|
-| `adeliom/redis:7.4`       | `7.4`         | `amd64/arm64`|
-| `adeliom/redis:latest`    | `7.4`         | `amd64/arm64`|
+| `adeliom/redis:8.2`       | `8.2`         | `amd64/arm64`|
+| `adeliom/redis:8.10`      | `8.10`        | `amd64/arm64`|
+| `adeliom/redis:latest`    | `8.10`        | `amd64/arm64`|
 
 ## Specific Image Versions
 
@@ -37,7 +38,7 @@ Using latest tags is a good way to stay up to date, but sometimes you need more 
 
 All detailed images are the latest stable versions. You can also use specific versions by adding a `-{specific-version}` part in the image name:
 
-Example: `adeliom/redis:7.4-dev` or `adeliom/redis:7.4-1.0.0`
+Example: `adeliom/redis:8.10-dev` or `adeliom/redis:8.10-1.0.0`
 
 - On every release, the image tag is moved to the new version.
 - On every release a new tag is created with the version number (e.g. `1.0.0`, `1.0.1`, etc.). [See releases list](https://github.com/agence-adeliom/docker-images/releases)
@@ -59,20 +60,20 @@ To stay up to date, you can use the `default` tag, which is always pointing to t
 docker run -d --name my-redis \
   -e REDIS_PASSWORD=my-secure-password \
   -p 6379:6379 \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 
 # Run Redis with custom port
 docker run -d --name my-redis \
   -e REDIS_PASSWORD=my-secure-password \
   -e REDIS_PORT_NUMBER=6380 \
   -p 6380:6380 \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 
 # Run Redis for development (no password)
 docker run -d --name my-redis-dev \
   -e ALLOW_EMPTY_PASSWORD=yes \
   -p 6379:6379 \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 ```
 
 ### Docker Compose Example
@@ -82,7 +83,7 @@ version: '3.8'
 
 services:
   redis:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     container_name: my-redis
     restart: unless-stopped
     
@@ -174,7 +175,7 @@ You can configure Redis using the following environment variables:
 ```yaml
 services:
   redis:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     environment:
       # Strong password
       - REDIS_PASSWORD=MyVerySecurePassword123!
@@ -195,7 +196,7 @@ services:
 ```yaml
 services:
   redis-dev:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     environment:
       # No password in development
       - ALLOW_EMPTY_PASSWORD=yes
@@ -212,7 +213,7 @@ services:
 ```yaml
 services:
   redis:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     environment:
       - REDIS_PASSWORD_FILE=/run/secrets/redis_password
     
@@ -237,7 +238,7 @@ Two persistence mechanisms are available:
 ```bash
 docker run -d \
   -e REDIS_AOF_ENABLED=yes \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 ```
 
 ### RDB (Snapshots)
@@ -250,12 +251,12 @@ docker run -d \
 # Custom RDB policy
 docker run -d \
   -e REDIS_RDB_POLICY="3600 1 300 100 60 10000" \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 
 # Disable RDB completely
 docker run -d \
   -e REDIS_RDB_POLICY_DISABLED=yes \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 ```
 
 ### Disabling Both (Not Recommended)
@@ -264,7 +265,7 @@ docker run -d \
 docker run -d \
   -e REDIS_AOF_ENABLED=no \
   -e REDIS_RDB_POLICY_DISABLED=yes \
-  adeliom/redis:7.4
+  adeliom/redis:8.10
 ```
 
 **⚠️ Warning**: Disabling both persistence methods means data loss on container restart.
@@ -278,7 +279,7 @@ Starting from Redis 6.0, you can enable multi-threaded I/O:
 ```yaml
 services:
   redis:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     environment:
       # Use 4 I/O threads
       - REDIS_IO_THREADS=4
@@ -328,7 +329,7 @@ docker exec my-redis redis-cli -a my-password INFO stats
 ```yaml
 services:
   redis:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     environment:
       - REDIS_PASSWORD=my-password
   
@@ -410,7 +411,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: adeliom/redis:7.4
+        image: adeliom/redis:8.10
         env:
         - name: REDIS_PASSWORD
           valueFrom:
@@ -469,7 +470,7 @@ Create a `redis-values.yaml` file:
 image:
   registry: docker.io
   repository: adeliom/redis
-  tag: 7.4
+  tag: 8.10
   pullPolicy: IfNotPresent
 
 # Redis configuration
@@ -574,14 +575,14 @@ name: redis-adeliom
 description: Redis Adeliom Helm chart
 type: application
 version: 1.0.0
-appVersion: "7.4"
+appVersion: "8.10"
 EOF
 
 # Create values.yaml
 cat > redis-chart/values.yaml <<EOF
 image:
   repository: adeliom/redis
-  tag: 7.4
+  tag: 8.10
   pullPolicy: IfNotPresent
 
 redis:
@@ -693,7 +694,7 @@ spec:
       values: |
         image:
           repository: adeliom/redis
-          tag: 7.4
+          tag: 8.10
         redis:
           password: "secure-password"
         persistence:
@@ -735,7 +736,7 @@ You can use a custom Redis configuration file:
 ```yaml
 services:
   redis:
-    image: adeliom/redis:7.4
+    image: adeliom/redis:8.10
     environment:
       - REDIS_PASSWORD=my-password
     volumes:
@@ -800,7 +801,7 @@ git clone https://github.com/agence-adeliom/docker-images.git
 cd docker-images/redis
 
 # Build the image
-docker build --build-arg REDIS_VERSION=7.4 -t adeliom/redis:7.4 .
+docker build --build-arg REDIS_VERSION=8.10 -t adeliom/redis:8.10 .
 ```
 
 Made with ❤️ by [@agence-adeliom](https://github.com/agence-adeliom)
