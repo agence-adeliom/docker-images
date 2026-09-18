@@ -3,7 +3,16 @@ ARG PHP_VERSION
 ARG REGISTRY
 ARG TAG_VERSION
 ARG CADDY_VERSION="2.11.4"
-FROM caddy:${CADDY_VERSION}-alpine AS caddy-builder
+# Build from source instead of copying the official caddy image's binary: the
+# official image lags behind on Go toolchain patch releases (e.g. it still
+# ships go1.26.3, which is vulnerable to CVE-2026-39821, fixed in go1.26.6),
+# even when the Caddy version itself hasn't changed. Building against a
+# current `golang` image lets us pick up stdlib security patches immediately.
+FROM golang:1.26-alpine AS caddy-builder
+ARG CADDY_VERSION
+ENV CGO_ENABLED=0
+RUN go install "github.com/caddyserver/caddy/v2/cmd/caddy@v${CADDY_VERSION}"
+RUN mv /root/go/bin/caddy /usr/bin/caddy
 
 FROM ${REGISTRY}/php:${PHP_VERSION}-fpm-wkhtmltopdf${TAG_VERSION}
 
