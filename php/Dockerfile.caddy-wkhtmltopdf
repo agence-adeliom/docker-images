@@ -12,7 +12,7 @@ FROM golang:1.26-alpine AS caddy-builder
 ARG CADDY_VERSION
 ENV CGO_ENABLED=0
 RUN go install "github.com/caddyserver/caddy/v2/cmd/caddy@v${CADDY_VERSION}"
-RUN mv /root/go/bin/caddy /usr/bin/caddy
+RUN mv /go/bin/caddy /usr/bin/caddy
 
 FROM ${REGISTRY}/php:${PHP_VERSION}-fpm-wkhtmltopdf${TAG_VERSION}
 
