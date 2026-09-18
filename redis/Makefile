@@ -223,6 +223,19 @@ config: ## Show Redis configuration
 health: ## Check container health
 	@docker inspect --format='{{.State.Health.Status}}' $(CONTAINER_NAME)
 
+# ========== SECURITY SCAN COMMANDS ==========
+
+scan: ## Scan the built image for vulnerabilities (docker scout)
+	@echo "$(BLUE)Scanning $(IMAGE_NAME):$(REDIS_VERSION)...$(NC)"
+	docker scout cves local://$(IMAGE_NAME):$(REDIS_VERSION)
+
+scan-critical: ## Scan the built image, only show fixable critical/high CVEs
+	@echo "$(BLUE)Scanning $(IMAGE_NAME):$(REDIS_VERSION) (critical/high, fixable)...$(NC)"
+	docker scout cves --only-severity critical,high --only-fixed local://$(IMAGE_NAME):$(REDIS_VERSION)
+
+scan-ci: ## Scan and fail (exit 2) if fixable critical/high CVEs are found
+	docker scout cves --only-severity critical,high --only-fixed --exit-code local://$(IMAGE_NAME):$(REDIS_VERSION)
+
 # ========== DOCKER COMPOSE COMMANDS ==========
 
 compose-up: ## Start Redis with docker-compose

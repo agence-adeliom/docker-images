@@ -258,6 +258,29 @@ frankenphp@8.5-debug: ## Run PHP 8.5 FrankenPHP in debug mode
 	@$(MAKE) build PHP_VERSION=8.5 VARIATION=frankenphp
 	@$(MAKE) run-debug PHP_VERSION=8.5 VARIATION=frankenphp
 
+# ========== SECURITY SCAN COMMANDS ==========
+
+scan: ## Scan the built image for vulnerabilities (docker scout)
+	@echo "$(BLUE)Scanning $(IMAGE_NAME):$(PHP_VERSION)-$(VARIATION)...$(NC)"
+	docker scout cves local://$(IMAGE_NAME):$(PHP_VERSION)-$(VARIATION)
+
+scan-critical: ## Scan the built image, only show fixable critical/high CVEs
+	@echo "$(BLUE)Scanning $(IMAGE_NAME):$(PHP_VERSION)-$(VARIATION) (critical/high, fixable)...$(NC)"
+	docker scout cves --only-severity critical,high --only-fixed local://$(IMAGE_NAME):$(PHP_VERSION)-$(VARIATION)
+
+scan-ci: ## Scan and fail (exit 2) if fixable critical/high CVEs are found
+	docker scout cves --only-severity critical,high --only-fixed --exit-code local://$(IMAGE_NAME):$(PHP_VERSION)-$(VARIATION)
+
+scan-all-variants: ## Scan all built variants for a PHP version
+	@for variant in cli fpm apache nginx caddy frankenphp; do \
+		if docker image inspect $(IMAGE_NAME):$(PHP_VERSION)-$$variant >/dev/null 2>&1; then \
+			echo "$(BLUE)Scanning $(IMAGE_NAME):$(PHP_VERSION)-$$variant...$(NC)"; \
+			docker scout cves --only-severity critical,high --only-fixed local://$(IMAGE_NAME):$(PHP_VERSION)-$$variant || true; \
+		else \
+			echo "$(YELLOW)Skipping $(IMAGE_NAME):$(PHP_VERSION)-$$variant (not built)$(NC)"; \
+		fi \
+	done
+
 # ========== CLEANUP COMMANDS ==========
 
 clean: stop ## Clean current variant

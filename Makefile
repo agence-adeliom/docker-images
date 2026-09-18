@@ -3,6 +3,11 @@
 
 .PHONY: help
 
+# Defaults for the php-scan / redis-scan wrapper targets
+PHP_VERSION ?= 8.4
+VARIATION ?= cli
+REDIS_VERSION ?= 7.4
+
 # Colors for output
 BLUE := \033[0;34m
 GREEN := \033[0;32m
@@ -29,6 +34,12 @@ help: ## Show this help message
 	@echo "  $(GREEN)make redis@7.4$(NC)       - Build & test Redis 7.4"
 	@echo "  $(GREEN)make redis-build$(NC)     - Build Redis latest"
 	@echo "  $(GREEN)make redis-test$(NC)      - Test Redis"
+	@echo ""
+	@echo "$(YELLOW)Vulnerability Scanning (docker scout):$(NC)"
+	@echo "  $(GREEN)make php-scan PHP_VERSION=8.4 VARIATION=caddy$(NC) - Scan one built image"
+	@echo "  $(GREEN)make php-scan-all PHP_VERSION=8.4$(NC)             - Scan all built variants"
+	@echo "  $(GREEN)make redis-scan REDIS_VERSION=7.4$(NC)             - Scan the Redis image"
+	@echo "  $(GREEN)make scan-all$(NC)                                 - Scan everything already built"
 	@echo ""
 	@echo "$(BLUE)For detailed documentation, see:$(NC)"
 	@echo "  - README.md"
@@ -125,6 +136,12 @@ php-frankenphp@8.5-debug: ## Debug PHP FrankenPHP
 php-build-all: ## Build all PHP images
 	@cd php && make build-all
 
+php-scan: ## Scan a built PHP image (PHP_VERSION=8.4 VARIATION=caddy)
+	@cd php && make scan-critical PHP_VERSION=$(PHP_VERSION) VARIATION=$(VARIATION)
+
+php-scan-all: ## Scan all built variants for a PHP version (PHP_VERSION=8.4)
+	@cd php && make scan-all-variants PHP_VERSION=$(PHP_VERSION)
+
 php-clean: ## Clean all PHP images
 	@cd php && make clean-all
 
@@ -160,6 +177,9 @@ redis-build: ## Build Redis latest version
 redis-build-all: ## Build all Redis versions
 	@cd redis && make build-all
 
+redis-scan: ## Scan a built Redis image (REDIS_VERSION=7.4)
+	@cd redis && make scan-critical REDIS_VERSION=$(REDIS_VERSION)
+
 redis-run: ## Run Redis
 	@cd redis && make run
 
@@ -178,6 +198,10 @@ redis-clean-all: ## Clean all Redis
 # ========== GENERAL COMMANDS ==========
 
 build-all: php-build-all redis-build-all ## Build all images (PHP + Redis)
+
+scan-all: ## Scan all built variants for PHP_VERSION and the Redis image (critical/high, fixable)
+	@$(MAKE) php-scan-all PHP_VERSION=$(PHP_VERSION)
+	@$(MAKE) redis-scan REDIS_VERSION=$(REDIS_VERSION)
 
 clean-all: php-clean redis-clean-all ## Clean everything
 
