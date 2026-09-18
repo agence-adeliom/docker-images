@@ -151,6 +151,8 @@ jobs:
           file: ./${{ inputs.image }}/Dockerfile
           platforms: "linux/amd64,linux/arm64"
           push: ${{ inputs.push_image }}
+          provenance: true
+          sbom: true
           tags: |
             ${{ steps.tags.outputs.tags }}
           build-args: |

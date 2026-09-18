@@ -28,6 +28,10 @@ on:
         options:
           - "all"
           - "frankenphp"
+          - "base"
+          - "caddy"
+          - "nginx"
+          - "apache"
       registry:
         description: 'Registry to deploy to'
         default: "adeliom"
@@ -39,6 +43,11 @@ on:
       push_image:
         description: 'Push images to registry'
         required: true
+        type: boolean
+        default: false
+      skip_wkhtmltopdf:
+        description: 'Skip building the wkhtmltopdf variants'
+        required: false
         type: boolean
         default: false
 
@@ -55,6 +64,7 @@ jobs:
       image_suffix: ${{ inputs.image_suffix }}
       push_image: ${{ inputs.push_image || (inputs.image_suffix != '-dev') }}
       variant_filter: ${{ inputs.variant }}
+      skip_wkhtmltopdf: ${{ inputs.skip_wkhtmltopdf }}
 
   # For github package: build images via build_php workflow
   ghcr-build-php-images:
@@ -67,6 +77,7 @@ jobs:
       image_suffix: ${{ inputs.image_suffix }}
       push_image: ${{ inputs.push_image || (inputs.image_suffix != '-dev') }}
       variant_filter: ${{ inputs.variant }}
+      skip_wkhtmltopdf: ${{ inputs.skip_wkhtmltopdf }}
 
   # For dockerhub: build images via build_redis workflow
   dockerhub-build-redis-images:
