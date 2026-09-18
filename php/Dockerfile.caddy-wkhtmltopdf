@@ -17,7 +17,14 @@ ENV CGO_ENABLED=0
 RUN apk add --no-cache git \
     && go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 WORKDIR /build
+# Caddy v2.11.4's own go.mod still pins golang.org/x/crypto v0.52.0 and
+# google.golang.org/grpc v1.81.0, which lag behind fixes for
+# CVE-2026-78662 (x/crypto/ssh DoS) and CVE-2026-84304 / GHSA-hrxh-6v49-42gf
+# (grpc-go DoS / auth bypass). Force newer, non-plugin dependency versions
+# via `--replace` until upstream Caddy bumps them itself.
 RUN xcaddy build "v${CADDY_VERSION}" \
+    --replace golang.org/x/crypto=golang.org/x/crypto@v0.56.0 \
+    --replace google.golang.org/grpc=google.golang.org/grpc@v1.83.1 \
     && mv /build/caddy /usr/bin/caddy
 
 FROM ${REGISTRY}/php:${PHP_VERSION}-fpm-wkhtmltopdf${TAG_VERSION}
