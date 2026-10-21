@@ -122,7 +122,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           set +x
           MODULES="$(docker run --rm "$TAG" php -m)"
@@ -228,7 +230,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           docker run --rm "$TAG" wkhtmltopdf --version
           set +x
@@ -335,7 +339,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           set +x
           MODULES="$(docker run --rm "$TAG" php -m)"
@@ -440,7 +446,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           docker run --rm "$TAG" wkhtmltopdf --version
           set +x
@@ -548,7 +556,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           set +x
           MODULES="$(docker run --rm "$TAG" php -m)"
@@ -655,7 +665,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           docker run --rm "$TAG" wkhtmltopdf --version
           set +x
@@ -761,7 +773,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           set +x
           MODULES="$(docker run --rm "$TAG" php -m)"
@@ -866,7 +880,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           docker run --rm "$TAG" wkhtmltopdf --version
           set +x
@@ -973,7 +989,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           set +x
           MODULES="$(docker run --rm "$TAG" php -m)"
@@ -1079,7 +1097,9 @@ jobs:
         run: |
           set -eux
           TAG="${{ steps.tags.outputs.tags }}"
-          docker run --rm "$TAG" php -v | grep -q "PHP ${{ matrix.version }}"
+          PHP_V="$(docker run --rm "$TAG" php -v)"
+          echo "$PHP_V"
+          echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
           docker run --rm "$TAG" composer --version
           docker run --rm "$TAG" wkhtmltopdf --version
           set +x
