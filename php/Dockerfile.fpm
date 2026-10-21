@@ -9,6 +9,13 @@ LABEL org.opencontainers.image.authors="Adeliom https://adeliom.com"
 LABEL org.opencontainers.image.title="PHP ${PHP_VERSION} - FPM"
 LABEL org.opencontainers.image.description="PHP ${PHP_VERSION} Docker image with FPM"
 
+# PHP security release of 2026-10-21 (CVE-2026-109618, CVE-2026-109619, CVSS 9.2, RCE).
+# The base image is pulled by minor version only (php:8.x-*), so a build made before Docker Hub
+# republishes it would silently ship a vulnerable PHP while still passing the "PHP 8.x" CI check.
+# Refuse to build below the first fixed patch release of each branch; bump these on the next security release.
+RUN php -r '$fixed = ["8.2" => "8.2.35", "8.3" => "8.3.36", "8.4" => "8.4.27", "8.5" => "8.5.12"][PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION] ?? null; \
+    if ($fixed === null || version_compare(PHP_VERSION, $fixed, "<")) { fwrite(STDERR, "PHP " . PHP_VERSION . " is older than the fixed release " . ($fixed ?? "(none: branch no longer supported)") . "\n"); exit(1); }'
+
 ENV COMPOSER_ALLOW_SUPERUSER='1'
 ENV COMPOSER_MEMORY_LIMIT='-1'
 ENV PHP_INI_MEMORY_LIMIT='128M'

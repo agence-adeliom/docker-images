@@ -16,6 +16,10 @@
 
 ⚠️ **Incohérence connue** : le `Makefile` racine n'expose pas de cible directe pour builder `apache`/`nginx`/`frankenphp` en 8.5 (ou `frankenphp` en 8.4) alors que la CI les construit et les publie bien. Pour builder ces combinaisons en local il faut passer par `cd php && make <variant>@<version>` (le `php/Makefile` sous-jacent, lui, n'a pas cette limite) plutôt que par les raccourcis `php-<variant>@<version>` du Makefile racine. À harmoniser lors d'une revue trimestrielle plutôt que de supposer que les deux Makefiles et la CI sont synchronisés.
 
+### Version patch minimale (garde de build)
+
+`php/Dockerfile.cli`, `php/Dockerfile.fpm` et `php/Dockerfile.frankenphp` refusent de builder si la base image embarque un PHP plus ancien que 8.2.35 / 8.3.36 / 8.4.27 / 8.5.12 (release de sécurité du 2026-10-21, CVE-2026-109618 et CVE-2026-109619). Les autres variantes héritent de ces trois images. À remonter à chaque release de sécurité PHP ; conséquence : 8.1 n'est plus buildable en local (aucun correctif upstream).
+
 Sources de vérité : `.github/workflows/build_php.yml` (matrices `matrix.version`) pour ce qui est réellement publié ; `Makefile` et `php/Makefile` pour ce qui est buildable en local.
 
 ## Redis
