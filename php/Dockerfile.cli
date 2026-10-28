@@ -59,6 +59,12 @@ ENV XDEBUG_MODE='off'
 
 WORKDIR /var/www/html
 
+# Pull the latest Alpine security patches for packages already present in the
+# base image (not covered by `apk add --upgrade` below, which only upgrades the
+# listed packages), e.g. brotli (CVE-2026-111497), curl (CVE-2026-92392),
+# giflib (CVE-2024-45993) and python3 (CVE-2026-115557, CVE-2026-114583).
+RUN apk upgrade --no-cache
+
 RUN apk add  --upgrade --no-cache \
         acl \
         bash \
