@@ -72,19 +72,16 @@ Use at your own risk and always test thoroughly before deploying to production.
 
 ## Specific Images versions
 
-Using latest tags is a good way to stay up to date, but sometimes you need more control over the version you are using :
+The tags listed above (e.g. `adeliom/php:8.4-caddy`) always point to the latest release.
+On every release, the CI builds every image and pushes two tags:
 
-All detailed images are the latest stable versions.
-You can also use specific versions by adding a `-{specific-version}` part in the image name by one of the following:
-Example: `adeliom/php:8.4-caddy-dev` or `adeliom/php:8.4-caddy-1.0.0`
+- the unsuffixed tag (e.g. `adeliom/php:8.4-caddy`), moved to the new release;
+- a tag with the release version (e.g. `adeliom/php:8.4-caddy-v1.7.0`), which never moves. [See releases list](https://github.com/agence-adeliom/docker-images/releases)
 
-- On every release, the image tag is moved to the new version.
-- On every release a new tag is created with the version number (e.g. `1.0.0`, `1.0.1`, etc.). [See releases list](https://github.com/agence-adeliom/docker-images/releases)
-- Before a new release, the `dev` tag is used for the new version. Do not use this tag in production.
+Before a release, the `-dev` tags (e.g. `adeliom/php:8.4-caddy-dev`) hold the next version. Do not use them in production.
 
-To stay up to date, you can use the `default` tag, which is always pointing to the latest stable version.
-[build_php.yml](../.github/workflows/build_php.yml)
-And if you have some trouble with the latest stable version, you can use a `adeliom/php:8.4-caddy-{specific-version}` tag, which is always pointing to the previous released version. [See releases list](https://github.com/agence-adeliom/docker-images/releases)
+Use the unsuffixed tag to get security fixes on every rebuild of your project.
+Pin a versioned tag (e.g. `adeliom/php:8.4-caddy-v1.7.0`) when you need reproducible builds, and bump it on each release.
 
 ## Usage
 
@@ -93,19 +90,19 @@ These images are based on the [official PHP image](https://hub.docker.com/_/php/
 Example with CLI:
 
 ```bash
-$ docker run -it --rm --name my-running-script -v "$PWD":/var/www/html adeliom/php:8.2-cli-latest php your-script.php
+$ docker run -it --rm --name my-running-script -v "$PWD":/var/www/html adeliom/php:8.4-cli php your-script.php
 ```
 
 Example with Apache:
 
 ```bash
-$ docker run -p 80:80 --rm --name my-apache-php-app -v "$PWD":/var/www/html adeliom/php:8.2-apache-latest
+$ docker run -p 80:80 --rm --name my-apache-php-app -v "$PWD":/var/www/html adeliom/php:8.4-apache
 ```
 
 Example with PHP-FPM:
 
 ```bash
-$ docker run -p 9000:9000 --rm --name my-php-fpm -v "$PWD":/var/www/html adeliom/php:8.2-fpm-latest
+$ docker run -p 9000:9000 --rm --name my-php-fpm -v "$PWD":/var/www/html adeliom/php:8.4-fpm
 ```
 
 ## Default working directory

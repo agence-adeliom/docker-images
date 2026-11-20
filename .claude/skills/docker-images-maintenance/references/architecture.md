@@ -74,8 +74,8 @@ Dockerfile.frankenphp ──► Dockerfile.frankenphp-wkhtmltopdf
 - **GHCR** : `ghcr.io/agence-adeliom/php`, `ghcr.io/agence-adeliom/redis`.
 - Le registre cible est passé en `ARG REGISTRY` (défaut CI `ghcr.io/agence-adeliom`), utilisé pour résoudre les `FROM ${REGISTRY}/php:...` internes ET comme préfixe du tag poussé.
 - Tag format : `<version>-<variant>[<suffix>]`, ex. `8.4-caddy`, `8.4-caddy-latest-release-tag`. Le suffixe dépend de `image_suffix` :
-  - `-dev` → pas de suffixe supplémentaire, tag `dev` (build de test, jamais poussé sauf si explicitement demandé).
-  - `-{{latest_release_tag}}` → suffixe = dernier tag git (`git describe --tags --abbrev=0`), utilisé automatiquement par `ci_publish_release.yml` sur chaque release GitHub publiée.
+  - `-dev` → suffixe `-dev` (build de test). Pour tester toute la chaîne (caddy, nginx, apache et wkhtmltopdf partent des images `-dev` du registre), lancer `manual_build.yml` avec `push_image: true`.
+  - `-{{latest_release_tag}}` → suffixe = dernier tag git (`git describe --tags --abbrev=0`), utilisé automatiquement par `ci_publish_release.yml` sur chaque release GitHub publiée. Ce mode pousse aussi le tag sans suffixe (`8.4-caddy`, et pour Redis `7.4` et `7`). Avant le 2026-11-20, les releases ne poussaient que le tag suffixé : les tags sans suffixe étaient restés au 2026-01-30.
   - `-latest` → pas de suffixe (option manuelle uniquement, via `manual_build.yml`).
 
 ## CI/CD
