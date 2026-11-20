@@ -18,7 +18,7 @@
 
 ### Version patch minimale (garde de build)
 
-`php/Dockerfile.cli`, `php/Dockerfile.fpm` et `php/Dockerfile.frankenphp` refusent de builder si la base image embarque un PHP plus ancien que 8.2.35 / 8.3.36 / 8.4.27 / 8.5.12 (release de sécurité du 2026-10-21, CVE-2026-109618 et CVE-2026-109619). Les autres variantes héritent de ces trois images. À remonter à chaque release de sécurité PHP ; conséquence : 8.1 n'est plus buildable en local (aucun correctif upstream).
+`php/Dockerfile.cli`, `php/Dockerfile.fpm` et `php/Dockerfile.frankenphp` refusent de builder si la base image embarque un PHP plus ancien que 8.2.36 / 8.3.37 / 8.4.28 / 8.5.13 (release de sécurité du 2026-11-19, 18 CVE dont CVE-2026-115560 et CVE-2026-129538 ; plancher précédent : release du 2026-10-21). Les autres variantes héritent de ces trois images. À remonter à chaque release de sécurité PHP ; conséquence : 8.1 n'est plus buildable en local (aucun correctif upstream).
 
 Sources de vérité : `.github/workflows/build_php.yml` (matrices `matrix.version`) pour ce qui est réellement publié ; `Makefile` et `php/Makefile` pour ce qui est buildable en local.
 
