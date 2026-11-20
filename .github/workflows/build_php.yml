@@ -98,6 +98,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -121,7 +125,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -206,6 +210,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -229,7 +237,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -314,6 +322,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -338,7 +350,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -422,6 +434,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -445,7 +461,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -531,6 +547,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -555,7 +575,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -640,6 +660,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -664,7 +688,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -749,6 +773,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -772,7 +800,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -856,6 +884,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -879,7 +911,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -965,6 +997,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -988,7 +1024,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"
@@ -1073,6 +1109,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 8.4-fpm) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Set repository
@@ -1096,7 +1136,7 @@ jobs:
       - name: Test image
         run: |
           set -eux
-          TAG="${{ steps.tags.outputs.tags }}"
+          TAG="${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
           PHP_V="$(docker run --rm "$TAG" php -v)"
           echo "$PHP_V"
           echo "$PHP_V" | grep -q "PHP ${{ matrix.version }}"

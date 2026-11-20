@@ -92,6 +92,10 @@ jobs:
           {
             echo 'tags<<EOF'
             echo "${{ steps.image_tag.outputs.IMAGE_TAG }}${{ steps.get_tag.outputs.tag }}"
+            # On a release, also move the unsuffixed tag (e.g. 7.4) to this release
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ steps.image_tag.outputs.IMAGE_TAG }}"
+            fi
             # Tag "latest" pour la version 7.4
             if [ "${{ matrix.version }}" = "7.4" ] && [ "${{ inputs.image_suffix }}" != "-dev" ]; then
               echo "${{ inputs.registry }}/${{ inputs.image }}:latest"
@@ -99,6 +103,9 @@ jobs:
             # Tags majeurs (6, 7)
             major_version=$(echo "${{ matrix.version }}" | cut -d. -f1)
             echo "${{ inputs.registry }}/${{ inputs.image }}:${major_version}${{ steps.get_tag.outputs.tag }}"
+            if [ "${{ inputs.image_suffix }}" = "-{{latest_release_tag}}" ]; then
+              echo "${{ inputs.registry }}/${{ inputs.image }}:${major_version}"
+            fi
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
